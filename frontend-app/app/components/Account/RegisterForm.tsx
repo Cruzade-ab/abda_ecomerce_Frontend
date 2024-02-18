@@ -51,11 +51,11 @@ function RegisterForm () {
             />
 
             <FormField
-                type="last_Name"
+                type="last_name"
                 placeholder="Last name"
-                name="last_Name"
+                name="last_name"
                 register={register}
-                error={errors.last_Name}
+                error={errors.last_name}
             />
 
             <FormField

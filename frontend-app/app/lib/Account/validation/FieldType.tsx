@@ -3,7 +3,7 @@ import { z, ZodType } from "zod";
 
 export type FormData = {
     name?: string;
-    last_Name?: string;
+    last_name?: string;
     email: string;
     password: string;
     confirmPassword?: string;
@@ -19,7 +19,7 @@ export type FormFieldProps = {
 
 export type ValidFieldNames =
   | "name"
-  | "last_Name"
+  | "last_name"
   | "email"
   | "password"
   | "confirmPassword";
@@ -28,7 +28,7 @@ export type ValidFieldNames =
   export const UserSchema: ZodType<FormData> = z.object({
     name: z.string(),
 
-    last_Name: z.string(),
+    last_name: z.string(),
 
     email: z.string().email(),
 
