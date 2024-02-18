@@ -17,7 +17,7 @@ function RegisterForm () {
     const onSubmit = async (data: FormData) => {
         console.log("SUCCESS", data);
         try{
-            const response = await fetch('/api/submit-form',{
+            const response = await fetch('https://backendapp-production-5383.up.railway.app/api/submit-form',{
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -35,7 +35,7 @@ function RegisterForm () {
     }
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} className="">
           <div className=" ">
             <h1 className="">
               Register
