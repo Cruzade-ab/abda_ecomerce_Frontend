@@ -9,8 +9,9 @@ Carpetas Principales
    * /lib
    * /components
    * /Account (Directorio que contiene las rutas register/login )
-     */register 
+     * /register 
        * page.tsx (Pagina de Register)
      * /login
        * page.tsx (Pagina de Login)
+       
 2- /public
