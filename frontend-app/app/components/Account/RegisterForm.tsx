@@ -15,14 +15,15 @@ function RegisterForm () {
 
 
     const onSubmit = async (data: FormData) => {
-        console.log("SUCCESS", data);
+        const {confirmPassword , ...FormData} = data;
+
         try{
             const response = await fetch('https://backendapp-production-5383.up.railway.app/api/submit-form',{
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
               },
-              body: JSON.stringify(data),
+              body: JSON.stringify(FormData),
             })
             if (response.ok) {
               console.log('Formulario enviado correctamente')
@@ -50,11 +51,11 @@ function RegisterForm () {
             />
 
             <FormField
-                type="lastName"
+                type="last_Name"
                 placeholder="Last name"
-                name="lastName"
+                name="last_Name"
                 register={register}
-                error={errors.lastName}
+                error={errors.last_Name}
             />
 
             <FormField

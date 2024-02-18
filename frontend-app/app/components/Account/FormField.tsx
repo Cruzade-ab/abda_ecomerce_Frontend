@@ -1,4 +1,4 @@
-import { FormFieldProps } from "@/app/lib/Account/validation/FieldType";
+import { FormFieldProps } from "@/app/lib/Account/validation/FieldType"
 
 const FormField: React.FC<FormFieldProps> = ({
     type,
