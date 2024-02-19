@@ -7,14 +7,20 @@ const FormField: React.FC<FormFieldProps> = ({
     name,
     register,
     error,
+    inputStyle,
+    labelStyle,
+    inputIcon
 }) => (
     <>
-        {label && <label htmlFor={name} className='text-xs font-semibold px-1'>{label}</label>}
-        <input className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500"
+        {label && <label htmlFor={name} className={labelStyle}>{label}</label>}
+        <div className="flex">
+            <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center"><i className={inputIcon}></i></div>
+            <input className={inputStyle}
             type={type}
             placeholder={placeholder}
             {...register(name)}    
         />
+        </div>
         {error && <span className="error-message ">{error.message}</span>}
     </>
 )
