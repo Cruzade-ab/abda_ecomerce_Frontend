@@ -43,6 +43,7 @@ function RegisterForm () {
             </h1>
 
             <FormField 
+                label="First Name"
                 type="name"
                 placeholder="Name"
                 name="name"
@@ -51,6 +52,7 @@ function RegisterForm () {
             />
 
             <FormField
+                label="Last Name"
                 type="last_name"
                 placeholder="Last name"
                 name="last_name"
@@ -59,6 +61,7 @@ function RegisterForm () {
             />
 
             <FormField
+              label="Email"
               type="email"
               placeholder="Email"
               name="email"
@@ -67,6 +70,7 @@ function RegisterForm () {
             />
   
             <FormField
+              label="Password"
               type="password"
               placeholder="Password"
               name="password"
@@ -75,6 +79,7 @@ function RegisterForm () {
             />
   
             <FormField
+              label="Confirm Password"
               type="password"
               placeholder="Confirm Password"
               name="confirmPassword"

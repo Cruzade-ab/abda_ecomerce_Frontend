@@ -12,6 +12,7 @@ export type FormData = {
 export type FormFieldProps = {
     type: string;
     placeholder: string;
+    label: string;
     name: ValidFieldNames;
     register: UseFormRegister<FormData>;
     error: FieldError | undefined;
