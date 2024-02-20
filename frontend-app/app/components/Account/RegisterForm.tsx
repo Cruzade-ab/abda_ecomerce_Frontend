@@ -21,7 +21,7 @@ function RegisterForm () {
         const {confirmPassword , ...FormData} = data;
 
         try{
-            const response = await fetch('https://backendapp-production-5383.up.railway.app/api/submit-form',{
+            const response = await fetch('https://backendapp-production-5383.up.railway.app/api/register',{ 
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -36,7 +36,7 @@ function RegisterForm () {
           }catch (error){
             console.error('')
           }
-    }
+    } 
 
     return (
       <div className="min-w-screen min-h-screen bg-gray-900 flex items-center justify-center px-5 py-5"> {/** Se establece un body que ocupe toda la pantalla, de color gray-900 Div como contenedor Flex para centralizar el sub contenedor */}
