@@ -1,7 +1,13 @@
-import { z, ZodType } from "zod";
-import { FormData } from "./FieldType";
+//Este archivo contiene la logica para la validacion de los valores del formulario. Para entender vea este orden(1- FieldType, 2- FormField , 3- UserSchema, 4-RegisterForm)
 
-export const UserSchema: ZodType<FormData> = z.object({
+import { z, ZodType } from "zod";
+//Lirberias necesarias para utilizar la validacion de datos mediante zod 
+
+import { FormData } from "./FieldType";
+//Se trae el FormData para utilizar sus valores como referencia a las propiedades del z.Object
+
+
+const UserSchema: ZodType<FormData> = z.object({
     name: z.string(),
 
     last_name: z.string(),
@@ -16,9 +22,14 @@ export const UserSchema: ZodType<FormData> = z.object({
 
     confirmPassword: z.string(),
 })
+//Se definen las validaciones referentes a los datos del FormData
+
+
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
     path: ["confirmPassword"],
   });
+// See Explain.md file
 
   export default UserSchema
+  //Se exporta este UserSchema para su uso en el Form

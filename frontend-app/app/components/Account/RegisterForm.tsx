@@ -1,13 +1,20 @@
+// Archivo para el componente RegisterForm  Para entender vea este orden(1- FieldType, 2- FormField , 3- UserSchema, 4-RegisterForm)
+
 import { useForm } from "react-hook-form";
+//Libreria para manejar la logica y funcionalidad del formulario
+
 import { FormData } from "@/app/lib/Account/validation/FieldType";
 import UserSchema from "@/app/lib/Account/validation/UserSchema";
 import FormField from "./FormField"
+//Archivos necesarios para la creacion del componente 
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import '@mdi/font/css/materialdesignicons.min.css';
 
 
 
 function RegisterForm () {
+
     const {
         register,
         handleSubmit,
@@ -16,10 +23,13 @@ function RegisterForm () {
       } = useForm<FormData>({
         resolver: zodResolver(UserSchema), 
       });
+      // Vea Explain.md file
 
-
+    //Funcion para manejar la logica cuando se envia el formulario
     const onSubmit = async (data: FormData) => {
+
         const {confirmPassword , ...FormData} = data;
+        //Se descontruye la data ya que no queremos enviar el confirmPassword
 
         try{
             const response = await fetch('https://backendapp-production-5383.up.railway.app/api/register',{ 
@@ -37,9 +47,10 @@ function RegisterForm () {
           }catch (error){
             console.error('')
           }
+          //Fetch envia esta data a un url del backend, mediante una solicitud HTTP, asignando su method, header y body. Se convierte la data a un objeto JSON
     } 
 
-    return (
+    return ( //Explain.md para los estilos del form 
       <div className="min-w-screen min-h-screen bg-gray-900 flex items-center justify-center px-5 py-5"> {/** Se establece un body que ocupe toda la pantalla, de color gray-900 Div como contenedor Flex para centralizar el sub contenedor */}
         <div className="bg-gray-100 text-gray-600 rounded-3xl shadow-xl w-full overflow-hidden" style={{maxWidth: "1000px"}}>
           <div className="md:flex w-full">
