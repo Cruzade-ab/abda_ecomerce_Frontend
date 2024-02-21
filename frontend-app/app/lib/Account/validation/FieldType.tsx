@@ -1,25 +1,32 @@
+//Este archivo contiene los data Types para los campos del formulario. Para entender vea este orden(1- FieldType, 2- FormField , 3- UserSchema, 4-RegisterForm)
+
 import { FieldError, UseFormRegister } from "react-hook-form";
-import { z, ZodType } from "zod";
+//Librerias necesarias para el desarrollo de los formularios, verifique el file *Explicaciones.md
+
 
 export type FormData = {
-    name?: string;
-    last_name?: string;
+    name: string;
+    last_name: string;
     email: string;
     password: string;
-    confirmPassword?: string;
+    confirmPassword: string;
   };
+//Expecificamos el tipado para la data que se utiliza en el formulario
 
 export type FormFieldProps = {
     type: string;
     placeholder: string;
     label: string;
     name: ValidFieldNames;
-    register: UseFormRegister<FormData>;
+    register: UseFormRegister<FormData>; //
     error: FieldError | undefined;
-    labelStyle: string;
+
+    //Se asignan estas propiedades para en el momento de inicializar el componente FormField, poder pasarle respectivamente cada Estilo de manera individual, vea el props en el FormField y al momento de inicializar el mismo en el formulario
+    labelStyle: string; 
     inputStyle: string;
     inputIcon: string;
 };
+//Tipado para los props(Atributos que se utilizaran en el FormField component)
 
 export type ValidFieldNames =
   | "name"
@@ -27,24 +34,4 @@ export type ValidFieldNames =
   | "email"
   | "password"
   | "confirmPassword";
-
-
-  export const UserSchema: ZodType<FormData> = z.object({
-    name: z.string(),
-
-    last_name: z.string(),
-
-    email: z.string().email(),
-
-    password: z.string()
-    .min(5, 'Password must be at least 5 characters long')
-    .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
-    .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
-    .regex(/[0-9]/, 'Password must contain at least one number'),
-
-    confirmPassword: z.string(),
-})
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-  });
+// Se guardan los diferentes tipados para el props.name (FormFieldProps)
