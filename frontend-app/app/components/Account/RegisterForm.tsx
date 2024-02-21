@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
-import { FormData, UserSchema } from "@/app/lib/Account/validation/FieldType";
+import { FormData } from "@/app/lib/Account/validation/FieldType";
+import UserSchema from "@/app/lib/Account/validation/UserSchema";
 import FormField from "./FormField"
 import { zodResolver } from "@hookform/resolvers/zod";
 import '@mdi/font/css/materialdesignicons.min.css';
