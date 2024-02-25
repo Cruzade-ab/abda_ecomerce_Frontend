@@ -3,8 +3,8 @@
 import { useForm } from "react-hook-form";
 //Libreria para manejar la logica y funcionalidad del formulario
 
-import { FormData } from "@/app/lib/Account/validation/FieldType";
-import UserSchema from "@/app/lib/Account/validation/UserSchema";
+import { FormData } from "@/app/lib/register-login/FieldType";
+import UserSchema from "@/app/lib/register-login/UserSchema";
 import FormField from "./FormField"
 //Archivos necesarios para la creacion del componente 
 
