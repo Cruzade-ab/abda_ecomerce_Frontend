@@ -15,7 +15,7 @@ export default function Navbar () {
       }
       
 return(
-    <nav className="w-full bg-withe-200 h-20 flex flex-row items-center justify-between border-b-2 border-black ">
+    <nav className="w-full bg-withe-200 h-18 flex flex-row items-center justify-between border-b-2 border-black ">
         <div className="m-6">
             <Link href="/register">
                 <i className='mdi mdi-account-outline text-black-400 text-5xl'>
