@@ -1,7 +1,12 @@
+"use client"
+import Navbar from "./components/home/Navbar";
+
 export default function Home() {
   return (
+    <>
     <main className="">
-      <h1>ABDA-Tshirt Home</h1>
+      <Navbar/>
     </main>
+    </>
   );
 }

@@ -8,14 +8,15 @@ Carpetas Principales
    * globals.css (Archivo Global de Css)
 
    * /lib
-     * /Account
-        * /validation (Contiene los archivos para las validaciones necesarias para el directorio Account(login/Registro))
+     * /register-login
+        * /validation (Contiene los archivos para las validaciones necesarias para el directorio (login/Registro))
           *  FieldType.tsx ()
+          *  UserSchema.tsx
    * /components
-     * /Account
+     * /register-login
        * FormField.tsx (Componente para el elemento input, con la logica para todos sus atributos)
        * RegisterForm.tsx(Componente de registro)
-   * /Account (Directorio que contiene las rutas de las paginas register/login )
+   * /Pages (Directorio que contiene las rutas de las paginas)
      * /register 
        * page.tsx (Pagina de Register)
      * /login
