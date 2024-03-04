@@ -30,15 +30,17 @@ function LoginForm () {
         //Se descontruye la data ya que no queremos enviar el confirmPassword
 
         try{
-            const response = await fetch('backendapp-production-5383.up.railway.app/api/user/login',{ 
+            const response = await fetch('http://localhost:4000/api/user/login',{ 
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
               },
+              credentials: "include",
               body: JSON.stringify(data),
             })
             if (response.ok) {
               console.log('Formulario enviado correctamente')
+              window.location.href = '/';
             } else {
               console.error('Error al enviar el formulario')
             }

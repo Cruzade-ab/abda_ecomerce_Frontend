@@ -1,6 +1,5 @@
 // Archivo para el componente RegisterForm  Para entender vea este orden(1- FieldType, 2- FormField , 3- UserSchema, 4-RegisterForm)
-
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 //Libreria para manejar la logica y funcionalidad del formulario
 
 import { FormData } from "@/app/lib/register-login/FieldType";
@@ -14,7 +13,6 @@ import '@mdi/font/css/materialdesignicons.min.css';
 
 
 function RegisterForm () {
-
     const {
         register,
         handleSubmit,
@@ -26,13 +24,14 @@ function RegisterForm () {
       // Vea Explain.md file
 
     //Funcion para manejar la logica cuando se envia el formulario
-    const onSubmit = async (data: FormData) => {
+    const onSubmit: SubmitHandler<FormData> = async (data, event) => {
 
+        event?.preventDefault();
         const {confirmPassword , ...FormData} = data;
         //Se descontruye la data ya que no queremos enviar el confirmPassword
 
         try{
-            const response = await fetch('backendapp-production-5383.up.railway.app/api/user/register',{ 
+            const response = await fetch('http://localhost:4000/api/user/register',{ 
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -41,6 +40,7 @@ function RegisterForm () {
             })
             if (response.ok) {
               console.log('Formulario enviado correctamente')
+              window.location.href = '/login';
             } else {
               console.error('Error al enviar el formulario')
             }
