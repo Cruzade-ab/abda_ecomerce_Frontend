@@ -1,7 +1,7 @@
 // Archivo para el componente RegisterForm  Para entender vea este orden(1- FieldType, 2- FormField , 3- UserSchema, 4-RegisterForm)
 import { SubmitHandler, useForm } from "react-hook-form";
 //Libreria para manejar la logica y funcionalidad del formulario
-
+import  Link  from "next/link"
 import { FormData } from "@/app/lib/register-login/FieldType";
 import UserSchema from "@/app/lib/register-login/UserSchema";
 import FormField from "./FormField"
@@ -141,6 +141,10 @@ function RegisterForm () {
                       inputIcon="mdi mdi-lock-outline text-gray-400 text-lg"
                     />
                     </div>
+                  </div>
+
+                  <div className="flex -mx-3 my-6 justify-center">
+                    <p>Already have an account? <Link href="/login" className="text-blue-500 hover:underline">Log In</Link></p>
                   </div>
 
                   <div className="flex -mx-3">

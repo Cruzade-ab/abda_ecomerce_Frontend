@@ -11,6 +11,8 @@ import FormField from "./LoginFormField"
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import '@mdi/font/css/materialdesignicons.min.css';
+import Link from "next/link";
+import Cookies from 'js-cookie';
 
 
 
@@ -41,6 +43,9 @@ function LoginForm () {
             if (response.ok) {
               console.log('Formulario enviado correctamente')
               window.location.href = '/';
+              // After successful login, set the cookie
+              Cookies.set('isLoggedIn', 'true');
+
             } else {
               console.error('Error al enviar el formulario')
             }
@@ -100,12 +105,14 @@ function LoginForm () {
                     />
                     </div>
                   </div>
+                  <div className="flex -mx-3 my-6 justify-center">
+                    <p>Don't have an account?   <Link href="/register" className="text-blue-500 hover:underline">Sign In</Link></p>
+                  </div>
                   <div className="flex -mx-3">
                     <button type="submit" className="block w-full max-w-xs mx-auto bg-gray-500 hover:bg-zinc-800 focus:bg-gray-900 text-white rounded-lg px-3 py-3 font-semibold">
                     Submit
                   </button>
                   </div>
-
                 </div>  
             </form>
           </div>

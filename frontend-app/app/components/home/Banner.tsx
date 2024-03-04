@@ -5,7 +5,7 @@ export default function Banner(){
 
 
     return (
-        <div className="w-full h-96 bg-gray-200 flex flex-row">
+        <div className="w-full h-[600px] bg-gray-200 flex flex-row">
 
             <div className="bg-gray-400 w-1/2 flex flex-col items-center justify-center bg-cover" style={{backgroundImage: "url('./Mens.jpg')"}}>
 
