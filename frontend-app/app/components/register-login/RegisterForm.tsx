@@ -32,7 +32,7 @@ function RegisterForm () {
         //Se descontruye la data ya que no queremos enviar el confirmPassword
 
         try{
-            const response = await fetch('https://backendapp-production-5383.up.railway.app/api/register',{ 
+            const response = await fetch('backendapp-production-5383.up.railway.app/api/user/register',{ 
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
