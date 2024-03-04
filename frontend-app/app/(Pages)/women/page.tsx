@@ -1,7 +1,7 @@
 import Navbar from "@/app/components/home/Navbar";
 
-export default function Cart (){
-    return(
+export default function Women() {
+    return (
         <>
         <Navbar/>
         <h1 className="w-full bg-black text-white text-center">Men</h1>

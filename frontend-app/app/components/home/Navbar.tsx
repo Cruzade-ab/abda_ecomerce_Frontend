@@ -17,10 +17,9 @@ export default function Navbar () {
 return(
     <nav className="w-full bg-withe-200 h-20 flex flex-row items-center justify-between border-b-2 border-black ">
         <div className="m-6">
-            <Link href="/register">
-                <i className='mdi mdi-account-outline text-black-400 text-5xl'>
+            <Link href="/login">
+                <i className='mdi mdi-account-outline text-black-400 text-6xl '>
                 </i>
-                <p>Account</p>
             </Link>
         </div>
         <div className="m-6">
@@ -30,9 +29,8 @@ return(
         </div>
         <div className="m-6">
             <Link href="/cart">
-                <i className='mdi mdi-cart-outline text-black-400 text-5xl'>
+                <i className='mdi mdi-cart-outline text-black-400 text-5xl '>
                 </i>
-                <p>Cart</p>
             </Link>
         </div>
     </nav>
