@@ -29,7 +29,7 @@ return(
     <nav className="w-full bg-withe-200 h-20 flex flex-row items-center justify-between border-b-2 border-black ">
         <div className="m-6">
             {isLoggedIn ? (
-          <Link href="/profile"> {/* Change the href for logged in user */}
+          <Link href="/"> 
             <i className='mdi mdi-account text-black-400 text-6xl'></i>
           </Link>
         ) : (
