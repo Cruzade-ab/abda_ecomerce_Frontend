@@ -1,4 +1,6 @@
+"use client"
 import Navbar from "@/app/components/home/Navbar";
+
 
 export default function Women() {
     return (

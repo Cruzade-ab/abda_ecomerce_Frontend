@@ -15,7 +15,7 @@ export default function Home() {
         });
         if (response.ok) {
           const content = await response.json();
-          setMessage(`${content.name} ${content.last_name} is logged in with an email: ${content.email}.`);
+          setMessage(`${content.name} ${content.last_name} is logged in with an email: ${content.email}. Its roles is the # ${content.role_id}`);
           setIsLoggedIn(true);
           console.log(content);
         } else {
