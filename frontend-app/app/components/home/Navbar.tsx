@@ -26,8 +26,8 @@ export default function Navbar () {
     }, []);
 
 return(
-    <nav className="w-full bg-withe-200 h-18 flex flex-row items-center justify-between border-b-2 border-black ">
-        <div className="m-6">
+    <nav className="w-full bg-withe-200 h-14 flex flex-row items-center justify-between border-b-2 border-black ">
+        <div className="m-6 flex flex-row items-center justify-between ">
             {isLoggedIn ? (
           <Link href="/"> 
             <i className='mdi mdi-account text-black-400 text-6xl'></i>
@@ -36,8 +36,15 @@ return(
           <Link href="/login">
             <i className='mdi mdi-account-outline text-black-400 text-6xl'></i>
           </Link>
+          
         )}
-        </div>
+        <Link href ="/men">
+          <p>Mens</p>
+        </Link>
+        <Link href ="/women">
+          <p>Womens</p>
+        </Link>
+       </div>
         <div className="m-6">
                 <Link href="/">
                 <p style={fontStyle}>ABDA Shirts</p>
