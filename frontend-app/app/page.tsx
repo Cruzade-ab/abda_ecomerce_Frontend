@@ -1,6 +1,4 @@
 "use client"
-import Navbar from "./components/home/Navbar";
-import Banner from "./components/home/Banner";
 import { useEffect, useState } from "react";
 import Navbar2 from "./components/home/Navbar2";
 
