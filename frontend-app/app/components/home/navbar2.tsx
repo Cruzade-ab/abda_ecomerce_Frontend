@@ -35,10 +35,10 @@ export default function Navbar2 () {
     <nav className="W-full h-14 bg-white border-b-2 border-black fixed top-0 left-0 right-0 z-10 ">
         <div className="justify-between px-2 mx-auto lg:max-w-7xl md:items center md:flex md:px-8">
             <div>
-                <div className="flex items-center justify-between py-3 md:py-5 md:block">
+                <div className="flex items-center justify-between py-2 md:py-5 md:block">
                         {/*Logo*/}
                          <Link href="*/*">
-                             <h2 className="text-2xl"style={fontStyle}>ABDA Shirts</h2>
+                             <h2 className="text-2xl pb-1"style={fontStyle}>ABDA Shirts</h2>
                         </Link>
                         {/*hamburger button for mobile*/}
                     <div className="md:hidden">
@@ -61,7 +61,7 @@ export default function Navbar2 () {
                     </div>
                 </div>
             </div>
-                               <div className="pb-6 text-xl border-b-2 md:border=b-0">
+                               <div className="text-xl border-b-2 md:border=b-0">
                                     <SearchBar/>
                                </div>           
                          
@@ -82,25 +82,17 @@ export default function Navbar2 () {
                                         <Link href="/women" onClick={() =>setNavbar(!navbar)}>
                                             <h1>Womens</h1>
                                         </Link>
-                                    </li>
-                                    <li className='pb-6 text-xl border-b-2 md:border-b-0'>
-                                            {isLoggedIn ? (
-                                        <Link href="/"> 
-                                            <i className='mdi mdi-account text-black-400 text-6xl'></i>
+                                   </li>
+                                   <li className="pb-6 text-xl  text-black py-2 md:px-6 text-center border-b-2 md:border-b-0 hover:bg-gray-400 border-gray-400 md:hover:text-gray-400 md:hover:bg-transparent">
+                                        <Link href="/login" onClick={() =>setNavbar(!navbar)}>
+                                            <h1>Account</h1>
                                         </Link>
-                                        ) : (
-                                        <Link href="/login">
-                                            <i className='mdi mdi-account-outline text-black-400 text-6xl'></i>
-                                        </Link>
-                                        
-                                        )}
-                                    </li>
-                                    <li className="pb-6 text-xl border-b-2 md:border=b-0">
+                                   </li>
+                                   <li className="pb-6 text-xl  text-black py-2 md:px-6 text-center border-b-2 md:border-b-0 hover:bg-gray-400 border-gray-400 md:hover:text-gray-400 md:hover:bg-transparent">
                                         <Link href="/cart" onClick={() =>setNavbar(!navbar)}>
-                                           <i className='mdi mdi-cart-outline text-black-400 text-5xl'>
-                                           </i>
+                                            <h1>Cart</h1>
                                         </Link>
-                                    </li>
+                                   </li>
                                 </ul>
                          </div> 
                          

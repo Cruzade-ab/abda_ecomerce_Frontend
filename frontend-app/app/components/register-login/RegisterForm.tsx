@@ -9,11 +9,20 @@ import FormField from "./FormField"
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import '@mdi/font/css/materialdesignicons.min.css';
-
+import { Kaushan_Script } from "next/font/google";
+const kaushan = Kaushan_Script({ subsets: ["latin"], weight: ["400"]});
 
 
 function RegisterForm () {
-    const {
+  const fontStyle = {
+    fontFamily: kaushan.className,
+    fontSize: "48px",
+    color: "#5B5C31",
+    textShadow: "2px 2px 4px rgba(0, 0, 0, 0.25)", // Drop shadow effect
+    WebkitTextStroke: "1px black", // Stroke effect,
+    fontStyle: "italic",
+  }
+  const {
         register,
         handleSubmit,
         formState: { errors },
@@ -63,9 +72,8 @@ function RegisterForm () {
             </div>
             <form onSubmit={handleSubmit(onSubmit)} className="w-full md:w-1/2 py-10 px-5 md:px-10">
                 <div className="text-center mb-10">
-                  <h1 className="font-bold text-3xl text-gray-900">
-                    Register
-                  </h1>
+                <h2 className="text-2xl"style={fontStyle}>ABDA Shirts</h2>
+                  <h1 className="text-2xl">Register</h1>
                   <p>Please enter your information to register</p>
                 </div>
                 <div className="">

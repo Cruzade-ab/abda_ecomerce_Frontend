@@ -2,7 +2,7 @@ import React from 'react';
 
 const SearchBar = () => {
   return (
-    <div className="relative mx-auto">
+    <div className="relative mx-auto pt-1">
       <input
         type="text"
         placeholder="Search..."
