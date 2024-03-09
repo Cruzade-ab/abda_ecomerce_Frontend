@@ -13,6 +13,8 @@ export default function Navbar () {
         WebkitTextStroke: "1px black", // Stroke effect,
         fontStyle: "italic",
       }
+
+      
       
 return(
     <nav className="w-full bg-withe-200 h-18 flex flex-row items-center justify-between border-b-2 border-black ">
@@ -37,5 +39,6 @@ return(
         </div>
     </nav>
 )
+
     
 }
