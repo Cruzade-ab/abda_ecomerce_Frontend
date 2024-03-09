@@ -1,6 +1,14 @@
 "use client"
 import { useEffect, useState } from "react";
 import Navbar2 from "./components/home/Navbar2";
+import { CssBaseline, } from '@mui/material';
+import { CacheProvider } from '@emotion/react';
+import createCache from '@emotion/cache';
+import { ThemeProvider } from '@mui/material/styles';
+import Productcard from '@/app/components/Products/Productcard'
+import Banner2 from '@/app/components/home/Banner2'
+
+
 
 export default function Home() {
   const [message, setMessage] = useState('');
@@ -32,6 +40,8 @@ export default function Home() {
   return (
     <>
       <Navbar2/>
+      <Banner2/>
+
       <p className="text-center">
         {isLoggedIn ? message : 'You need to log in.'}
       </p>

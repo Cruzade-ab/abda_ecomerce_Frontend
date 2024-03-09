@@ -32,7 +32,7 @@ export default function Navbar2 () {
 
     return(
 <div> 
-    <nav className="W-full h-14 bg-white border-b-2 border-black fixed top-0 left-0 right-0 z-10 ">
+    <nav className="W-full h-14 bg-white border-b-2 border-black fixed top-0 left-0 right-0  ">
         <div className="justify-between px-2 mx-auto lg:max-w-7xl md:items center md:flex md:px-8">
             <div>
                 <div className="flex items-center justify-between py-2 md:py-5 md:block">
@@ -61,7 +61,7 @@ export default function Navbar2 () {
                     </div>
                 </div>
             </div>
-                               <div className="text-xl border-b-2 md:border=b-0">
+                               <div className="text-xl">
                                     <SearchBar/>
                                </div>           
                          
