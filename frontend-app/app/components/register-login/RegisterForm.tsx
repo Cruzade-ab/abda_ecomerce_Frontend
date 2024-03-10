@@ -2,8 +2,8 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 //Libreria para manejar la logica y funcionalidad del formulario
 import  Link  from "next/link"
-import { FormData } from "@/app/lib/register-login/FieldType";
-import UserSchema from "@/app/lib/register-login/UserSchema";
+import { FormData } from "@/app/lib/register-login/FieldType/FieldType";
+import UserSchema from "@/app/lib/register-login/UserSchema/UserSchema";
 import FormField from "./FormField"
 //Archivos necesarios para la creacion del componente 
 
@@ -33,7 +33,7 @@ function RegisterForm () {
         //Se descontruye la data ya que no queremos enviar el confirmPassword
 
         try{
-            const response = await fetch('http://localhost:4000/api/user/register',{ 
+            const response = await fetch('http://localhost:4000/api/register',{ 
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',

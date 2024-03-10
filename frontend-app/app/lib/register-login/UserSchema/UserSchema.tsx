@@ -3,11 +3,15 @@
 import { z, ZodType } from "zod";
 //Lirberias necesarias para utilizar la validacion de datos mediante zod 
 
-import { FormData } from "./LoginType";
+import { FormData } from "../FieldType/FieldType";
 //Se trae el FormData para utilizar sus valores como referencia a las propiedades del z.Object
 
 
 const UserSchema: ZodType<FormData> = z.object({
+    name: z.string(),
+
+    last_name: z.string(),
+
     email: z.string().email(),
 
     password: z.string()
@@ -16,8 +20,16 @@ const UserSchema: ZodType<FormData> = z.object({
     .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
     .regex(/[0-9]/, 'Password must contain at least one number'),
 
-
+    confirmPassword: z.string(),
 })
+//Se definen las validaciones referentes a los datos del FormData
 
-export default UserSchema
-//Se exporta este UserSchema para su uso en el Form
+
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+// See Explain.md file
+
+  export default UserSchema
+  //Se exporta este UserSchema para su uso en el Form

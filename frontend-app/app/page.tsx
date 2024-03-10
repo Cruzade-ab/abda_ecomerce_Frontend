@@ -1,8 +1,7 @@
 "use client"
 import Navbar from "./components/home/navBar/Navbar";
-import Banner from "./components/home/Banner";
+import Banner from "./components/home/banner/Banner";
 import { useEffect, useState } from "react";
-import SearchBar from "./components/home/searchBar/SearchBar";
 
 export default function Home() {
   const [message, setMessage] = useState('');
@@ -11,7 +10,7 @@ export default function Home() {
   useEffect(() => {
     (async () => {
       try {
-        const response = await fetch('http://localhost:4000/api/user/getUser', {
+        const response = await fetch('http://localhost:4000/api/userOperations/getUser', {
           credentials: "include",
         });
         if (response.ok) {
@@ -34,7 +33,6 @@ export default function Home() {
   return (
     <>
       <Navbar/>
-      <SearchBar/>
       <Banner/>
       <p className="text-center">
         {isLoggedIn ? message : 'You need to log in.'}

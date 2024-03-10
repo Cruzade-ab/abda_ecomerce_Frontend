@@ -3,16 +3,16 @@
 import { useForm } from "react-hook-form";
 //Libreria para manejar la logica y funcionalidad del formulario
 
-import { FormData } from "@/app/lib/register-login/LoginType";
+import { FormData } from "@/app/lib/register-login/LoginType/LoginType";
 
-import LoginSchema from "@/app/lib/register-login/LoginSchema";
+import LoginSchema from "@/app/lib/register-login/LoginSchema/LoginSchema";
 import FormField from "./LoginFormField"
 //Archivos necesarios para la creacion del componente 
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import '@mdi/font/css/materialdesignicons.min.css';
 import Link from "next/link";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 
 
 
@@ -32,7 +32,7 @@ function LoginForm () {
         //Se descontruye la data ya que no queremos enviar el confirmPassword
 
         try{
-            const response = await fetch('http://localhost:4000/api/user/login',{ 
+            const response = await fetch('http://localhost:4000/api/login',{ 
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
