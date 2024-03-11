@@ -10,8 +10,8 @@ const SearchBar = () => {
       />
       <button className="absolute right-0  mt-3.5 mr-4">
         {/* Add your search icon or button here */}
-        <Link href="/"> 
-            <img src="./icons8-search.svg" alt="Icon" width="18" height="18"></img>
+        <Link href="/search"> 
+            <img src="./icons8-search.png" alt="Icon" width="18" height="18"></img>
         </Link>
       </button>
     </div>
