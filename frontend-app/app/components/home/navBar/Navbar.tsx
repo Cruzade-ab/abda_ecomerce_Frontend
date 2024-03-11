@@ -34,7 +34,7 @@ export default function Navbar() {
           <div>
             <div className="flex items-center justify-between py-2 md:py-5 md:block">
               {/*Logo*/}
-              <Link href="#page.tsx">
+              <Link href="/">
                 <h2 className="text-2xl pb-1" style={fontStyle}>
                   ABDA Shirts
                 </h2>
