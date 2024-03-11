@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import Cookies from "js-cookie";
 import { useState } from "react";
 import Image from "next/image";
-import SearchBar from "../searchBar/SearchBar";
+import SearchBar from "../Search bar";
 const kaushan = Kaushan_Script({ subsets: ["latin"], weight: ["400"] });
 
 export default function Navbar() {
@@ -34,7 +34,7 @@ export default function Navbar() {
           <div>
             <div className="flex items-center justify-between py-2 md:py-5 md:block">
               {/*Logo*/}
-              <Link href="*/*">
+              <Link href="#page.tsx">
                 <h2 className="text-2xl pb-1" style={fontStyle}>
                   ABDA Shirts
                 </h2>
@@ -47,7 +47,7 @@ export default function Navbar() {
                 >
                   {navbar ? (
                     <Image
-                      src="/icons8-close  static.svg"
+                      src="/icons8-close.svg"
                       width={30}
                       height={30}
                       alt="close icon"
@@ -66,14 +66,16 @@ export default function Navbar() {
             </div>
           </div>
           <div className="text-xl">
-            <SearchBar />
+                <SearchBar onSearch={function (value: string): void {
+              throw new Error("Function not implemented.");
+            } } />
           </div>
 
           <div>
             <div
-              className={
-                "flex-1 justify-self-center pb-3 mt-8 md:block md:pb-0 md:mt-0"
-              }
+              className={`${
+              navbar ? "block" : "hidden"
+              } md:flex-1 justify-self-center pb-3 mt-8 md:block md:pb-0 md:mt-0 `}
             >
               <ul className="h-screen md:h-auto items-center justify-center md:flex md:items-center md:justify-center ">
                 <li className="pb-6 text-xl  text-black py-2 md:px-6 text-center border-b-2 md:border-b-0 hover:bg-gray-400 border-gray-400 md:hover:text-gray-400 md:hover:bg-transparent">

@@ -1,6 +1,6 @@
 "use client"
 import Navbar from "./components/home/navBar/Navbar";
-import Banner from "./components/home/banner/Banner";
+import Banner from "./components/home/banner/banner1";
 import { useEffect, useState } from "react";
 
 export default function Home() {
