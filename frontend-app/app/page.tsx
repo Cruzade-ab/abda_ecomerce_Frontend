@@ -2,6 +2,7 @@
 import Navbar from "./components/home/navBar/Navbar";
 import Banner from "./components/home/banner/banner1";
 import { useEffect, useState } from "react";
+import Section from "./components/home/Sections/Sectionbestseller";
 
 export default function Home() {
   const [message, setMessage] = useState('');
@@ -34,6 +35,7 @@ export default function Home() {
     <>
       <Navbar/>
       <Banner/>
+      <Section/>
       <p className="text-center">
         {isLoggedIn ? message : 'You need to log in.'}
       </p>
