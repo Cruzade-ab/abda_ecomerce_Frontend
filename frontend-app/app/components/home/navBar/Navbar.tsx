@@ -80,12 +80,12 @@ export default function Navbar() {
               <ul className="h-screen md:h-auto items-center justify-center md:flex md:items-center md:justify-center ">
                 <li className="pb-6 text-xl  text-black py-3 md:px-6 text-center border-b-2 md:border-b-0 hover:bg-gray-400 border-gray-400 md:hover:text-gray-400 md:hover:bg-transparent">
                   <Link href="/men" onClick={() => setNavbar(!navbar)}>
-                    <h1>Mens</h1>
+                    <h1>Men</h1>
                   </Link>
                 </li>
                 <li className="pb-6 text-xl  text-black py-3 md:px-6 text-center border-b-2 md:border-b-0 hover:bg-gray-400 border-gray-400 md:hover:text-gray-400 md:hover:bg-transparent">
                   <Link href="/women" onClick={() => setNavbar(!navbar)}>
-                    <h1>Womens</h1>
+                    <h1>Women</h1>
                   </Link>
                 </li>
                 <li className="pb-6 text-xl  text-black py-3 md:px-6 text-center border-b-2 md:border-b-0 hover:bg-gray-400 border-gray-400 md:hover:text-gray-400 md:hover:bg-transparent">
