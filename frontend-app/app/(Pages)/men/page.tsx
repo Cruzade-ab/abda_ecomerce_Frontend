@@ -1,10 +1,13 @@
 "use client"
+import Banner from "@/app/components/home/banner/banner1"
 import Navbar from "@/app/components/home/navBar/Navbar"
-
+import Section from "@/app/components/home/Sections/Sectionbestseller"
 
 export default function Men(){
     return (<>
         <Navbar/>
-        <h1 className="w-full bg-black text-white text-center">Mens Page</h1></>
+        <Banner/>
+        <Section/>
+        </>
     )
 }
