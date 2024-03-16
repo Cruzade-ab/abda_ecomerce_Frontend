@@ -2,11 +2,13 @@
 import Navbar from "./components/home/navBar/Navbar";
 import Banner from "./components/home/banner/banner1";
 import { useEffect, useState } from "react";
-import Section from "./components/home/Sections/Sectionbestseller";
+import ProductsContainer from "./components/home/Producto/ProductContainer";
 
 export default function Home() {
   const [message, setMessage] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  
 
   useEffect(() => {
     (async () => {
@@ -35,7 +37,7 @@ export default function Home() {
     <>
       <Navbar/>
       <Banner/>
-      <Section/>
+      <ProductsContainer apiUrl="http://localhost:4000/api/products/sendProducts"/>
       <p className="text-center">
         {isLoggedIn ? message : 'You need to log in.'}
       </p>
