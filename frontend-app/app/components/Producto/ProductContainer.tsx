@@ -29,7 +29,7 @@ interface ProductsContainerProps {
     }, [apiUrl]); 
   
     return (<>
-      <h2 className=''>{section_name}</h2>
+      <h2 className=' flex flex-1 justify-center text-center align-top text-2xl md:text-4xl  font-bold'>{section_name}</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center">
         {products.map(product => (
           <ProductCard key={product.general_product_id} product={product} />
