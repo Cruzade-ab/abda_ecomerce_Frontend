@@ -2,7 +2,7 @@
 import Navbar from "./components/home/navBar/Navbar";
 import Banner from "./components/home/banner/banner1";
 import { useEffect, useState } from "react";
-import ProductsContainer from "./components/home/Producto/ProductContainer";
+import ProductsContainer from "./components/Producto/ProductContainer";
 
 export default function Home() {
   const [message, setMessage] = useState('');
@@ -37,7 +37,7 @@ export default function Home() {
     <>
       <Navbar/>
       <Banner/>
-      <ProductsContainer apiUrl="http://localhost:4000/api/products/sendProducts"/>
+      <ProductsContainer apiUrl="http://localhost:4000/api/products/sendProducts" section_name="Most Wanted Products"/>
       <p className="text-center">
         {isLoggedIn ? message : 'You need to log in.'}
       </p>

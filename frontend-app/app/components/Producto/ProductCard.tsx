@@ -27,10 +27,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     };
 
     return (
-        <div className="relative m-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
-            <a className="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl" href="#">
-                <img className="object-fit" src={selectedVariant?.image_url || ''} alt={product.general_product_name} /> </a>
-                
+        <div className="m-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
+            
+            <div className='mx-3 mt-3 h-60 rounded-xl overflow-clip'>
+                <img className="object-cover w-full h-full" src={selectedVariant?.image_url || ''} alt={product.general_product_name} /> 
+            </div>
             <div className="mt-4 px-5 pb-5">
                 <a href="#">
                     <h5 className="text-xl tracking-tight text-slate-900">{product.general_product_name}, {product.brand.brand_name}</h5>
@@ -40,18 +41,18 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                         <span className="text-3xl font-bold text-slate-900">${selectedVariant?.value || (product.products[0]?.value ?? 0)}</span>
                     </p>
                     <div className="flex items-center">
-                        <p>Available Sizes:</p>
+                        <p>Sizes:</p>
                         <select value={selectedVariant?.size.size_name || ''} onChange={e => handleSizeChange(e.target.value)}>
-                            {/* Generate dropdown options for sizes */}
+                            
                             {product.products.map((variant, index) => (
                                 <option key={index} value={variant.size.size_name}>
                                     {variant.size.size_name}
                                 </option>
                             ))}
                         </select>
-                        <p>Available Colors:</p>
+                        <p>Colors:</p>
                         <select value={selectedColor} onChange={e => handleColorChange(e.target.value)}>
-                            {/* Generate dropdown options for colors */}
+                            
                             {product.products.map((variant, index) => (
                                 <option key={index} value={variant.color.color_name}>
                                     {variant.color.color_name}

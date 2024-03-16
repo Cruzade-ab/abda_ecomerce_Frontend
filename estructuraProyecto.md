@@ -36,6 +36,10 @@ Carpetas Principales
          * index.ts
          * search.tsx
          * SearchProps.ts
+       * /Producto
+         *ProductCard.tsx
+         *ProductContainer.tsx
+         * ProductInterface.tsx  
     
   
    * /Pages (Directorio que contiene las rutas de las paginas)
