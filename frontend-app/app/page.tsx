@@ -3,6 +3,8 @@ import Navbar from "./components/home/navBar/Navbar";
 import Banner from "./components/home/banner/banner1";
 import { useEffect, useState } from "react";
 import ProductsContainer from "./components/Producto/ProductContainer";
+import AdminForm from "./components/admin/AdminForm";
+
 
 export default function Home() {
   const [message, setMessage] = useState('');
@@ -41,6 +43,7 @@ export default function Home() {
       <p className="text-center">
         {isLoggedIn ? message : 'You need to log in.'}
       </p>
+      <AdminForm/>
     </>
   );
 }
