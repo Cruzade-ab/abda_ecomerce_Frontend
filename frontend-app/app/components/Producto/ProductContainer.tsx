@@ -7,6 +7,7 @@ interface ProductsContainerProps {
     apiUrl: string; // URL to fetch product data
     section_name: string;
  }
+
   
  const ProductsContainer: React.FC<ProductsContainerProps> = ({ apiUrl, section_name }) => {
     // State to hold the fetched products
