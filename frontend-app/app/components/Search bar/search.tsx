@@ -1,10 +1,60 @@
 'use client'
 import React, { ChangeEvent, useState } from 'react';
+import Autosuggest from 'react-autosuggest';
 
 export type SearchProps = {
     onSearch: (value: string) => void
-}
 
+ 
+
+    const AutocompleteSearch: React.FC = () => {
+        const [value, setValue] = useState('');
+        const [suggestionsList, setSuggestionsList] = useState([]);
+      
+        const onChange = (event: React.FormEvent<HTMLInputElement>, { newValue }: { newValue: string }) => {
+          setValue(newValue);
+        };
+      
+        const onSuggestionsFetchRequested = ({ value }: { value: string }) => {
+          const filteredSuggestions = suggestions.filter(suggestion =>
+            suggestion.name.toLowerCase().includes(value.toLowerCase())
+          );
+          setSuggestionsList(filteredSuggestions);
+        };
+      
+        const onSuggestionsClearRequested = () => {
+          setSuggestionsList([]);
+        };
+      
+        const getSuggestionValue = (suggestion: { name: string }) => suggestion.name;
+      
+        const renderSuggestion = (suggestion: { name: string }) => (
+          <div>
+            {suggestion.name}
+          </div>
+        );
+      
+        const inputProps = {
+          placeholder: 'Type a fruit',
+          value,
+          onChange
+        };
+      
+        return (
+          <Autosuggest
+            suggestions={suggestionsList}
+            onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+            onSuggestionsClearRequested={onSuggestionsClearRequested}
+            getSuggestionValue={getSuggestionValue}
+            renderSuggestion={renderSuggestion}
+            inputProps={inputProps}
+          />
+        );
+      };
+      
+      export default AutocompleteSearch;
+}
+ 
 const Search = (props: SearchProps) => {
     const { onSearch } = props;
     const [value, setValue] = useState('Enter search...');
@@ -44,8 +94,22 @@ const Search = (props: SearchProps) => {
                     />
                 </svg>
             </button>
-        </div>
+         
+    </div>
+        
     );
 };
 
 export default Search;
+
+const suggestions = [
+    { name: 'Red' },
+    { name: 'Black' },
+    { name: 'Blue' },
+    { name: 'Gray' },
+    { name: 'White' }
+    { name: 'Shirt' },
+    { name: 'Tshirt' },
+    { name: 'T-Shirt' },
+    { name: 'Camisa' }
+    ;
