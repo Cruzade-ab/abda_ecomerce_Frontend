@@ -5,9 +5,7 @@ import Autosuggest from 'react-autosuggest';
 export type SearchProps = {
     onSearch: (value: string) => void
 
- 
-
-    const AutocompleteSearch: React.FC = () => {
+    const: any AutocompleteSearch: React.FC = () => {
         const [value, setValue] = useState('');
         const [suggestionsList, setSuggestionsList] = useState([]);
       
@@ -16,7 +14,7 @@ export type SearchProps = {
         };
       
         const onSuggestionsFetchRequested = ({ value }: { value: string }) => {
-          const filteredSuggestions = suggestions.filter(suggestion =>
+          const filteredSuggestions = suggestions.filter((suggestion: { name: string; }) =>
             suggestion.name.toLowerCase().includes(value.toLowerCase())
           );
           setSuggestionsList(filteredSuggestions);
@@ -52,7 +50,6 @@ export type SearchProps = {
         );
       };
       
-      export default AutocompleteSearch;
 }
  
 const Search = (props: SearchProps) => {
@@ -102,14 +99,3 @@ const Search = (props: SearchProps) => {
 
 export default Search;
 
-const suggestions = [
-    { name: 'Red' },
-    { name: 'Black' },
-    { name: 'Blue' },
-    { name: 'Gray' },
-    { name: 'White' }
-    { name: 'Shirt' },
-    { name: 'Tshirt' },
-    { name: 'T-Shirt' },
-    { name: 'Camisa' }
-    ;
