@@ -1,11 +1,16 @@
 'use client'
 import React, { ChangeEvent, useState } from 'react';
-import { SearchProps } from './SearchProps';
 
-function Search(props: SearchProps) {
+
+export type SearchProps = {
+    onSearch: (value: string) => void
+}
+
+const Search = (props: SearchProps) => {
     const { onSearch } = props;
-    const [value, setValue] = useState('Enter search...');
-
+    const placeholdervalue = 'Enter search...';
+    const [value, setValue] = useState(placeholdervalue);
+   
     const searchHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const { target } = event;
         setValue(target.value);
@@ -19,7 +24,7 @@ function Search(props: SearchProps) {
     };
 
     return (
-        <div className="relative py-3 w-full text-gray-600">
+        <div className="relative px-2 py-4 w-2/4 text-gray-600">
             <input
                 type="search"
                 name="search"
@@ -29,7 +34,7 @@ function Search(props: SearchProps) {
                 onKeyDown={handleKeyDown} />
             <button type="submit" className="absolute right-0 top-1 mt-3 mr-4">
                 <svg
-                    className="h-4 my-2 w-4 fill-current"
+                    className="h-4 my-3 w-4 fill-current"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 20 20"
                 >
