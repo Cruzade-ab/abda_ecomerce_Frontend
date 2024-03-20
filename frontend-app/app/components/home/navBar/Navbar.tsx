@@ -82,9 +82,6 @@ export default function Navbar() {
               }`}
             >
               <ul className="h-screen md:h-auto items-center justify-center  md:flex">
-                
-                <SearchBar onSearch={handlesearch} />
-                
                 <li className="pb-6 text-xl   text-black py-3 md:px-6 text-center border-b-2 md:border-b-0 hover:bg-gray-400 border-gray-400 md:hover:text-gray-400 md:hover:bg-transparent">
                   <Link href="/men" onClick={() => setNavbar(!navbar)}>
                     <h1>Men</h1>
@@ -105,6 +102,7 @@ export default function Navbar() {
                     <h1>Cart</h1>
                   </Link>
                 </li>
+                <SearchBar onSearch={handlesearch} />
               </ul>
             </div>
           </div>
