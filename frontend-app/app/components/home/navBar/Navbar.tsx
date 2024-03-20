@@ -8,29 +8,26 @@ import Image from "next/image";
 import SearchBar from "../Search bar";
 import React from "react";
 
-
-
 const kaushan = Kaushan_Script({ subsets: ["latin"], weight: ["400"] });
 
 export default function Navbar() {
   const fontStyle = {
     fontFamily: kaushan.className,
-    fontSize: "44px",
+    fontSize: "42px",
     color: "#5B5C31",
     textShadow: "2px 2px 4px rgba(0, 0, 0, 0.25)", // Drop shadow effect
     WebkitTextStroke: "1px black", // Stroke effect,
     fontStyle: "italic",
   };
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  
+
   const [navbar, setNavbar] = useState(false);
 
-  const [searchValue, setSearchValue] = useState('');
+  const [searchValue, setSearchValue] = useState("");
 
   const handlesearch = (value: string) => {
-      setSearchValue(value);
-
-  }
+    setSearchValue(value);
+  };
   useEffect(() => {
     const userLoggedIn = Cookies.get("isLoggedIn");
     if (userLoggedIn === "true") {
@@ -40,21 +37,21 @@ export default function Navbar() {
 
   return (
     <div>
-      <nav className= " bg-white fixed top-0 left-0 right-0 ">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-6">
-            <div className="flex items-center">
-              
-                <Link href="/">
-                  <h2 className="text-xl pt-4 flex flex-shrink-1" style={fontStyle}>
-                    ABDA Shirts
-                  </h2>
-                </Link>
-            
-              {/*hamburger button for mobile*/}
-              <div className="md:hidden block">
+      <nav className=" relative w-full bg-white top-0 right-0 left-0 ">
+        <div className=" flex justify-between px-4 mx-auto lg:max-w-7xl md:items-center md:flex md:px-8 ">
+          <div>
+            <div className="flex flex-row items-center justify-between py-3 md:py-5 md:block">
+              {/*Titulo de la Pagina (LOGO)*/}
+              <Link href="/">
+                <h1 className="text-xl flex flex-shrink-1" style={fontStyle}>
+                  ABDA Shirts
+                </h1>
+              </Link>
+
+              {/* codigo para icono de hamburger para mobiles*/}
+              <div className="md:hidden">
                 <button
-                  className="p-2 focus:border-gray-400 "
+                  className="p-2  text-gray-600 rounded outline-none  focus:border-gray-400 "
                   onClick={() => setNavbar(!navbar)}
                 >
                   {navbar ? (
@@ -77,17 +74,17 @@ export default function Navbar() {
               </div>
             </div>
           </div>
-          <div className="text-xl">
-                <SearchBar onSearch={handlesearch} />
-          </div>
 
           <div>
             <div
-              className={`${ 
-                navbar ? "block" : "hidden"}
-               md:flex-1 justify-self-center pb-3 mt-8 md:block md:pb-0 md:mt-0`}
+              className={`flex-1 justify-self-center pb-3 mt-8 md:block md:pb-0 md:mt-0 ${
+                navbar ? "p-12 md:p-0 block" : "hidden"
+              }`}
             >
-              <ul className="h-screen md:h-auto items-center justify-center md:flex md:items-center md:justify-center ">
+              <ul className="h-screen md:h-auto items-center justify-center  md:flex">
+                
+                <SearchBar onSearch={handlesearch} />
+                
                 <li className="pb-6 text-xl   text-black py-3 md:px-6 text-center border-b-2 md:border-b-0 hover:bg-gray-400 border-gray-400 md:hover:text-gray-400 md:hover:bg-transparent">
                   <Link href="/men" onClick={() => setNavbar(!navbar)}>
                     <h1>Men</h1>
@@ -105,7 +102,7 @@ export default function Navbar() {
                 </li>
                 <li className="pb-6 text-xl  text-black py-3 md:px-6 text-center border-b-2 md:border-b-0 hover:bg-gray-400 border-gray-400 md:hover:text-gray-400 md:hover:bg-transparent">
                   <Link href="/cart" onClick={() => setNavbar(!navbar)}>
-                    <h1>Car</h1>
+                    <h1>Cart</h1>
                   </Link>
                 </li>
               </ul>
@@ -113,6 +110,6 @@ export default function Navbar() {
           </div>
         </div>
       </nav>
-      </div>
+    </div>
   );
 }

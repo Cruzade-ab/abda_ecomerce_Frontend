@@ -24,7 +24,7 @@ const Search = (props: SearchProps) => {
     };
 
     return (
-        <div className="relative px-2 py-4 w-2/4 text-gray-600">
+        <div className="flex py-2 px-2 w-3/4 text-gray-600">
             <input
                 type="search"
                 name="search"
@@ -32,7 +32,7 @@ const Search = (props: SearchProps) => {
                 className="bg-white h-10 px-5 pr-10 w-full text-sm border border-gray-300 rounded-full focus:outline-none focus:border-gray-400 transition duration-300"
                 onChange={(event) => searchHandler(event)}
                 onKeyDown={handleKeyDown} />
-            <button type="submit" className="absolute right-0 top-1 mt-3 mr-4">
+            <button type="submit" className="absolute right-0  mr-6">
                 <svg
                     className="h-4 my-3 w-4 fill-current"
                     xmlns="http://www.w3.org/2000/svg"
