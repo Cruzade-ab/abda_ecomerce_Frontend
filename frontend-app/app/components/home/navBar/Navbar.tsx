@@ -5,8 +5,9 @@ import { useEffect } from "react";
 import Cookies from "js-cookie";
 import { useState } from "react";
 import Image from "next/image";
-import SearchBar from "../Search bar";
 import React from "react";
+import SearchBar from "@/app/(Pages)/search/SearchBar";
+
 
 const kaushan = Kaushan_Script({ subsets: ["latin"], weight: ["400"] });
 
@@ -83,7 +84,10 @@ export default function Navbar() {
             >
               <ul className="h-screen md:h-auto items-center justify-center  md:flex">
                 
-                <SearchBar onSearch={handlesearch} />
+              <div>
+               SearchBar
+              </div>
+                {/* <Search onSearch={handlesearch} /> */}
                 
                 <li className="pb-6 text-xl   text-black py-3 md:px-6 text-center border-b-2 md:border-b-0 hover:bg-gray-400 border-gray-400 md:hover:text-gray-400 md:hover:bg-transparent">
                   <Link href="/men" onClick={() => setNavbar(!navbar)}>
