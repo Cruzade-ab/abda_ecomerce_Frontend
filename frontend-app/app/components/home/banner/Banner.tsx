@@ -15,11 +15,11 @@ const Banner = () => {
     delaySpeed: 2000,
   });
   return (
-    <div className=" flex flex-col justify-center items-center overflow-visible">
-      <h1 className="text-2xl md:text-4xl uppercase font-bold">
+    <div className=" flex flex-col w-full h-96 border border-gray-300 justify-center items-center overflow-visible">
+      <h1 className="text-2xl md:text-4xl uppercase font-semibold">
         ABDA T-Shirts
       </h1>
-      <p className="text-base md:text-lg font-semibold mt-2">
+      <p className="text-base md:text-lg mt-2">
         {text} <Cursor cursorBlinking cursorStyle="|" cursorColor="#ffaa17" />
       </p>
     </div>
