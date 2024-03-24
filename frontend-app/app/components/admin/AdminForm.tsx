@@ -20,26 +20,40 @@ const RegisterForm = () => {
     const [products, setProducts] = useState([{ value: '', color: '', description: '', section: '', imageFile: null, size: '', size_amount: '' }]);
 
     const onSubmit: SubmitHandler<FormData> = async (data) => {
-        try {
-            console.log(data)
-            const response = await fetch('http://localhost:4000/api-product-create', { 
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            });
-            if (response.ok) {
-                console.log('Form submitted successfully');
-                window.location.href = '/login';
-            } else {
-                console.error('Error submitting form');
-            }
-        } catch (error) {
-            console.log(data)
-            console.error('Error:', error);
-        }
-    };
+      try {
+          const formData = {
+              general_product_name: data.general_product_name,
+              brand_name: data.brand_name,
+              products: data.products.map((product) => ({
+                  value: product.value,
+                  color: product.color,
+                  description: product.description,
+                  section: product.section,
+                  size: product.size,
+                  size_amount: product.size_amount,
+                  imageFile: product.imageFile || null,
+              })),
+          };
+  
+          const response = await fetch('http://localhost:4000/api/product/create', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(formData),
+          });
+  
+          if (response.ok) {
+              console.log('Form submitted successfully');
+          } else {
+              console.error('Error submitting form');
+          }
+      } catch (error) {
+          console.error('Error:', error);
+      }
+  };
+  
+    
 
     const addProduct = () => {
         const productsCopy = [...products];

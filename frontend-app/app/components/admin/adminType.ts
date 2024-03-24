@@ -6,7 +6,7 @@ export type FormData = {
     products: Product[];
   };
 
-  export type Product = {
+export type Product = {
     value: string;
     color: string;
     description: string;
