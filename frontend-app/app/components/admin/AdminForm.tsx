@@ -45,14 +45,28 @@ const AdminForm: React.FC = () => {
     const handleProductChange = (index: number, field: string, value: any) => {
       const updatedProducts = generalProduct.products.map((product, i) => {
         if (i === index) {
-          return { ...product, [field]: value };
+          // Verificar el nombre del campo y actualizar el estado correspondiente
+          if (field === 'size') {
+            return { ...product, size_amount: { ...product.size_amount, size: value } };
+          } else if (field === 'size_amount') {
+            return { ...product, size_amount: { ...product.size_amount, size_amount: value } };
+          } else if (field === 'value') { // Cambiado de "Price" a "value"
+            return { ...product, value: value }; // Actualizar el valor del producto
+          } else if (field === 'color') {
+            return { ...product, color: { ...product.color, color_name: value } };
+          } else {
+            return { ...product, [field]: value };
+          }
         }
         return product;
       });
       setGeneralProduct({ ...generalProduct, products: updatedProducts });
     };
-
+    
+    
+    
     const handleFileChange = (index: number, file: File) => {
+      if (generalProduct.products[index]) {
         const updatedProducts = generalProduct.products.map((product, i) => {
           if (i === index) {
             return { ...product, imageFile: file };
@@ -60,7 +74,9 @@ const AdminForm: React.FC = () => {
           return product;
         });
         setGeneralProduct({ ...generalProduct, products: updatedProducts });
-      };
+      }
+    };
+    
       
     
 
@@ -98,7 +114,7 @@ const AdminForm: React.FC = () => {
         });
       
         try {
-          const response = await fetch('https://localhost:4000/products/create', {
+          const response = await fetch('http://localhost:4000/products/create', {
             method: 'POST',
             body: formData
           });
