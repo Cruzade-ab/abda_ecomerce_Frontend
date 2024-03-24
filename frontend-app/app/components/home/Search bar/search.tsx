@@ -22,16 +22,16 @@ const Search = (props: SearchProps) => {
   };
 
   return (
-    <div className="flex flex-row py-2 px-2 w-full text-gray-600">
+    <div className="flex flex-row pb-2 text-gray-600">
       <input
         type="search"
         name="search"
         placeholder={value}
-        className="bg-white h-10 px-5 pr-10 text-sm border border-gray-300 rounded-full focus:outline-none focus:border-gray-400 transition duration-300"
+        className="  bg-white h-10 px-5 pr-10 w-full text-sm border border-gray-300 rounded-full focus:outline-none focus:border-gray-400 transition duration-300"
         onChange={(event) => searchHandler(event)}
         onKeyDown={handleKeyDown}
       />
-      <button type="submit" className="fixed right-40 mx-16">
+      <button type="submit" className="relative right-10">
         <svg
           className="h-4 my-3 w-4 fill-current"
           xmlns="http://www.w3.org/2000/svg"
