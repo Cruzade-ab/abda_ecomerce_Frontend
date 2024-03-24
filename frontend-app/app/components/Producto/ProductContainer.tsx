@@ -19,6 +19,7 @@ interface ProductsContainerProps {
           const response = await fetch(apiUrl);
           const data = await response.json();
           setProducts(data);
+          console.log("Fetching products on container, data:")
           console.log(data)
         } catch (error) {
           console.error('Error fetching products:', error);

@@ -18,7 +18,7 @@ interface ColorDTO {
     description: string;
     section: SectionDTO;
     size_amount: SizeAmountDTO;
-    imageFile?: File | null;
+    image?: File | null;
   }
   
   interface BrandDTO {

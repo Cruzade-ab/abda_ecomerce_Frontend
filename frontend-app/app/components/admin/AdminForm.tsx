@@ -28,7 +28,7 @@ const AdminForm: React.FC = () => {
       description: '',
       section: { section_name: '' },
       size_amount: { size_amount: 0, size: '' },
-      imageFile: null
+      image: null
     };
     setGeneralProduct({
       ...generalProduct,
@@ -61,7 +61,7 @@ const AdminForm: React.FC = () => {
   const handleProductFileChange = (index: number, file: File | null) => {
     const updatedProducts = generalProduct.products.map((product, i) => {
       if (i === index) {
-        return { ...product, imageFile: file };
+        return { ...product, image: file };
       }
       return product;
     });
@@ -73,10 +73,12 @@ const AdminForm: React.FC = () => {
     const productData = {
       general_product_name: generalProduct.general_product_name,
       brand: generalProduct.brand,
-      products: generalProduct.products.map(({ imageFile, ...rest }) => rest)
+      products: generalProduct.products.map(({ image, ...rest }) => rest)
     };
 
     try {
+      console.log("Try fetch data:")
+      console.log(FormData)
       const createResponse = await fetch('http://localhost:4000/products/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -93,9 +95,9 @@ const AdminForm: React.FC = () => {
 
       for (let i = 0; i < generalProduct.products.length; i++) {
         const product = generalProduct.products[i];
-        if (product.imageFile) {
+        if (product.image) {
           const formData = new FormData();
-          formData.append('imageFile', product.imageFile);
+          formData.append('image', product.image);
 
           const uploadResponse = await fetch(`http://localhost:4000/products/${productCreationResult.id}/upload-image`, {
             method: 'POST',
