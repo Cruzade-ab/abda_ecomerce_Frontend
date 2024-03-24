@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import ProductsContainer from "./components/Producto/ProductContainer";
 import AdminForm from "./components/admin/AdminForm";
 
-
 export default function Home() {
   const [message, setMessage] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -43,7 +42,7 @@ export default function Home() {
       <p className="text-center">
         {isLoggedIn ? message : 'You need to log in.'}
       </p>
-      <AdminForm/>
+      <AdminForm></AdminForm>
     </>
   );
 }
