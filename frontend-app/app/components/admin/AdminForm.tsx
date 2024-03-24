@@ -22,7 +22,7 @@ const RegisterForm = () => {
     const onSubmit: SubmitHandler<FormData> = async (data) => {
         try {
             console.log(data)
-            const response = await fetch('http://localhost:4000/', { 
+            const response = await fetch('http://localhost:4000/api-product-create', { 
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
