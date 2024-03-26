@@ -1,7 +1,7 @@
 import { z, ZodType } from "zod";
-import { FormData, Product } from "./adminType";
+import { MyFormData, Product } from "./adminType";
 
-const AdminFormSchema: ZodType<FormData> = z.object({
+const AdminFormSchema: ZodType<MyFormData> = z.object({
     general_product_name: z.string().nonempty(),
     brand_name: z.string().nonempty(),
     products: z.array(

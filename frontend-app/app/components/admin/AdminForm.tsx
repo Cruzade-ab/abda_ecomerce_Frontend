@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import FormField from './AdminFormField'; // Assuming this is the path to your FormField component
-import { FormData, Product } from './adminType';
+import { MyFormData, Product } from './adminType';
 import { zodResolver } from '@hookform/resolvers/zod';
 import AdminFormSchema from './AdminFormSchema';
 
@@ -13,34 +13,36 @@ const RegisterForm = () => {
         setError,
         getValues,
         setValue,
-      } = useForm<FormData>({
+      } = useForm<MyFormData>({
         resolver: zodResolver(AdminFormSchema), 
       });
 
     const [products, setProducts] = useState([{ value: '', color: '', description: '', section: '', imageFile: null, size: '', size_amount: '' }]);
 
-    const onSubmit: SubmitHandler<FormData> = async (data) => {
-      try {
-          const formData = {
-              general_product_name: data.general_product_name,
-              brand_name: data.brand_name,
-              products: data.products.map((product) => ({
-                  value: product.value,
-                  color: product.color,
-                  description: product.description,
-                  section: product.section,
-                  size: product.size,
-                  size_amount: product.size_amount,
-                  imageFile: product.imageFile || null,
-              })),
-          };
+    const onSubmit: SubmitHandler<MyFormData> = async (data) => {
+      const formData = new FormData();
   
+      // Assuming `data.products` contains files and other product details
+      data.products.forEach((product, index) => {
+          formData.append(`products[${index}][value]`, product.value);
+          formData.append(`products[${index}][color]`, product.color);
+          formData.append(`products[${index}][description]`, product.description);
+          formData.append(`products[${index}][section]`, product.section);
+          formData.append(`products[${index}][size]`, product.size);
+          formData.append(`products[${index}][size_amount]`, product.size_amount);
+          if (product.imageFile) {
+              formData.append(`products[${index}][imageFile]`, product.imageFile);
+          }
+      });
+  
+      // Append other data as needed
+      formData.append("general_product_name", data.general_product_name);
+      formData.append("brand_name", data.brand_name);
+  
+      try {
           const response = await fetch('http://localhost:4000/api/product/create', {
               method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(formData),
+              body: formData, 
           });
   
           if (response.ok) {
@@ -52,6 +54,7 @@ const RegisterForm = () => {
           console.error('Error:', error);
       }
   };
+  
   
     
 
@@ -136,7 +139,7 @@ const RegisterForm = () => {
             inputIcon="input-icon"
           />
           <FormField
-            type="file" // Assuming you want to upload a file for imageFile
+            type="file" 
             placeholder={`Upload product ${index + 1} image`}
             label={`Product ${index + 1} Image`}
             name={`products.${index}.imageFile`}

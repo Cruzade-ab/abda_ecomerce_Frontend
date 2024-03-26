@@ -1,6 +1,6 @@
 import { FieldError, UseFormRegister } from "react-hook-form";
 
-export type FormData = {
+export type MyFormData = {
     general_product_name: string;
     brand_name: string;
     products: Product[];
@@ -23,7 +23,7 @@ export type FormFieldProps = {
     placeholder: string;
     label: string;
     name: ValidFieldNames;
-    register: UseFormRegister<FormData>; //
+    register: UseFormRegister<MyFormData>; //
     error: FieldError | undefined;
 
     //Se asignan estas propiedades para en el momento de inicializar el componente FormField, poder pasarle respectivamente cada Estilo de manera individual, vea el props en el FormField y al momento de inicializar el mismo en el formulario
