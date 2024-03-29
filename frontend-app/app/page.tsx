@@ -38,7 +38,7 @@ export default function Home() {
     <>
       <Navbar/>
       <Banner/>
-      <ProductsContainer apiUrl="http://localhost:4000/api/products/sendProducts" section_name="Most Wanted Products"/>
+      <ProductsContainer apiUrl="http://localhost:4000/api/products/getAllProducts" section_name="Most Wanted Products"/>
       <p className="text-center">
         {isLoggedIn ? message : 'You need to log in.'}
       </p>

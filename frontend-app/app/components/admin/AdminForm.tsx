@@ -31,7 +31,7 @@ const RegisterForm = () => {
           formData.append(`products[${index}][size]`, product.size);
           formData.append(`products[${index}][size_amount]`, product.size_amount);
           if (product.imageFile) {
-              formData.append(`products[${index}][imageFile]`, product.imageFile);
+              formData.append('files', product.imageFile);
           }
       });
   
