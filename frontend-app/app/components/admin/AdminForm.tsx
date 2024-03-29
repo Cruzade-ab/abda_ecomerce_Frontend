@@ -5,7 +5,7 @@ import { MyFormData, Product } from './adminType';
 import { zodResolver } from '@hookform/resolvers/zod';
 import AdminFormSchema from './AdminFormSchema';
 
-const RegisterForm = () => {
+const AdminForm = () => {
     const {
         register,
         handleSubmit,
@@ -40,7 +40,7 @@ const RegisterForm = () => {
       formData.append("brand_name", data.brand_name);
   
       try {
-          const response = await fetch('http://localhost:4000/api/product/create', {
+          const response = await fetch('http://localhost:4000/api/admin/product/create', {
               method: 'POST',
               body: formData, 
           });
@@ -181,4 +181,4 @@ const RegisterForm = () => {
   );
 };
 
-export default RegisterForm;
+export default AdminForm;
