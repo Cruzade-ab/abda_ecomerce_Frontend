@@ -1,6 +1,8 @@
 export interface ProductInterface {
     general_product_id: number;
     general_product_name: string;
+    description: string;
+    section: SectionInterface;
     brand: BrandInterface;
     products: ProductVariant[];
   }
@@ -14,9 +16,8 @@ export interface ProductInterface {
     product_id: number;
     value: number;
     color: ColorInterface;
-    description: string;
-    section: SectionInterface;
     image_url: string;
+    hover_image_url: string; 
     size_amount: SizeAmountInterface;
     size: SizeInterface;
   }

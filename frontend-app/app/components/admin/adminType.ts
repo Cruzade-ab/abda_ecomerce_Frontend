@@ -10,11 +10,17 @@ export type MyFormData = {
 
 export type Product = {
   value: string;
-  color_name: string;
-  imageFile: File | null;  
-  hoverImageFile: File | null; 
-  sizes: { [key: string]: string }; 
-};
+  color_name: string; // Add color_name property
+  imageFile?: any;
+  hoverImageFile?: any;
+  sizes: {
+    S: string;
+    M: string;
+    L: string;
+    XL: string;
+    [key: string]: string;
+  };
+}
 
 
 
@@ -25,15 +31,20 @@ export type FormFieldProps = {
   name: ValidFieldNames;
   register: UseFormRegister<MyFormData>;
   error: FieldError | undefined;
-  labelStyle: string; 
+  labelStyle: string;
   inputStyle: string;
   inputIcon: string;
 };
 //Tipado para los props(Atributos que se utilizaran en el FormField component)
 
 export type ValidFieldNames =
-| "general_product_name"
-  | "brand_name"
-  | "description"
-  | "section"
-  |string
+  | 'general_product_name'
+  | 'brand_name'
+  | 'description'
+  | 'section'
+  | `products.${number}.value`
+  | `products.${number}.color_name`
+  | `products.${number}.sizes.S`
+  | `products.${number}.sizes.M`
+  | `products.${number}.sizes.X`
+  | `products.${number}.sizes.XL`

@@ -4,7 +4,7 @@ import FormField from './AdminFormField';
 import { MyFormData, Product } from './adminType';
 import { zodResolver } from '@hookform/resolvers/zod';
 import AdminFormSchema from './AdminFormSchema';
-
+import { ValidFieldNames } from './adminType';
 
 const AdminForm = () => {
   const { register, handleSubmit, formState: { errors }, control } = useForm<MyFormData>({
@@ -122,7 +122,7 @@ const AdminForm = () => {
             type="text"
             placeholder={`Enter product ${index + 1} color`}
             label={`Product ${index + 1} Color`}
-            name={`products.${index}.color`}
+            name={`products.${index}.color_name`}
             register={register} error={undefined} labelStyle={''} inputStyle={''} inputIcon={''}          />
           <Controller
             name={`products[${index}].imageFile`  as keyof MyFormData}
@@ -150,20 +150,23 @@ const AdminForm = () => {
           />
           {['S', 'M', 'L', 'XL'].map((size) => (
             <FormField
-              key={size}
-              type="text"
-              placeholder={`Enter amount for size ${size}`}
-              label={`Size ${size} Amount`}
-              name={`products[${index}].sizes.${size}`}
-              register={register}
-              error={errors.products?.[index]?.sizes?.[size]} labelStyle={''} inputStyle={''} inputIcon={''}/>
+            type="text"
+            placeholder={`Enter amount for size ${size}`}
+            label={`Size ${size} Amount`}
+            name={`products[${index}].sizes.${size}` as ValidFieldNames}
+            register={register}
+            error={errors.products?.[index]?.sizes?.[size]}
+            labelStyle={''}
+            inputStyle={''}
+            inputIcon={''}
+          />
           ))}
         </div>
       ))}
 
       <button type="button" onClick={addProduct}>Add Product</button>
 
-      <button type="submit" onClick={handleSubmit(onSubmit)}>Submit</button>
+      <button type="submit">Submit</button>
     </form>
   );
 };
