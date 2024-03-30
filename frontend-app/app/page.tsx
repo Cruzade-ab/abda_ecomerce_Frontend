@@ -14,7 +14,7 @@ export default function Home() {
   useEffect(() => {
     (async () => {
       try {
-        const response = await fetch('http://localhost:4000/api/userOperations/getUser', {
+        const response = await fetch('http://localhost:4000/api/user/getUser', {
           credentials: "include",
         });
         if (response.ok) {

@@ -33,7 +33,7 @@ function RegisterForm () {
         //Se descontruye la data ya que no queremos enviar el confirmPassword
 
         try{
-            const response = await fetch('http://localhost:4000/api/register',{ 
+            const response = await fetch('http://localhost:4000/api/user/register',{ 
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
