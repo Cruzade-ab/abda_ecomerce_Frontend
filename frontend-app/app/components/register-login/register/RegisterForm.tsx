@@ -5,16 +5,13 @@ import  Link  from "next/link"
 import { FormData } from "@/app/lib/register-login/register/FieldType";
 import UserSchema from "@/app/lib/register-login/register/UserSchema";
 import FormField from "./FormField"
-//Archivos necesarios para la creacion del componente 
-
 import { zodResolver } from "@hookform/resolvers/zod";
-
-
 import '@mdi/font/css/materialdesignicons.min.css';
-
+import { useRouter } from "next/navigation";
 
 
 function RegisterForm () {
+    const router = useRouter()
     const {
         register,
         handleSubmit,
@@ -42,7 +39,7 @@ function RegisterForm () {
             })
             if (response.ok) {
               console.log('Formulario enviado correctamente')
-              window.location.href = '/login';
+              router.push('/login')
             } else {
               console.error('Error al enviar el formulario')
             }

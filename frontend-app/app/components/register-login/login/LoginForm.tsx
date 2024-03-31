@@ -1,23 +1,17 @@
-// Archivo para el componente RegisterForm  Para entender vea este orden(1- FieldType, 2- FormField , 3- UserSchema, 4-RegisterForm)
-
 import { useForm } from "react-hook-form";
-//Libreria para manejar la logica y funcionalidad del formulario
-
 import { FormData } from "@/app/lib/register-login/login/LoginType";
-
 import LoginSchema from "@/app/lib/register-login/login/LoginSchema";
 import FormField from "./LoginFormField"
-//Archivos necesarios para la creacion del componente 
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import '@mdi/font/css/materialdesignicons.min.css';
 import Link from "next/link";
 import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 
 
 function LoginForm () {
-
+  const router = useRouter()
     const {
         register,
         handleSubmit,
@@ -42,7 +36,7 @@ function LoginForm () {
             })
             if (response.ok) {
               console.log('Formulario enviado correctamente')
-              window.location.href = '/';
+              router.push('/')
               // After successful login, set the cookie
               Cookies.set('isLoggedIn', 'true');
 
