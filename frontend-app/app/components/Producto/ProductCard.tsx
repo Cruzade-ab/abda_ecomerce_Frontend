@@ -8,6 +8,7 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     const [selectedColor, setSelectedColor] = useState<string>('');
     const [selectedVariant, setSelectedVariant] = useState<ProductVariant | undefined>();
+    const [hoverImage, setHoverImage] = useState<boolean>(false);
 
     // Set the selected variant to the first product object on component mount
     useEffect(() => {
@@ -29,8 +30,16 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     return (
         <div className="m-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
             
-            <div className='mx-3 mt-3 h-60 rounded-xl overflow-clip'>
-                <img className="object-cover w-full h-full" src={selectedVariant?.image_url || ''} alt={product.general_product_name} /> 
+            <div className='mx-3 mt-3 h-60 rounded-xl overflow-clip'
+             onMouseEnter={() => setHoverImage(true)}
+             onMouseLeave={() => setHoverImage(false)}
+            
+            >
+            <img
+                    className="object-cover w-full h-full"
+                    src={hoverImage ? selectedVariant?.hover_image_url : selectedVariant?.image_url || ''}
+                    alt={product.general_product_name}
+                /> 
             </div>
             <div className="mt-4 px-5 pb-5">
                 <a href="#">
