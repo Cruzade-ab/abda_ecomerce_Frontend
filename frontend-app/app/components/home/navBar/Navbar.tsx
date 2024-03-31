@@ -8,7 +8,11 @@ import Image from "next/image";
 import SearchBar from "../Search bar";
 const kaushan = Kaushan_Script({ subsets: ["latin"], weight: ["400"] });
 
-export default function Navbar() {
+interface NavbarProps {
+  onCategoryChange: (category: string) => void;
+}
+
+const Navbar: React.FC<NavbarProps>= ({ onCategoryChange }) => {
   const fontStyle = {
     fontFamily: kaushan.className,
     fontSize: "46px",
@@ -19,6 +23,7 @@ export default function Navbar() {
   };
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [navbar, setNavbar] = useState(false);
+
 
   useEffect(() => {
     const userLoggedIn = Cookies.get("isLoggedIn");
@@ -77,19 +82,19 @@ export default function Navbar() {
                 } md:flex-1 justify-self-center pb-3 mt-8 md:block md:pb-0 md:mt-0 `}
             >
               <ul className="h-screen md:h-auto items-center justify-center md:flex md:items-center md:justify-center ">
-                <li className="pb-6 text-xl  text-black py-3 md:px-6 text-center border-b-2 md:border-b-0 hover:bg-gray-400 border-gray-400 md:hover:text-gray-400 md:hover:bg-transparent">
-                  <Link href="/men" onClick={() => setNavbar(!navbar)}>
-                    <h1>Men</h1>
-                  </Link>
+                <li className="text-xl text-black py-3 md:px-6 text-center hover:bg-gray-400 md:hover:text-gray-400 md:hover:bg-transparent">
+                  <button onClick={() => { onCategoryChange('men'); setNavbar(false); }}>
+                    Men
+                  </button>
                 </li>
-                <li className="pb-6 text-xl  text-black py-3 md:px-6 text-center border-b-2 md:border-b-0 hover:bg-gray-400 border-gray-400 md:hover:text-gray-400 md:hover:bg-transparent">
-                  <Link href="/women" onClick={() => setNavbar(!navbar)}>
-                    <h1>Women</h1>
-                  </Link>
+                <li className="text-xl text-black py-3 md:px-6 text-center hover:bg-gray-400 md:hover:text-gray-400 md:hover:bg-transparent">
+                  <button onClick={() => { onCategoryChange('women'); setNavbar(false); }}>
+                    Women
+                  </button>
                 </li>
                 <li className="pb-6 text-xl  text-black py-3 md:px-6 text-center border-b-2 md:border-b-0 hover:bg-gray-400 border-gray-400 md:hover:text-gray-400 md:hover:bg-transparent">
                   <Link href={isLoggedIn ? "/profile" : "/login"} onClick={() => setNavbar(!navbar)}>
-                      Account
+                    Account
                   </Link>
                 </li>
                 <li className="pb-6 text-xl  text-black py-3 md:px-6 text-center border-b-2 md:border-b-0 hover:bg-gray-400 border-gray-400 md:hover:text-gray-400 md:hover:bg-transparent">
@@ -105,3 +110,5 @@ export default function Navbar() {
     </div>
   );
 }
+
+export default Navbar;

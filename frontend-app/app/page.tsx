@@ -10,7 +10,9 @@ export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
 
-  
+  const [apiUrl, setApiUrl] = useState('http://localhost:4000/api/products/getAllProducts');
+  const [sectionName, setSectionName] = useState('Most Wanted Products');
+
 
   useEffect(() => {
     (async () => {
@@ -38,11 +40,16 @@ export default function Home() {
     })();
   }, []);
 
+  const handleCategoryChange = (category:string) => {
+    setApiUrl(`http://localhost:4000/api/products/${category}`);
+    setSectionName(category === 'men' ? 'Men\'s Collection' : 'Women\'s Collection');
+  };
+
   return (
     <>
-      <Navbar/>
+      <Navbar onCategoryChange={handleCategoryChange} />
       <Banner/>
-      <ProductsContainer apiUrl="http://localhost:4000/api/products/getAllProducts" section_name="Most Wanted Products"/>
+      <ProductsContainer apiUrl={apiUrl} section_name={sectionName}/>
       <p className="text-center">
         {isLoggedIn ? message : 'You need to log in.'}
       </p>
