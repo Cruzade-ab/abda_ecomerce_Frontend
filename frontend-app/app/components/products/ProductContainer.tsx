@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ProductCard from './ProductCard';
-import {ProductInterface} from './ProductInterface';
+import {ProductInterface} from '../../lib/products/ProductInterface';
 
 
 interface ProductsContainerProps {

@@ -1,7 +1,7 @@
 "use client"
 import Banner from "@/app/components/home/banner/banner1"
 import Navbar from "@/app/components/home/navBar/Navbar"
-import ProductsContainer from "@/app/components/Producto/ProductContainer"
+import ProductsContainer from "@/app/components/products/ProductContainer"
 
 export default function Women() {
     return (

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import FormField from './AdminFormField'; 
-import { MyFormData, Product } from './adminType';
+import { MyFormData, Product } from '../../lib/admin/createProduct/adminType';
 import { zodResolver } from '@hookform/resolvers/zod';
-import AdminFormSchema from './AdminFormSchema';
-import { ValidFieldNames } from './adminType';
+import AdminFormSchema from '../../lib/admin/createProduct/AdminFormSchema';
+import { ValidFieldNames } from '../../lib/admin/createProduct/adminType';
 
 const AdminForm = () => {
   const { register, handleSubmit, formState: { errors }, control } = useForm<MyFormData>({

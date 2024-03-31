@@ -2,12 +2,13 @@
 import Navbar from "./components/home/navBar/Navbar";
 import Banner from "./components/home/banner/banner1";
 import { useEffect, useState } from "react";
-import ProductsContainer from "./components/Producto/ProductContainer";
+import ProductsContainer from "./components/products/ProductContainer";
 import AdminForm from "./components/admin/AdminForm";
 
 export default function Home() {
   const [message, setMessage] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   
 
@@ -21,14 +22,17 @@ export default function Home() {
           const content = await response.json();
           setMessage(`${content.name} ${content.last_name} is logged in with an email: ${content.email}. Its roles is the # ${content.role_id}`);
           setIsLoggedIn(true);
+          setIsAdmin(content.role_id === 2);
           console.log(content);
         } else {
           setIsLoggedIn(false);
+          setIsAdmin(false);
           setMessage('You need to log in.');
         }
       } catch (error) {
         console.error('Error fetching user data:', error);
         setIsLoggedIn(false);
+        setIsAdmin(false);
         setMessage('You need to log in.');
       }
     })();

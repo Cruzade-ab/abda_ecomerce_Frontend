@@ -66,16 +66,15 @@ export default function Navbar() {
             </div>
           </div>
           <div className="text-xl">
-                <SearchBar onSearch={function (value: string): void {
+            <SearchBar onSearch={function (value: string): void {
               throw new Error("Function not implemented.");
-            } } />
+            }} />
           </div>
 
           <div>
             <div
-              className={`${
-              navbar ? "block" : "hidden"
-              } md:flex-1 justify-self-center pb-3 mt-8 md:block md:pb-0 md:mt-0 `}
+              className={`${navbar ? "block" : "hidden"
+                } md:flex-1 justify-self-center pb-3 mt-8 md:block md:pb-0 md:mt-0 `}
             >
               <ul className="h-screen md:h-auto items-center justify-center md:flex md:items-center md:justify-center ">
                 <li className="pb-6 text-xl  text-black py-3 md:px-6 text-center border-b-2 md:border-b-0 hover:bg-gray-400 border-gray-400 md:hover:text-gray-400 md:hover:bg-transparent">
@@ -89,8 +88,8 @@ export default function Navbar() {
                   </Link>
                 </li>
                 <li className="pb-6 text-xl  text-black py-3 md:px-6 text-center border-b-2 md:border-b-0 hover:bg-gray-400 border-gray-400 md:hover:text-gray-400 md:hover:bg-transparent">
-                  <Link href="/login" onClick={() => setNavbar(!navbar)}>
-                    <h1>Account</h1>
+                  <Link href={isLoggedIn ? "/profile" : "/login"} onClick={() => setNavbar(!navbar)}>
+                      Account
                   </Link>
                 </li>
                 <li className="pb-6 text-xl  text-black py-3 md:px-6 text-center border-b-2 md:border-b-0 hover:bg-gray-400 border-gray-400 md:hover:text-gray-400 md:hover:bg-transparent">

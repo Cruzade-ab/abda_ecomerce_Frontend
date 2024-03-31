@@ -1,6 +1,6 @@
 //Componente inputField. Para entender vea este orden(1- FieldType, 2- FormField , 3- UserSchema, 4-RegisterForm)
 
-import { FormFieldProps } from "@/app/lib/register-login/LoginType/LoginType"
+import { FormFieldProps } from "@/app/lib/register-login/login/LoginType"
 //Se trae todos props ya especificados con su tipado(Type)
 
 

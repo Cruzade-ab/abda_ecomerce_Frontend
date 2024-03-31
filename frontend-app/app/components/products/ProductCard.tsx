@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ProductInterface, ProductVariant } from './ProductInterface';
+import { ProductInterface, ProductVariant } from '../../lib/products/ProductInterface';
 
 interface ProductCardProps {
     product: ProductInterface;
