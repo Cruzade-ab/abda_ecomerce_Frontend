@@ -1,17 +1,30 @@
+'use client'
 import React, { useState, useEffect } from 'react';
 import { ProductInterface, ProductVariant } from '../../lib/products/ProductInterface';
-import Link from 'next/link';
+
+import { useRouter } from "next/navigation";
+
 interface ProductCardProps {
     product: ProductInterface;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+
+
     const [selectedColor, setSelectedColor] = useState<string>('');
     const [selectedSize, setSelectedSize] = useState<string>('');
     const [selectedVariant, setSelectedVariant] = useState(product.products[0]);
     const [hoverImage, setHoverImage] = useState<boolean>(false);
     const [uniqueSizes, setUniqueSizes] = useState<string[]>([]);
     const [uniqueColors, setUniqueColors] = useState<string[]>([]);
+    const router = useRouter();
+
+    const handleViewDetails = () => {
+        localStorage.setItem('selectedProductVariantId', selectedVariant.product_id.toString());
+        router.push('/productDetail');
+    };
+
+
     useEffect(() => {
         if (product.products.length > 0) {
             const sizes = new Set(product.products.map(p => p.size.size_name));
@@ -40,9 +53,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         setSelectedSize(size);
     };
 
+
     return (
         <div className="m-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
-            <Link href={`/product/${product.general_product_id}`} className='block'>
+            <div onClick={handleViewDetails} className='cursor-pointer'>
                
                     <div className='mx-3 mt-3 h-60 rounded-xl overflow-clip'
                         onMouseEnter={() => setHoverImage(true)}
@@ -60,7 +74,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                         </h5>
                     </div>
                
-            </Link>
+            </div>
             <div className="mt-4 px-5 pb-5">
                 <div className="mt-2 mb-5 flex items-center justify-between">
                     <span className="text-3xl font-bold text-slate-900">
