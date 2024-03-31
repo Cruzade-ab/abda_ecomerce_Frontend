@@ -10,9 +10,10 @@ const kaushan = Kaushan_Script({ subsets: ["latin"], weight: ["400"] });
 
 interface NavbarProps {
   onCategoryChange: (category: string) => void;
+  isAdmin: boolean;
 }
 
-const Navbar: React.FC<NavbarProps>= ({ onCategoryChange }) => {
+const Navbar: React.FC<NavbarProps> = ({ onCategoryChange, isAdmin }) => {
   const fontStyle = {
     fontFamily: kaushan.className,
     fontSize: "46px",
@@ -83,14 +84,14 @@ const Navbar: React.FC<NavbarProps>= ({ onCategoryChange }) => {
             >
               <ul className="h-screen md:h-auto items-center justify-center md:flex md:items-center md:justify-center ">
                 <li className="text-xl text-black py-3 md:px-6 text-center hover:bg-gray-400 md:hover:text-gray-400 md:hover:bg-transparent">
-                  <button onClick={() => { onCategoryChange('men'); setNavbar(false); }}>
+                  <Link href="/" onClick={() => { onCategoryChange('men'); setNavbar(false); }}>
                     Men
-                  </button>
+                  </Link>
                 </li>
                 <li className="text-xl text-black py-3 md:px-6 text-center hover:bg-gray-400 md:hover:text-gray-400 md:hover:bg-transparent">
-                  <button onClick={() => { onCategoryChange('women'); setNavbar(false); }}>
+                <Link href="/" onClick={() => { onCategoryChange('women'); setNavbar(false); }}>
                     Women
-                  </button>
+                  </Link>
                 </li>
                 <li className="pb-6 text-xl  text-black py-3 md:px-6 text-center border-b-2 md:border-b-0 hover:bg-gray-400 border-gray-400 md:hover:text-gray-400 md:hover:bg-transparent">
                   <Link href={isLoggedIn ? "/profile" : "/login"} onClick={() => setNavbar(!navbar)}>
@@ -102,6 +103,12 @@ const Navbar: React.FC<NavbarProps>= ({ onCategoryChange }) => {
                     <h1>Cart</h1>
                   </Link>
                 </li>
+                {isAdmin && (
+                  <li className="text-xl text-black py-3 md:px-6 text-center hover:bg-gray-400 md:hover:text-gray-400 md:hover:bg-transparent">
+                    <Link href="/admin" onClick={() => setNavbar(false)}>
+                      Admin
+                    </Link>
+                  </li>)}
               </ul>
             </div>
           </div>

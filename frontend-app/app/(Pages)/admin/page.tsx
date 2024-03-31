@@ -1,7 +1,9 @@
 "use client"
 
 import AdminForm from "@/app/components/admin/AdminForm"
+import Banner from "@/app/components/home/banner/banner1";
 import Navbar from "@/app/components/home/navBar/Navbar"
+import ProductsContainer from "@/app/components/products/ProductContainer";
 import { useState, useEffect } from "react"
 
 export default function Admin() {
@@ -47,12 +49,11 @@ export default function Admin() {
 
     return (
         <>
-            <Navbar onCategoryChange={handleCategoryChange} />
-            <p className="text-center">
-                {isLoggedIn ? message : 'You need to log in.'}
-            </p>
-            <h1 className="w-full bg-black text-white text-center">Admin Page</h1>
-            <AdminForm />
-        </>
+        <Navbar onCategoryChange={handleCategoryChange} isAdmin={isAdmin}/>
+        <p className="text-center">
+          {isLoggedIn ? message : 'You need to log in.'}
+        </p>
+        <AdminForm></AdminForm>
+      </>
     )
 }

@@ -47,7 +47,7 @@ export default function Home() {
 
   return (
     <>
-      <Navbar onCategoryChange={handleCategoryChange} />
+      <Navbar onCategoryChange={handleCategoryChange} isAdmin={isAdmin}/>
       <Banner/>
       <ProductsContainer apiUrl={apiUrl} section_name={sectionName}/>
       <p className="text-center">
