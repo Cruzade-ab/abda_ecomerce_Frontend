@@ -18,12 +18,16 @@ interface ProductsContainerProps {
         try {
           const response = await fetch(apiUrl);
           const data = await response.json();
-          setProducts(data);
-          console.log(data)
+          console.log('Fetched data:', data);
+            if (Array.isArray(data)) {
+                setProducts(data);
+            } else {
+                console.error('Expected an array but got:', data);
+            }
         } catch (error) {
-          console.error('Error fetching products:', error);
+            console.error('Error fetching products:', error);
         }
-      };
+    };
   
       fetchProducts();
     }, [apiUrl]); 
