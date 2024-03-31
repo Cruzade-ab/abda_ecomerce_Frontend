@@ -50,7 +50,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         setSelectedSize(size);
     };
 
-
     const handleViewDetails = async () => {
         try {
             const response = await fetch('/api/products/mostWanted', {
@@ -58,25 +57,19 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(selectedVariant),
+                body: JSON.stringify({ product_id: selectedVariant.product_id }), // Pass only the product_id
             });
             if (response.ok) {
-                // Handle successful response from the backend
-                console.log(selectedVariant)
                 console.log('Product variant sent successfully');
             } else {
                 console.error('Failed to send product variant to the backend');
-                console.log(selectedVariant)
-
             }
         } catch (error) {
             console.error('Error sending product variant to the backend:', error);
-            console.log(selectedVariant)
         }
-
+    
         localStorage.setItem('selectedProductVariantId', selectedVariant.product_id.toString());
         router.push('/productDetail');
-
     };
 
     return (

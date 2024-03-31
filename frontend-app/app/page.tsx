@@ -10,7 +10,7 @@ export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
 
-  const [apiUrl, setApiUrl] = useState('http://localhost:4000/api/products/getAllProducts');
+  const [apiUrl, setApiUrl] = useState('http://localhost:4000/api/products/wantedProducts');
   const [sectionName, setSectionName] = useState('Most Wanted Products');
 
 
