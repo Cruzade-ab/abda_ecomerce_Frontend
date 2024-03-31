@@ -50,10 +50,6 @@ export default function Home() {
       <Navbar onCategoryChange={handleCategoryChange} isAdmin={isAdmin}/>
       <Banner/>
       <ProductsContainer apiUrl={apiUrl} section_name={sectionName}/>
-      <p className="text-center">
-        {isLoggedIn ? message : 'You need to log in.'}
-      </p>
-      <AdminForm></AdminForm>
     </>
   );
 }

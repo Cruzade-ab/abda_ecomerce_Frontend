@@ -46,13 +46,44 @@ export default function Admin() {
         setSectionName(category === 'men' ? 'Men\'s Collection' : 'Women\'s Collection');
     };
 
+    const handleLogout = async () => {
+        try {
+            // Make a request to the backend logout endpoint
+            const response = await fetch('http://localhost:4000/api/user/logout', {
+                method: 'POST',
+                credentials: 'include',
+            });
+
+            if (response.ok) {
+                console.log('Logout successful');
+                setIsLoggedIn(false);
+                window.location.href = '/';
+
+            } else {
+                console.error('Logout failed:', await response.text());
+            }
+        } catch (error) {
+            console.error('Logout error:', error);
+        }
+    };
+
 
     return (
         <>
-        <Navbar onCategoryChange={handleCategoryChange} isAdmin={isAdmin} />
-        <p className="text-center">
-          {isLoggedIn ? message : 'You need to log in.'}
-        </p>
-      </>
+            <Navbar onCategoryChange={handleCategoryChange} isAdmin={isAdmin} />
+            <div className="my-4">
+                <p className="text-center">
+                    {isLoggedIn ? message : 'You need to log in.'}
+                </p>
+            </div>
+            <div className="my-y">
+
+                <button onClick={handleLogout} className="logout-button">
+                    Log Out
+                </button>
+
+            </div>
+
+        </>
     )
 }

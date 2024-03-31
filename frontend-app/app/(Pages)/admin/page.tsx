@@ -50,10 +50,15 @@ export default function Admin() {
     return (
         <>
         <Navbar onCategoryChange={handleCategoryChange} isAdmin={isAdmin}/>
+        <div className="my-4">
         <p className="text-center">
           {isLoggedIn ? message : 'You need to log in.'}
         </p>
+        </div>
+        <div className="my-4">
         <AdminForm></AdminForm>
+
+        </div>
       </>
     )
 }
