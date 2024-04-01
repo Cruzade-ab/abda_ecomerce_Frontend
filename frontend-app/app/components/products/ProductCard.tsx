@@ -52,12 +52,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
     const handleViewDetails = async () => {
         try {
-            const response = await fetch('/api/products/mostWanted', {
+            const response = await fetch('http://localhost:4000/api/products/addCountMostWanted', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ product_id: selectedVariant.product_id }), // Pass only the product_id
+                body: JSON.stringify({ productId: selectedVariant.product_id }), // Pass only the product_id
             });
             if (response.ok) {
                 console.log('Product variant sent successfully');
@@ -69,6 +69,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         }
     
         localStorage.setItem('selectedProductVariantId', selectedVariant.product_id.toString());
+        localStorage.setItem('selectedColorId', selectedVariant.color.color_id.toString());
+        console.log(selectedVariant.color.color_id)
+        
         router.push('/productDetail');
     };
 
