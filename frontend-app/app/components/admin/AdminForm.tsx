@@ -77,15 +77,6 @@ const AdminForm: React.FC = () => {
       }
     };
     
-      
-    
-
-
-
-
-
-
-
 
 
       const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
