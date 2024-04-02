@@ -11,6 +11,7 @@ const kaushan = Kaushan_Script({ subsets: ["latin"], weight: ["400"] });
 interface NavbarProps {
   onCategoryChange: (category: string) => void;
   isAdmin: boolean;
+  
 }
 
 const Navbar: React.FC<NavbarProps> = ({ onCategoryChange, isAdmin }) => {

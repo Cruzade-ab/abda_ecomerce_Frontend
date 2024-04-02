@@ -35,10 +35,35 @@ export default function Home() {
     })();
   }, []);
 
+  const handleCategoryChange = (category: string) => {
+    const apiUrlMap = {
+      'men': 'http://localhost:4000/api/products/men',
+      'women': 'http://localhost:4000/api/products/women',
+      'wantedProducts': 'http://localhost:4000/api/products/wantedProducts'
+    };
+
+    const sectionNameMap = {
+      'men': "Men's Collection",
+      'women': "Women's Collection",
+      'wantedProducts': "Most Wanted Products"
+    };
+
+    const key = category as keyof typeof apiUrlMap; // assert category as a key of apiUrlMap
+
+    // Check if the key exists in the map to ensure type safety
+    if (apiUrlMap[key] && sectionNameMap[key]) {
+        setApiUrl(apiUrlMap[key]);
+        setSectionName(sectionNameMap[key]);
+    } else {
+        console.error('Invalid category:', category);
+
+    }
+  };
+
 
   return (
     <>
-      <MainLayout isAdmin={isAdmin} >
+      <MainLayout isAdmin={isAdmin} onCategoryChange={handleCategoryChange} >
         <Banner/>
         <ProductsContainer apiUrl={apiUrl} section_name={sectionName}/>
       </MainLayout>

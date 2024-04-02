@@ -4,17 +4,14 @@ import React, { ReactNode } from 'react';
 type MainLayoutProps = {
   children: ReactNode;
   isAdmin: boolean; 
+  onCategoryChange: (category: string) => void;
 };
 
-const MainLayout: React.FC<MainLayoutProps> = ({ children , isAdmin}) => {
-
-    const handleCategoryChange = (category: string) => {
-    console.log(`Category changed to ${category}`);
-  };
+const MainLayout: React.FC<MainLayoutProps> = ({ children , isAdmin, onCategoryChange}) => {
 
   return (
     <div>
-      <Navbar onCategoryChange={handleCategoryChange} isAdmin={isAdmin} />
+      <Navbar onCategoryChange={onCategoryChange} isAdmin={isAdmin} />
       <main className="mt-24"> 
         {children}
       </main>

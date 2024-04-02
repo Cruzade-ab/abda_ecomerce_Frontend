@@ -12,6 +12,8 @@ export default function Admin() {
     const [isAdmin, setIsAdmin] = useState(false);
     const [showForm, setShowForm] = useState(false); 
     const [products, setProducts] = useState<ProductInterface[]>([]);
+    const [apiUrl, setApiUrl] = useState('http://localhost:4000/api/products/wantedProducts');
+    const [sectionName, setSectionName] = useState('Most Wanted Products');
 
     useEffect(() => {
         (async () => {
@@ -45,7 +47,9 @@ export default function Admin() {
                 query.append(key, value);
             }
         });
-        const response = await fetch(`http://localhost:4000/api/filter?${query.toString()}`);
+        const url = `http://localhost:4000/api/filter?${query.toString()}`
+        console.log(url)
+        const response = await fetch(url);
         if (response.ok) {
             const data = await response.json();
             setProducts(data);
@@ -73,11 +77,36 @@ export default function Admin() {
       
     };
 
+    
+  const handleCategoryChange = (category: string) => {
+    const apiUrlMap = {
+      'men': 'http://localhost:4000/api/products/men',
+      'women': 'http://localhost:4000/api/products/women',
+      'wantedProducts': 'http://localhost:4000/api/products/wantedProducts'
+    };
+
+    const sectionNameMap = {
+      'men': "Men's Collection",
+      'women': "Women's Collection",
+      'wantedProducts': "Most Wanted Products"
+    };
+
+    const key = category as keyof typeof apiUrlMap; // assert category as a key of apiUrlMap
+
+    // Check if the key exists in the map to ensure type safety
+    if (apiUrlMap[key] && sectionNameMap[key]) {
+        setApiUrl(apiUrlMap[key]);
+        setSectionName(sectionNameMap[key]);
+    } else {
+        console.error('Invalid category:', category);
+
+    }
+  };
 
 
     return (
         <>
-        <MainLayout isAdmin={isAdmin}>
+        <MainLayout isAdmin={isAdmin} onCategoryChange={handleCategoryChange}>
         <div className="m-6 flex justify-around">
             <div className="text-4xl">
                 Administrate Products
