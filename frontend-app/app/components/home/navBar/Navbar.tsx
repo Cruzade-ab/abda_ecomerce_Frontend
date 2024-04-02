@@ -40,7 +40,7 @@ const Navbar: React.FC<NavbarProps> = ({ onCategoryChange, isAdmin }) => {
           <div>
             <div className="flex items-center justify-between py-2 md:py-5 md:block">
               {/*Logo*/}
-              <Link href="/">
+              <Link href="/"  onClick={() => { onCategoryChange('wantedProducts'); setNavbar(false); }} >
                 <h2 className="text-xl pb-8" style={fontStyle}>
                   ABDA Shirts
                 </h2>

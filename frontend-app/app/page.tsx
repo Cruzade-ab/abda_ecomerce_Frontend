@@ -10,7 +10,7 @@ export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
 
-  const [apiUrl, setApiUrl] = useState('http://localhost:4000/api/products/getAllProducts');
+  const [apiUrl, setApiUrl] = useState('http://localhost:4000/api/products/wantedProducts');
   const [sectionName, setSectionName] = useState('Most Wanted Products');
 
 
@@ -39,11 +39,21 @@ export default function Home() {
       }
     })();
   }, []);
-
-  const handleCategoryChange = (category:string) => {
-    setApiUrl(`http://localhost:4000/api/products/${category}`);
-    setSectionName(category === 'men' ? 'Men\'s Collection' : 'Women\'s Collection');
-  };
+  const handleCategoryChange = (category: string) => {
+    let sectionName = '';
+    let url = 'http://localhost:4000/api/products/wantedProducts';  // default URL
+    if (category === 'men') {
+        url = 'http://localhost:4000/api/products/men';
+        sectionName = 'Men\'s Collection';
+    } else if (category === 'women') {
+        url = 'http://localhost:4000/api/products/women';
+        sectionName = 'Women\'s Collection';
+    } else {
+        sectionName = 'Most Wanted Products';
+    }
+    setApiUrl(url);
+    setSectionName(sectionName);
+}
 
   return (
     <>
