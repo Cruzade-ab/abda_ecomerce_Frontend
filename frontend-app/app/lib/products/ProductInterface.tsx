@@ -2,6 +2,7 @@ export interface ProductInterface {
     general_product_id: number;
     general_product_name: string;
     description: string;
+    wanted_count?: number;
     section: SectionInterface;
     brand: BrandInterface;
     products: ProductVariant[];

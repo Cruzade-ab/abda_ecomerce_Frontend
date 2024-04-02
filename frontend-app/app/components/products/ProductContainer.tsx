@@ -12,25 +12,30 @@ interface ProductsContainerProps {
     // State to hold the fetched products
     const [products, setProducts] = useState<ProductInterface[]>([]);
   
-    // Effect to fetch data when component mounts
     useEffect(() => {
+      console.log('Effect hook triggered');
       const fetchProducts = async () => {
         try {
           const response = await fetch(apiUrl);
-          const data = await response.json();
+          const data: ProductInterface[] = await response.json();
           console.log('Fetched data:', data);
-            if (Array.isArray(data)) {
-                setProducts(data);
-            } else {
-                console.error('Expected an array but got:', data);
-            }
+
+          if (Array.isArray(data)) {
+            // Sort the data by wantedCount if it's defined, otherwise by a default value (e.g., 0)
+            const sortedData = data.sort((a, b) => (b.wanted_count ?? 0) - (a.wanted_count ?? 0));
+            setProducts(sortedData);
+            console.log(sortedData)
+          } else {
+            console.error('Expected an array but got:', data);
+          }
         } catch (error) {
-            console.error('Error fetching products:', error);
+          console.error('Error fetching products:', error);
         }
-    };
-  
+      };
+
       fetchProducts();
-    }, [apiUrl]); 
+    }, [apiUrl]);
+    
   
     return (<>
       <h2 className=' flex flex-1 justify-center text-center align-top text-2xl md:text-4xl  font-bold'>{section_name}</h2>
