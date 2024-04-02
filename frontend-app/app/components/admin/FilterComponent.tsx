@@ -2,6 +2,7 @@
 import React , { useState, useEffect } from "react";
 
 import { BrandInterface, ColorInterface, SectionInterface } from "@/app/lib/products/ProductInterface";
+import { FilterParams } from "@/app/lib/admin/Filter/FilterType";
 
 type FilterComponentProps = {
     onFilterChange: (filters: FilterParams) => void;
@@ -22,9 +23,9 @@ const FilterComponent: React.FC<FilterComponentProps> = ({ onFilterChange }) => 
     const fetchFiltersData = async () => {
         try {
             const [brandsResponse, colorsResponse, sectionsResponse] = await Promise.all([
-              fetch('http://localhost:4000/api/brands'),
-              fetch('http://localhost:4000/api/colors'),
-              fetch('http://localhost:4000/api/sections')
+              fetch('http://localhost:4000/api/filter/brands'),
+              fetch('http://localhost:4000/api/filter/colors'),
+              fetch('http://localhost:4000/api/filter/sections')
             ]);
     
             if (brandsResponse.ok) {

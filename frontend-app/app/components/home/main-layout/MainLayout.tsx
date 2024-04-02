@@ -3,9 +3,10 @@ import React, { ReactNode } from 'react';
 
 type MainLayoutProps = {
   children: ReactNode;
+  isAdmin: boolean; 
 };
 
-const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
+const MainLayout: React.FC<MainLayoutProps> = ({ children , isAdmin}) => {
 
     const handleCategoryChange = (category: string) => {
     console.log(`Category changed to ${category}`);
@@ -13,7 +14,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 
   return (
     <div>
-      <Navbar onCategoryChange={handleCategoryChange} isAdmin={false} />
+      <Navbar onCategoryChange={handleCategoryChange} isAdmin={isAdmin} />
       <main className="mt-24"> 
         {children}
       </main>

@@ -60,16 +60,4 @@ const AdminTable: React.FC<ProductTableProps> = ({ products, onEdit, onRemove })
   );
 };
 
-// Usage of ProductTable somewhere in your application:
-// <ProductTable products={yourProductsArray} onEdit={handleEdit} onRemove={handleRemove} />
-
-// Placeholder for handleEdit and handleRemove functions
-const handleEdit = (productId: number) => {
-  // Implement the logic to edit the product
-};
-
-const handleRemove = (productId: number) => {
-  // Implement the logic to remove the product
-};
-
 export default AdminTable;

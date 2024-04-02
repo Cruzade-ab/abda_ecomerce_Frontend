@@ -1,9 +1,6 @@
 "use client"
 
-import AdminForm from "@/app/components/admin/CreateProducts/AdminForm"
-import Banner from "@/app/components/home/banner/banner1";
 import Navbar from "@/app/components/home/navBar/Navbar"
-import ProductsContainer from "@/app/components/products/ProductContainer";
 import { useState, useEffect } from "react"
 
 export default function Admin() {
@@ -70,8 +67,9 @@ export default function Admin() {
 
     return (
         <>
+
             <Navbar onCategoryChange={handleCategoryChange} isAdmin={isAdmin} />
-            <div className="my-4">
+            <div className="mt-20">
                 <p className="text-center">
                     {isLoggedIn ? message : 'You need to log in.'}
                 </p>

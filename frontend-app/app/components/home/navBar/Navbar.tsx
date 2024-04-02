@@ -40,7 +40,7 @@ const Navbar: React.FC<NavbarProps> = ({ onCategoryChange, isAdmin }) => {
           <div>
             <div className="flex items-center justify-between py-2 md:py-5 md:block">
               {/*Logo*/}
-              <Link href="/"  onClick={() => { onCategoryChange('wantedProducts'); setNavbar(false); }} >
+              <Link href="/" onClick={() => { onCategoryChange('wantedProducts'); setNavbar(false); }} >
                 <h2 className="text-xl pb-8" style={fontStyle}>
                   ABDA Shirts
                 </h2>
@@ -89,7 +89,7 @@ const Navbar: React.FC<NavbarProps> = ({ onCategoryChange, isAdmin }) => {
                   </Link>
                 </li>
                 <li className="text-xl text-black py-3 md:px-6 text-center hover:bg-gray-400 md:hover:text-gray-400 md:hover:bg-transparent">
-                <Link href="/" onClick={() => { onCategoryChange('women'); setNavbar(false); }}>
+                  <Link href="/" onClick={() => { onCategoryChange('women'); setNavbar(false); }}>
                     Women
                   </Link>
                 </li>
@@ -108,7 +108,8 @@ const Navbar: React.FC<NavbarProps> = ({ onCategoryChange, isAdmin }) => {
                     <Link href="/admin" onClick={() => setNavbar(false)}>
                       Admin
                     </Link>
-                  </li>)}
+                  </li>
+                )}
               </ul>
             </div>
           </div>
