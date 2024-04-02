@@ -1,6 +1,6 @@
 "use client"
 
-import AdminForm from "@/app/components/admin/AdminForm"
+import AdminForm from "@/app/components/admin/CreateProducts/AdminForm"
 import Banner from "@/app/components/home/banner/banner1";
 import Navbar from "@/app/components/home/navBar/Navbar"
 import ProductsContainer from "@/app/components/products/ProductContainer";

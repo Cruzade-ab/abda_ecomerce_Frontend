@@ -3,7 +3,7 @@ import Navbar from "./components/home/navBar/Navbar";
 import Banner from "./components/home/banner/banner1";
 import { useEffect, useState } from "react";
 import ProductsContainer from "./components/products/ProductContainer";
-import AdminForm from "./components/admin/AdminForm";
+import AdminForm from "./components/admin/CreateProducts/AdminForm";
 
 export default function Home() {
   const [message, setMessage] = useState('');

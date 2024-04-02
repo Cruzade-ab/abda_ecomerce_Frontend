@@ -1,6 +1,6 @@
 "use client"
 
-import AdminForm from "@/app/components/admin/AdminForm"
+import AdminForm from "@/app/components/admin/CreateProducts/AdminForm"
 import { useState, useEffect } from "react"
 import MainLayout from "@/app/components/home/main-layout/MainLayout"
 
@@ -8,6 +8,7 @@ import MainLayout from "@/app/components/home/main-layout/MainLayout"
 export default function Admin() {
     const [isAdmin, setIsAdmin] = useState(false);
     const [apiUrl, setApiUrl] = useState('http://localhost:4000/api/products/getAllProducts');
+    const [showForm, setShowForm] = useState(false); 
     const [sectionName, setSectionName] = useState('Most Wanted Products');
 
     useEffect(() => {
@@ -30,6 +31,9 @@ export default function Admin() {
         })();
     }, []);
 
+    const toggleFormVisibility = () => {
+        setShowForm(!showForm);
+    };
 
     const handleCategoryChange = (category: string) => {
         setApiUrl(`http://localhost:4000/api/products/${category}`);
@@ -39,12 +43,26 @@ export default function Admin() {
     return (
         <>
         <MainLayout>
-        <h1>
-            Administrate Products
-        </h1>
-        <div className="my-4">
-        <AdminForm></AdminForm>
+        <div className="m-6 flex justify-around">
+            <div className="text-4xl">
+                Administrate Products
+            </div>
+            <div className="border border-rounded">
+                Filter: 
+            </div>
+            <div>
+                <button className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow" onClick={toggleFormVisibility}>
+                        {showForm ? 'Hide Create Product Form' : 'Create Product'}
+                </button>
+            </div> 
         </div>
+        
+        {showForm && 
+        <div className="border-2 border-rounded"> 
+                <AdminForm/>
+        </div>
+        }
+        
         </MainLayout>
       </>
     )

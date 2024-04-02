@@ -14,7 +14,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   return (
     <div>
       <Navbar onCategoryChange={handleCategoryChange} isAdmin={false} />
-      <main style={{ marginTop: '64px' }}> 
+      <main className="mt-24"> 
         {children}
       </main>
     </div>
