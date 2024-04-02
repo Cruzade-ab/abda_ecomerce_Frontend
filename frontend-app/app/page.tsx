@@ -41,19 +41,19 @@ export default function Home() {
   }, []);
   const handleCategoryChange = (category: string) => {
     let sectionName = '';
+    let url = 'http://localhost:4000/api/products/wantedProducts';  // default URL
     if (category === 'men') {
-        setApiUrl('http://localhost:4000/api/products/men');
+        url = 'http://localhost:4000/api/products/men';
         sectionName = 'Men\'s Collection';
     } else if (category === 'women') {
-        setApiUrl('http://localhost:4000/api/products/women');
+        url = 'http://localhost:4000/api/products/women';
         sectionName = 'Women\'s Collection';
     } else {
-        setApiUrl('http://localhost:4000/api/products/wantedProducts');
         sectionName = 'Most Wanted Products';
     }
+    setApiUrl(url);
     setSectionName(sectionName);
-    setApiUrl(`http://localhost:4000/api/products/${category}`)
-  }
+}
 
   return (
     <>
