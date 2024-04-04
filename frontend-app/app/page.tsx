@@ -48,9 +48,8 @@ export default function Home() {
       'wantedProducts': "Most Wanted Products"
     };
 
-    const key = category as keyof typeof apiUrlMap; // assert category as a key of apiUrlMap
+    const key = category as keyof typeof apiUrlMap; 
 
-    // Check if the key exists in the map to ensure type safety
     if (apiUrlMap[key] && sectionNameMap[key]) {
         setApiUrl(apiUrlMap[key]);
         setSectionName(sectionNameMap[key]);

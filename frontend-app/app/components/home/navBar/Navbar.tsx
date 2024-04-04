@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import Cookies from "js-cookie";
 import { useState } from "react";
 import Image from "next/image";
-import SearchBar from "../Search bar";
+import Search from "../Search bar/search";
 const kaushan = Kaushan_Script({ subsets: ["latin"], weight: ["400"] });
 
 interface NavbarProps {
@@ -73,9 +73,7 @@ const Navbar: React.FC<NavbarProps> = ({ onCategoryChange, isAdmin }) => {
             </div>
           </div>
           <div className="text-xl">
-            <SearchBar onSearch={function (value: string): void {
-              throw new Error("Function not implemented.");
-            }} />
+            <Search />
           </div>
 
           <div>

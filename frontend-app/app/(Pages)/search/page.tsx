@@ -1,18 +1,22 @@
 "use client"
 
-import Navbar from "@/app/components/home/navBar/Navbar"
+import MainLayout from "@/app/components/home/main-layout/MainLayout";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import { ProductInterface } from "@/app/lib/products/ProductInterface";
+import ProductsSearchContainer from "@/app/components/home/Search bar/ProductsSearchContainer";
+
 export default function Search() {
-
-
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
-
-    const [apiUrl, setApiUrl] = useState('http://localhost:4000/api/products/getAllProducts');
-    const [sectionName, setSectionName] = useState('Most Wanted Products');
-
+    const [products, setProducts] = useState<ProductInterface[]>([]);
+    const [query, setQuery] = useState('');
 
     useEffect(() => {
+        const searchParams = new URLSearchParams(window.location.search);
+        const queryParam = searchParams.get('query');
+        setQuery(queryParam || '');
+
         (async () => {
             try {
                 const response = await fetch('http://localhost:4000/api/user/getUser', {
@@ -22,7 +26,6 @@ export default function Search() {
                     const content = await response.json();
                     setIsLoggedIn(true);
                     setIsAdmin(content.role_id === 2);
-                    console.log(content);
                 } else {
                     setIsLoggedIn(false);
                     setIsAdmin(false);
@@ -32,15 +35,24 @@ export default function Search() {
                 setIsLoggedIn(false);
                 setIsAdmin(false);
             }
+
+            if (queryParam) {
+                const searchResponse = await fetch(`http://localhost:4000/api/search?query=${queryParam}`);
+                const data = await searchResponse.json();
+                setProducts(data);
+            }
         })();
     }, []);
 
-    const handleCategoryChange = (category: string) => {
-        setApiUrl(`http://localhost:4000/api/products/${category}`);
-        setSectionName(category === 'men' ? 'Men\'s Collection' : 'Women\'s Collection');
-    };
-    return (
-        <Navbar onCategoryChange={handleCategoryChange} isAdmin={isAdmin} />
+    
+    const sectionName = `Search Results for "${query}"`;
 
-    )
+    return (
+        <MainLayout isAdmin={isAdmin} onCategoryChange={() => {}}>
+            <div>
+                <h1></h1>
+                <ProductsSearchContainer products={products} section_name={sectionName} />
+            </div>
+        </MainLayout>
+    );
 }

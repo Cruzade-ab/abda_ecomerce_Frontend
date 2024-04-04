@@ -1,35 +1,27 @@
 'use client'
-import React, { ChangeEvent, useState } from 'react';
-import { SearchProps } from './SearchProps';
+import React, { useState } from 'react';
 
-function Search(props: SearchProps) {
-    const { onSearch } = props;
-    const [value, setValue] = useState('Enter search...');
+const Search = () => {
+    const [value, setValue] = useState('');
 
-    const searchHandler = (event: ChangeEvent<HTMLInputElement>) => {
-        const { target } = event;
-        setValue(target.value);
-    };
-
-    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === 'Enter') {
-
-            onSearch(value);
-        }
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        console.log(event.target.value)
+        setValue(event.target.value);
     };
 
     return (
-        <div className="relative py-3 w-full text-gray-600">
+        <form action="/search" method="GET" className="relative py-3 w-full text-gray-600">
             <input
                 type="search"
-                name="search"
-                placeholder={value}
+                name="query"
+                placeholder="Enter search..."
                 className="bg-white h-10 px-5 pr-10 w-full text-sm border border-gray-300 rounded-full focus:outline-none focus:border-gray-400 transition duration-300"
-                onChange={(event) => searchHandler(event)}
-                onKeyDown={handleKeyDown} />
+                value={value}
+                onChange={handleChange}
+            />
             <button type="submit" className="absolute right-0 top-1 mt-3 mr-4">
                 <svg
-                    className="h-4 my-2 w-4 fill-current"
+                    className="h-4 w-4 fill-current"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 20 20"
                 >
@@ -39,7 +31,7 @@ function Search(props: SearchProps) {
                         clipRule="evenodd" />
                 </svg>
             </button>
-        </div>
+        </form>
     );
 }
 
