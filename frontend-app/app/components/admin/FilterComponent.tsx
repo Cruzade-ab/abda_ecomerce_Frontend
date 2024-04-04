@@ -86,6 +86,19 @@ const FilterComponent: React.FC<FilterComponentProps> = ({ onFilterChange }) => 
               </option>
             ))}
           </select>
+
+          <input
+                type="number"
+                placeholder="Min Price"
+                value={selectedMinValue}
+                onChange={e => setSelectedMinValue(e.target.value)}
+            />
+            <input
+                type="number"
+                placeholder="Max Price"
+                value={selectedMaxValue}
+                onChange={e => setSelectedMaxValue(e.target.value)}
+            />
     
           <button onClick={handleFilterChange}>Apply Filters</button>
         </div>
