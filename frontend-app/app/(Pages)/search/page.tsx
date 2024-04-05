@@ -50,7 +50,6 @@ export default function Search() {
     return (
         <MainLayout isAdmin={isAdmin} onCategoryChange={() => {}}>
             <div>
-                <h1></h1>
                 <ProductsSearchContainer products={products} section_name={sectionName} />
             </div>
         </MainLayout>

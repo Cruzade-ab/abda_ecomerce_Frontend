@@ -28,11 +28,11 @@ const ProductDetailPage: React.FC = () => {
                 }
 
                 const data = await response.json();
-                console.log("Fetched data:", data); // Log the received data
+                console.log("Fetched data:", data); 
 
-                // Assuming the API always returns an array with one product
+    
                 if (data && Array.isArray(data) && data.length > 0) {
-                    setProduct(data[0]); // Take the first element of the array
+                    setProduct(data[0]); 
                 } else {
                     console.error('Product data is not in expected format:', data);
                     setProduct(null);
@@ -66,7 +66,6 @@ const ProductDetailPage: React.FC = () => {
                     <h2>{variant.color.color_name}</h2>
                     <img src={variant.hover_image_url || variant.image_url} alt={`Image of ${variant.color.color_name}`} />
                     <p>Price: ${variant.value}</p>
-                    {/* Additional details for each product variant */}
                 </div>
             ))}
         </div>

@@ -1,42 +1,44 @@
-//Componente inputField. Para entender vea este orden(1- FieldType, 2- FormField , 3- UserSchema, 4-RegisterForm)
-
-import { FormFieldProps } from "@/app/lib/register-login/register/FieldType"
-//Se trae todos props ya especificados con su tipado(Type)
-
-
+import { FormFieldProps } from "@/app/lib/register-login/register/RegisterFieldType"
+// Componente de campo de formulario
 const FormField: React.FC<FormFieldProps> = ({
+    // Tipo de campo (ej. "text", "password", etc.)
     type,
+    // Placeholder del campo
     placeholder,
+    // Etiqueta del campo
     label,
+    // Nombre del campo según el tipo de datos definido
     name,
+    // Función de registro de react-hook-form
     register,
+    // Error del campo
     error,
+    // Estilo CSS para el campo de entrada
     inputStyle,
+    // Estilo CSS para la etiqueta
     labelStyle,
+    // Icono del campo de entrada (si aplica)
     inputIcon
-//Se asignan los props que se utilizaran en este React Function Component llamado Form Field que contiene un tipado ya definido.
-
 }) => (
     <>
+        {/* Etiqueta del campo */}
         {<label htmlFor={name} className={labelStyle}>{label}</label>}
-        {/* Etiqueta que va almacenar el Label referente a un input field, ademas se le pasa un prop para definir su estilo al momento de la inicializacion de este compponente*/}
-
-
-        <div className="flex"> {/*Div como contenedor para el inputfield, se expecifica flex(Un tipo de display Box [CSS]), para manejar las relacion entre los hijos de este contenedor*/}
-
+   
+        {/* Contenedor del campo */}
+        <div className="flex"> 
+            {/* Icono del campo */}
             <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center"><i className={inputIcon}></i></div>
-            {/* Contenedor del incono referenta al input field, */}
 
+            {/* Campo de entrada */}
             <input className={inputStyle}
-            type={type}
-            placeholder={placeholder}
-            {...register(name)}/>
-            {/* input tag, Se asigna los diferentes props a los atributos del input*/}
+                type={type}
+                placeholder={placeholder}
+                {...register(name)}/>
         </div>
         
+        {/* Mostrar mensaje de error si existe */}
         {error && <span className="text-red-600">{error.message}</span>}
-        {/* De haber un error se muestra en la etiqueta span(Se utiliza como una etiqueta p) */}
     </>
-)
+);
 
-export default FormField
+export default FormField;
