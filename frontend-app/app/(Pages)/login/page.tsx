@@ -1,5 +1,9 @@
+"use client"
+import LoginForm from "@/app/components/register-login/login/LoginForm";
+
+
 export default function LogIn(){
     return <div>
-        <h1>LogIn</h1>
+        <LoginForm/>
     </div>
 }

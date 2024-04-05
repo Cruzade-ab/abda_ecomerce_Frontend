@@ -1,8 +1,12 @@
 "use client"
-import Navbar from "@/app/components/home/navBar/Navbar"
-import { useState, useEffect } from "react";
 
-export default function Cart() {
+import AdminForm from "@/app/components/admin/AdminForm"
+import Banner from "@/app/components/home/banner/banner1";
+import Navbar from "@/app/components/home/navBar/Navbar"
+import ProductsContainer from "@/app/components/products/ProductContainer";
+import { useState, useEffect } from "react"
+
+export default function Admin() {
     const [message, setMessage] = useState('');
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
@@ -42,10 +46,19 @@ export default function Cart() {
         setSectionName(category === 'men' ? 'Men\'s Collection' : 'Women\'s Collection');
     };
 
+
     return (
         <>
-            <Navbar onCategoryChange={handleCategoryChange} isAdmin={isAdmin} />
+        <Navbar onCategoryChange={handleCategoryChange} isAdmin={isAdmin}/>
+        <div className="my-4">
+        <p className="text-center">
+          {isLoggedIn ? message : 'You need to log in.'}
+        </p>
+        </div>
+        <div className="my-4">
+        <AdminForm></AdminForm>
 
-        </>
+        </div>
+      </>
     )
 }

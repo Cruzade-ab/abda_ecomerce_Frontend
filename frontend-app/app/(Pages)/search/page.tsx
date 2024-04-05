@@ -1,9 +1,10 @@
 "use client"
+
 import Navbar from "@/app/components/home/navBar/Navbar"
 import { useState, useEffect } from "react";
+export default function Search() {
 
-export default function Cart() {
-    const [message, setMessage] = useState('');
+
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
 
@@ -19,20 +20,17 @@ export default function Cart() {
                 });
                 if (response.ok) {
                     const content = await response.json();
-                    setMessage(`${content.name} ${content.last_name} is logged in with an email: ${content.email}. Its roles is the # ${content.role_id}`);
                     setIsLoggedIn(true);
                     setIsAdmin(content.role_id === 2);
                     console.log(content);
                 } else {
                     setIsLoggedIn(false);
                     setIsAdmin(false);
-                    setMessage('You need to log in.');
                 }
             } catch (error) {
                 console.error('Error fetching user data:', error);
                 setIsLoggedIn(false);
                 setIsAdmin(false);
-                setMessage('You need to log in.');
             }
         })();
     }, []);
@@ -41,11 +39,8 @@ export default function Cart() {
         setApiUrl(`http://localhost:4000/api/products/${category}`);
         setSectionName(category === 'men' ? 'Men\'s Collection' : 'Women\'s Collection');
     };
-
     return (
-        <>
-            <Navbar onCategoryChange={handleCategoryChange} isAdmin={isAdmin} />
+        <Navbar onCategoryChange={handleCategoryChange} isAdmin={isAdmin} />
 
-        </>
     )
 }

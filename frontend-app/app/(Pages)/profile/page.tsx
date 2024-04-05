@@ -1,8 +1,12 @@
 "use client"
-import Navbar from "@/app/components/home/navBar/Navbar"
-import { useState, useEffect } from "react";
 
-export default function Cart() {
+import AdminForm from "@/app/components/admin/AdminForm"
+import Banner from "@/app/components/home/banner/banner1";
+import Navbar from "@/app/components/home/navBar/Navbar"
+import ProductsContainer from "@/app/components/products/ProductContainer";
+import { useState, useEffect } from "react"
+
+export default function Admin() {
     const [message, setMessage] = useState('');
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
@@ -42,9 +46,43 @@ export default function Cart() {
         setSectionName(category === 'men' ? 'Men\'s Collection' : 'Women\'s Collection');
     };
 
+    const handleLogout = async () => {
+        try {
+            // Make a request to the backend logout endpoint
+            const response = await fetch('http://localhost:4000/api/user/logout', {
+                method: 'POST',
+                credentials: 'include',
+            });
+
+            if (response.ok) {
+                console.log('Logout successful');
+                setIsLoggedIn(false);
+                window.location.href = '/';
+
+            } else {
+                console.error('Logout failed:', await response.text());
+            }
+        } catch (error) {
+            console.error('Logout error:', error);
+        }
+    };
+
+
     return (
         <>
             <Navbar onCategoryChange={handleCategoryChange} isAdmin={isAdmin} />
+            <div className="my-4">
+                <p className="text-center">
+                    {isLoggedIn ? message : 'You need to log in.'}
+                </p>
+            </div>
+            <div className="my-y">
+
+                <button onClick={handleLogout} className="logout-button">
+                    Log Out
+                </button>
+
+            </div>
 
         </>
     )

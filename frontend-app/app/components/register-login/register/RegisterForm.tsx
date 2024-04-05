@@ -1,20 +1,17 @@
 // Archivo para el componente RegisterForm  Para entender vea este orden(1- FieldType, 2- FormField , 3- UserSchema, 4-RegisterForm)
-
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 //Libreria para manejar la logica y funcionalidad del formulario
-
-import { FormData } from "@/app/lib/register-login/FieldType";
-import UserSchema from "@/app/lib/register-login/UserSchema";
+import  Link  from "next/link"
+import { FormData } from "@/app/lib/register-login/register/FieldType";
+import UserSchema from "@/app/lib/register-login/register/UserSchema";
 import FormField from "./FormField"
-//Archivos necesarios para la creacion del componente 
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import '@mdi/font/css/materialdesignicons.min.css';
-
+import { useRouter } from "next/navigation";
 
 
 function RegisterForm () {
-
+    const router = useRouter()
     const {
         register,
         handleSubmit,
@@ -26,13 +23,14 @@ function RegisterForm () {
       // Vea Explain.md file
 
     //Funcion para manejar la logica cuando se envia el formulario
-    const onSubmit = async (data: FormData) => {
+    const onSubmit: SubmitHandler<FormData> = async (data, event) => {
 
+        event?.preventDefault();
         const {confirmPassword , ...FormData} = data;
         //Se descontruye la data ya que no queremos enviar el confirmPassword
 
         try{
-            const response = await fetch('https://backendapp-production-5383.up.railway.app/api/register',{ 
+            const response = await fetch('http://localhost:4000/api/user/register',{ 
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -41,6 +39,7 @@ function RegisterForm () {
             })
             if (response.ok) {
               console.log('Formulario enviado correctamente')
+              router.push('/login')
             } else {
               console.error('Error al enviar el formulario')
             }
@@ -141,6 +140,10 @@ function RegisterForm () {
                       inputIcon="mdi mdi-lock-outline text-gray-400 text-lg"
                     />
                     </div>
+                  </div>
+
+                  <div className="flex -mx-3 my-6 justify-center">
+                    <p>Already have an account? <Link href="/login" className="text-blue-500 hover:underline">Log In</Link></p>
                   </div>
 
                   <div className="flex -mx-3">
