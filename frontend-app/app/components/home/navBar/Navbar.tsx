@@ -12,7 +12,12 @@ import React from "react";
 
 const kaushan = Kaushan_Script({ subsets: ["latin"], weight: ["400"] });
 
-export default function Navbar() {
+interface NavbarProps {
+  onCategoryChange: (category: string) => void;
+  isAdmin: boolean;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ onCategoryChange, isAdmin }) => {
   const fontStyle = {
     fontFamily: kaushan.className,
     fontSize: "44px",
@@ -25,12 +30,7 @@ export default function Navbar() {
   
   const [navbar, setNavbar] = useState(false);
 
-  const [searchValue, setSearchValue] = useState('');
 
-  const handlesearch = (value: string) => {
-      setSearchValue(value);
-
-  }
   useEffect(() => {
     const userLoggedIn = Cookies.get("isLoggedIn");
     if (userLoggedIn === "true") {
@@ -40,17 +40,16 @@ export default function Navbar() {
 
   return (
     <div>
-      <nav className= " bg-white fixed top-0 left-0 right-0 ">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-6">
-            <div className="flex items-center">
-              
-                <Link href="/">
-                  <h2 className="text-xl pt-4 flex flex-shrink-1" style={fontStyle}>
-                    ABDA Shirts
-                  </h2>
-                </Link>
-            
+      <nav className="W-full h-16 bg-white border-b-2 border-black fixed top-0 left-0 right-0  ">
+        <div className="justify-between px-2 mx-auto lg:max-w-7xl md:items center md:flex md:px-8">
+          <div>
+            <div className="flex items-center justify-between py-2 md:py-5 md:block">
+              {/*Logo*/}
+              <Link href="/"  onClick={() => { onCategoryChange('wantedProducts'); setNavbar(false); }} >
+                <h2 className="text-xl pb-8" style={fontStyle}>
+                  ABDA Shirts
+                </h2>
+              </Link>
               {/*hamburger button for mobile*/}
               <div className="md:hidden block">
                 <button
@@ -78,29 +77,30 @@ export default function Navbar() {
             </div>
           </div>
           <div className="text-xl">
-                <SearchBar onSearch={handlesearch} />
+            <SearchBar onSearch={function (value: string): void {
+              throw new Error("Function not implemented.");
+            }} />
           </div>
 
           <div>
             <div
-              className={`${ 
-                navbar ? "block" : "hidden"}
-               md:flex-1 justify-self-center pb-3 mt-8 md:block md:pb-0 md:mt-0`}
+              className={`${navbar ? "block" : "hidden"
+                } md:flex-1 justify-self-center pb-3 mt-8 md:block md:pb-0 md:mt-0 `}
             >
               <ul className="h-screen md:h-auto items-center justify-center md:flex md:items-center md:justify-center ">
-                <li className="pb-6 text-xl   text-black py-3 md:px-6 text-center border-b-2 md:border-b-0 hover:bg-gray-400 border-gray-400 md:hover:text-gray-400 md:hover:bg-transparent">
-                  <Link href="/men" onClick={() => setNavbar(!navbar)}>
-                    <h1>Men</h1>
+                <li className="text-xl text-black py-3 md:px-6 text-center hover:bg-gray-400 md:hover:text-gray-400 md:hover:bg-transparent">
+                  <Link href="/" onClick={() => { onCategoryChange('men'); setNavbar(false); }}>
+                    Men
+                  </Link>
+                </li>
+                <li className="text-xl text-black py-3 md:px-6 text-center hover:bg-gray-400 md:hover:text-gray-400 md:hover:bg-transparent">
+                <Link href="/" onClick={() => { onCategoryChange('women'); setNavbar(false); }}>
+                    Women
                   </Link>
                 </li>
                 <li className="pb-6 text-xl  text-black py-3 md:px-6 text-center border-b-2 md:border-b-0 hover:bg-gray-400 border-gray-400 md:hover:text-gray-400 md:hover:bg-transparent">
-                  <Link href="/women" onClick={() => setNavbar(!navbar)}>
-                    <h1>Women</h1>
-                  </Link>
-                </li>
-                <li className="pb-6 text-xl  text-black py-3 md:px-6 text-center border-b-2 md:border-b-0 hover:bg-gray-400 border-gray-400 md:hover:text-gray-400 md:hover:bg-transparent">
-                  <Link href="/login" onClick={() => setNavbar(!navbar)}>
-                    <h1>Account</h1>
+                  <Link href={isLoggedIn ? "/profile" : "/login"} onClick={() => setNavbar(!navbar)}>
+                    Account
                   </Link>
                 </li>
                 <li className="pb-6 text-xl  text-black py-3 md:px-6 text-center border-b-2 md:border-b-0 hover:bg-gray-400 border-gray-400 md:hover:text-gray-400 md:hover:bg-transparent">
@@ -108,6 +108,12 @@ export default function Navbar() {
                     <h1>Car</h1>
                   </Link>
                 </li>
+                {isAdmin && (
+                  <li className="text-xl text-black py-3 md:px-6 text-center hover:bg-gray-400 md:hover:text-gray-400 md:hover:bg-transparent">
+                    <Link href="/admin" onClick={() => setNavbar(false)}>
+                      Admin
+                    </Link>
+                  </li>)}
               </ul>
             </div>
           </div>
@@ -116,3 +122,5 @@ export default function Navbar() {
       </div>
   );
 }
+
+export default Navbar;

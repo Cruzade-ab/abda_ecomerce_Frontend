@@ -1,221 +1,174 @@
-"use client"
 import React, { useState } from 'react';
+import { useForm, Controller, SubmitHandler } from 'react-hook-form';
+import FormField from './AdminFormField'; 
+import { MyFormData, Product } from '../../lib/admin/createProduct/adminType';
+import { zodResolver } from '@hookform/resolvers/zod';
+import AdminFormSchema from '../../lib/admin/createProduct/AdminFormSchema';
+import { ValidFieldNames } from '../../lib/admin/createProduct/adminType';
 
+const AdminForm = () => {
+  const { register, handleSubmit, formState: { errors }, control } = useForm<MyFormData>({
+    resolver: zodResolver(AdminFormSchema),
+  });
 
+  const [products, setProducts] = useState<Product[]>([{
+    value: '', 
+    color_name: '' ,
+    imageFile: null, 
+    hoverImageFile: null ,
+    sizes: { S: '', M: '', L: '', XL: '' }
+  }]);
 
-const AdminForm: React.FC = () => {
-    const [generalProduct, setGeneralProduct] = useState<GeneralProductDTO>({
-      general_product_id: 0,
-      general_product_name: '',
-      brand: { brand_id: 0, brand_name: '' },
-      products: []
-    });
-  
-    const handleGeneralProductChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setGeneralProduct({
-        ...generalProduct,
-        [e.target.name]: e.target.value
-      });
-    };
-  
-    const handleBrandChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setGeneralProduct({
-        ...generalProduct,
-        brand: { ...generalProduct.brand, [e.target.name]: e.target.value }
-      });
-    };
-  
-    const addProductVariant = () => {
-      const newProduct: ProductDTO = {
-        product_id: generalProduct.products.length + 1, // Simple increment, consider unique IDs for real applications
-        value: 0,
-        color: { color_id: 0, color_name: '' },
-        description: '',
-        section: { section_id: 0, section_name: '' },
-        image_url: '',
-        size_amount: { size_amount_id: 0, size_amount: 0 , size: '' },
-        imageFile: undefined
-      };
-      setGeneralProduct({
-        ...generalProduct,
-        products: [...generalProduct.products, newProduct]
-      });
-    };
-  
-    const handleProductChange = (index: number, field: string, value: any) => {
-      const updatedProducts = generalProduct.products.map((product, i) => {
-        if (i === index) {
-          // Verificar el nombre del campo y actualizar el estado correspondiente
-          if (field === 'size') {
-            return { ...product, size_amount: { ...product.size_amount, size: value } };
-          } else if (field === 'size_amount') {
-            return { ...product, size_amount: { ...product.size_amount, size_amount: value } };
-          } else if (field === 'value') { // Cambiado de "Price" a "value"
-            return { ...product, value: value }; // Actualizar el valor del producto
-          } else if (field === 'color') {
-            return { ...product, color: { ...product.color, color_name: value } };
-          } else {
-            return { ...product, [field]: value };
-          }
-        }
-        return product;
-      });
-      setGeneralProduct({ ...generalProduct, products: updatedProducts });
-    };
-    
-    
-    
-    const handleFileChange = (index: number, file: File) => {
-      if (generalProduct.products[index]) {
-        const updatedProducts = generalProduct.products.map((product, i) => {
-          if (i === index) {
-            return { ...product, imageFile: file };
-          }
-          return product;
-        });
-        setGeneralProduct({ ...generalProduct, products: updatedProducts });
+  const onSubmit: SubmitHandler<MyFormData> = async (data) => {
+    const formData = new FormData();
+
+    formData.append("general_product_name", data.general_product_name);
+    formData.append("brand_name", data.brand_name);
+    formData.append("description", data.description);
+    formData.append("section", data.section);
+
+    data.products.forEach((product, index) => {
+      formData.append(`products[${index}][value]`, product.value);
+      formData.append(`products[${index}][color_name]`, product.color_name);
+      if (product.imageFile) {
+        formData.append(`products[${index}][imageFile]`, product.imageFile);
       }
-    };
-    
+      if (product.hoverImageFile) {
+        formData.append(`products[${index}][hoverImageFile]`, product.hoverImageFile);
+      }
 
+      // Append size amounts for each size
+      Object.keys(product.sizes).forEach((size) => {
+        formData.append(`products[${index}][sizes][${size}]`, product.sizes[size]);
+      });
+    });
 
-      const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-      
-        const formData = new FormData();
-      
-        // Add general product data to formData
-        formData.append('general_product_id', String(generalProduct.general_product_id));
-        formData.append('general_product_name', generalProduct.general_product_name);
-        formData.append('brand_id', String(generalProduct.brand.brand_id));
-        formData.append('brand_name', generalProduct.brand.brand_name);
-      
-        // Append each product variant and its details to formData
-        generalProduct.products.forEach((product, index) => {
-          formData.append(`products[${index}][product_id]`, String(product.product_id));
-          formData.append(`products[${index}][value]`, String(product.value));
-          formData.append(`products[${index}][description]`, product.description);
-          formData.append(`products[${index}][color_id]`, String(product.color.color_id));
-          formData.append(`products[${index}][color_name]`, product.color.color_name);
-          // Add other product details similarly
-      
-          if (product.imageFile) {
-            formData.append(`products[${index}][imageFile]`, product.imageFile);
-          }
-        });
-      
-        try {
-          const response = await fetch('http://localhost:4000/products/create', {
-            method: 'POST',
-            body: formData
-          });
-      
-          if (!response.ok) {
-            throw new Error(`Error: ${response.statusText}`);
-          }
-      
-          const result = await response.json();
-          console.log('Success:', result);
-        } catch (error) {
-          console.error('Error:', error);
-        }
-      };
-      
+    console.log(formData)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    return (
-      <form onSubmit={handleSubmit} className='flex flex-col'>
-        <input 
-          className='w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-gray-500'
-          type="text"
-          name="general_product_name"
-          value={generalProduct.general_product_name}
-          onChange={handleGeneralProductChange}
-          placeholder="General Product Name"
-        />
-        <input  
-          className='w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-gray-500'
-          type="text"
-          name="brand_name"
-          value={generalProduct.brand.brand_name}
-          onChange={handleBrandChange}
-          placeholder="Brand Name"
-        />
+    try {
+      const response = await fetch('http://localhost:4000/api/admin/product/create', {
+        method: 'POST',
+        body: formData,
         
-        {generalProduct.products.map((product, index) => (
-          <div key={index}>
-            <input
-             className='w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-gray-500'
-              type="text"
-              placeholder="Product Description"
-              value={product.description}
-              onChange={(e) => handleProductChange(index, 'description', e.target.value)}
-            />
+      });
+      console.log(formData)
 
-            <input
-              className='w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-gray-500'
-              type="text"
-              placeholder="Size"
-              value={product.size_amount.size}
-              onChange={(e) => handleProductChange(index, 'size', e.target.value)}
-            />
+      if (response.ok) {
+        console.log('Form submitted successfully');
+        console.log(formData)
+      } else {
+        console.error('Error submitting form');
+        console.log(formData)
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      console.log(formData)
+    }
+  };
 
-            <input
-              className='w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-gray-500'
-              type="number"
-              placeholder="Product Size"
-              value={product.size_amount.size_amount}
-              onChange={(e) => handleProductChange(index, 'Size Amount', e.target.value)}
-            />
 
-            <input
-              className='w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-gray-500'
-              type="number"
-              placeholder="Product Value"
-              value={product.value}
-              onChange={(e) => handleProductChange(index, 'Price', e.target.value)}
-            />
+  const addProduct = () => {
+    setProducts([...products, { 
+      value: '', 
+      color_name: '',
+      imageFile: null, 
+      hoverImageFile: null ,
+      sizes: { S: '', M: '', L: '', XL: '' }
+    }]);
+  };
 
-            <input
-              className='w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-gray-500'
-              type="text"
-              placeholder="Color"
-              value={product.color.color_name}
-              onChange={(e) => handleProductChange(index, 'color', e.target.value)}
-            />
 
-            <input
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <FormField
+        type="text"
+        placeholder="Enter general product name"
+        label="General Product Name"
+        name="general_product_name"
+        register={register}
+        error={errors.general_product_name} labelStyle={''} inputStyle={''} inputIcon={''}      />
+      <FormField
+        type="text"
+        placeholder="Enter brand name"
+        label="Brand Name"
+        name="brand_name"
+        register={register}
+        error={errors.brand_name} labelStyle={''} inputStyle={''} inputIcon={''}      />
+      <FormField
+        type="text"
+        placeholder="Enter description"
+        label="Description"
+        name="description"
+        register={register}
+        error={errors.description} labelStyle={''} inputStyle={''} inputIcon={''}      />
+      <FormField
+        type="text"
+        placeholder="Enter section"
+        label="Section"
+        name="section"
+        register={register}
+        error={errors.section} labelStyle={''} inputStyle={''} inputIcon={''}      />
+
+      {products.map((product, index) => (
+        <div key={index}>
+          <h3>Product {index + 1}</h3>
+          <FormField
+            type="text"
+            placeholder={`Enter product ${index + 1} value`}
+            label={`Product ${index + 1} Value`}
+            name={`products.${index}.value`}
+            register={register} error={undefined} labelStyle={''} inputStyle={''} inputIcon={''}          />
+          <FormField
+            type="text"
+            placeholder={`Enter product ${index + 1} color`}
+            label={`Product ${index + 1} Color`}
+            name={`products.${index}.color_name`}
+            register={register} error={undefined} labelStyle={''} inputStyle={''} inputIcon={''}          />
+          <Controller
+            name={`products[${index}].imageFile`  as keyof MyFormData}
+            control={control}
+            render={({ field }) => (
+              <input
                 type="file"
                 onChange={(e) => {
-                    if (e.target.files && e.target.files[0]) {
-                    handleFileChange(index, e.target.files[0]);
-                    }
+                  if (e.target.files) field.onChange(e.target.files[0]);
                 }}
-            />
-            
-          </div>
-        ))}
-  
-        <button type="button" onClick={addProductVariant} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full'>
-          Add Product Variant
-        </button>
-        <button type="submit" className='bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full'>Submit</button>
-      </form>
-    );
-  };
-  
-  export default AdminForm;
+              />
+            )}
+          />
+          <Controller
+            name={`products[${index}].hoverImageFile`  as keyof MyFormData}
+            control={control}
+            render={({ field }) => (
+              <input
+                type="file"
+                onChange={(e) => {
+                  if (e.target.files) field.onChange(e.target.files[0]);
+                }}
+              />
+            )}
+          />
+          {['S', 'M', 'L', 'XL'].map((size) => (
+            <FormField
+            type="text"
+            placeholder={`Enter amount for size ${size}`}
+            label={`Size ${size} Amount`}
+            name={`products[${index}].sizes.${size}` as ValidFieldNames}
+            register={register}
+            error={errors.products?.[index]?.sizes?.[size]}
+            labelStyle={''}
+            inputStyle={''}
+            inputIcon={''}
+          />
+          ))}
+        </div>
+      ))}
+
+      <button type="button" onClick={addProduct}>Add Product</button>
+
+      <button type="submit">Submit</button>
+    </form>
+  );
+};
+
+export default AdminForm;
