@@ -3,6 +3,7 @@ import Navbar from "@/app/components/home/navBar/Navbar"
 import { useState, useEffect } from "react";
 
 export default function Cart() {
+    
     const [message, setMessage] = useState('');
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);

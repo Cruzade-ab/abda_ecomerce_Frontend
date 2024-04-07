@@ -105,7 +105,7 @@ const Navbar: React.FC<NavbarProps> = ({ onCategoryChange, isAdmin }) => {
                 </li>
                 <li className="pb-6 text-xl  text-black py-3 md:px-6 text-center border-b-2 md:border-b-0 hover:bg-gray-400 border-gray-400 md:hover:text-gray-400 md:hover:bg-transparent">
                   <Link href="/cart" onClick={() => setNavbar(!navbar)}>
-                    <h1>Car</h1>
+                    <h1>Cart</h1>
                   </Link>
                 </li>
                 {isAdmin && (
