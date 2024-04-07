@@ -79,7 +79,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <div className="m-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
             <div onClick={handleViewDetails} className='cursor-pointer'>
                
-                    <div className='mx-3 mt-3 h-60 rounded-xl overflow-clip'
+                    <div className='mx-3 mt-3 h-90 rounded-xl overflow-clip'
                         onMouseEnter={() => setHoverImage(true)}
                         onMouseLeave={() => setHoverImage(false)}
                     >
