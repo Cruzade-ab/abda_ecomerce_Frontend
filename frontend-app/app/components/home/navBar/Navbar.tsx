@@ -5,12 +5,13 @@ import { useEffect } from "react";
 import Cookies from "js-cookie";
 import { useState } from "react";
 import Image from "next/image";
-import SearchBar from "../Search bar";
+import Search from "../Search bar/search";
 const kaushan = Kaushan_Script({ subsets: ["latin"], weight: ["400"] });
 
 interface NavbarProps {
   onCategoryChange: (category: string) => void;
   isAdmin: boolean;
+  
 }
 
 const Navbar: React.FC<NavbarProps> = ({ onCategoryChange, isAdmin }) => {
@@ -35,12 +36,12 @@ const Navbar: React.FC<NavbarProps> = ({ onCategoryChange, isAdmin }) => {
 
   return (
     <div>
-      <nav className="W-full h-16 bg-white border-b-2 border-black fixed top-0 left-0 right-0  ">
+      <nav className="W-full h-20 bg-white border-b-2 border-black fixed top-0 left-0 right-0  ">
         <div className="justify-between px-2 mx-auto lg:max-w-7xl md:items center md:flex md:px-8">
           <div>
             <div className="flex items-center justify-between py-2 md:py-5 md:block">
               {/*Logo*/}
-              <Link href="/"  onClick={() => { onCategoryChange('wantedProducts'); setNavbar(false); }} >
+              <Link href="/" onClick={() => { onCategoryChange('wantedProducts'); setNavbar(false); }} >
                 <h2 className="text-xl pb-8" style={fontStyle}>
                   ABDA Shirts
                 </h2>
@@ -72,9 +73,7 @@ const Navbar: React.FC<NavbarProps> = ({ onCategoryChange, isAdmin }) => {
             </div>
           </div>
           <div className="text-xl">
-            <SearchBar onSearch={function (value: string): void {
-              throw new Error("Function not implemented.");
-            }} />
+            <Search />
           </div>
 
           <div>
@@ -89,7 +88,7 @@ const Navbar: React.FC<NavbarProps> = ({ onCategoryChange, isAdmin }) => {
                   </Link>
                 </li>
                 <li className="text-xl text-black py-3 md:px-6 text-center hover:bg-gray-400 md:hover:text-gray-400 md:hover:bg-transparent">
-                <Link href="/" onClick={() => { onCategoryChange('women'); setNavbar(false); }}>
+                  <Link href="/" onClick={() => { onCategoryChange('women'); setNavbar(false); }}>
                     Women
                   </Link>
                 </li>
@@ -108,7 +107,8 @@ const Navbar: React.FC<NavbarProps> = ({ onCategoryChange, isAdmin }) => {
                     <Link href="/admin" onClick={() => setNavbar(false)}>
                       Admin
                     </Link>
-                  </li>)}
+                  </li>
+                )}
               </ul>
             </div>
           </div>
