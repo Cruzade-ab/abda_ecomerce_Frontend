@@ -26,7 +26,7 @@ export type Product = {
 
 export type FormFieldProps = {
   type: string;
-  placeholder: string;
+  placeholder?: string;
   label: string;
   name: ValidFieldNames;
   register: UseFormRegister<MyFormData>;
