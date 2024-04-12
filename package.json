@@ -1,0 +1,15 @@
+{
+  "name": "abda_ecomerce_frontend",
+  "version": "1.0.0",
+  "description": "Repositorio Frontend para el proyecto de e-comerce con Forte",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack-dev-server --open"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.0.2"
+  }
+}
