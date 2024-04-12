@@ -1,43 +1,48 @@
 "use client"
 import React, { useEffect, useState } from 'react';
-import { ProductInterface, ColorInterface, ProductVariant } from '../../lib/products/ProductInterface';
+import { ProductInterface, ColorInterface } from '../../lib/products/ProductInterface';
 import MainLayout from '@/app/components/home/main-layout/MainLayout';
+
 const ProductDetailPage: React.FC = () => {
     const [product, setProduct] = useState<ProductInterface | null>(null);
     const [loading, setLoading] = useState(true);
     const [selectedColor, setSelectedColor] = useState<ColorInterface | null>(null);
-    const [dropdownOpen, setdropdownOpen] = useState(false);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
     const [selectedSize, setSelectedSize] = useState<string>('');
+    const [selectedQuantity, setSelectedQuantity] = useState<number>(1);
+    const [availableQuantity, setAvailableQuantity] = useState<number>(0);
+
     useEffect(() => {
         const fetchProduct = async () => {
             const productVariantId = localStorage.getItem('selectedProductVariantId');
-    
+
             if (!productVariantId) {
                 console.error('Product variant ID not found in localStorage');
                 setLoading(false);
                 return;
             }
-    
+
             try {
                 const response = await fetch('http://localhost:4000/api/products/getProductById', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ productVariantId }),
                 });
-    
+
                 if (!response.ok) {
                     throw new Error('Failed to fetch product details');
                 }
-    
-                const data = await response.json();
-                console.log("Fetched data:", data); 
-    
-                if (data && Array.isArray(data) && data.length > 0) {
-                    setProduct(data[0]); 
-                    // Seleccionar el primer color cuando se cargue el producto
-                    setSelectedColor(data[0]?.products[0]?.color || null);
 
-                    
+                const data = await response.json();
+                console.log("Fetched data:", data);
+
+                if (data && Array.isArray(data) && data.length > 0) {
+                    const initialProduct = data[0];
+                    setProduct(initialProduct);
+
+                    setSelectedColor(initialProduct?.products[0]?.color || null);
+
+                    setSelectedSize(initialProduct?.products[0]?.size?.size_name || '');
                 } else {
                     console.error('Product data is not in expected format:', data);
                     setProduct(null);
@@ -48,17 +53,49 @@ const ProductDetailPage: React.FC = () => {
                 setLoading(false);
             }
         };
-    
+
         fetchProduct();
     }, []);
-    
+
+    useEffect(() => {
+        if (product && selectedColor && selectedSize) {
+            const selectedProduct = product.products.find((variant) =>
+                variant.color.color_id === selectedColor.color_id &&
+                variant.size.size_name === selectedSize
+            );
+
+            if (selectedProduct) {
+                setAvailableQuantity(selectedProduct.size_amount.size_amount);
+            }
+        }
+    }, [product, selectedColor, selectedSize]);
+
     const handleColorChange = (color: ColorInterface) => {
         setSelectedColor(color);
-        setdropdownOpen(false);
+        setDropdownOpen(false);
     };
-   
+
     const handleSizeChange = (size: string) => {
         setSelectedSize(size);
+    };
+
+    const handleIncrement = () => {
+        if (selectedQuantity < Math.min(5, availableQuantity)) {
+            setSelectedQuantity(selectedQuantity + 1);
+        }
+    };
+
+    const handleDecrement = () => {
+        if (selectedQuantity > 1) {
+            setSelectedQuantity(selectedQuantity - 1);
+        }
+    };
+
+    const handleQuantityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = parseInt(event.target.value);
+        if (!isNaN(value) && value >= 1 && value <= 5 && value <= availableQuantity) {
+            setSelectedQuantity(value);
+        }
     };
 
     if (loading) {
@@ -69,8 +106,11 @@ const ProductDetailPage: React.FC = () => {
         return <div>Error fetching product details</div>;
     }
 
+    const selectedProductVariant = product.products.find((variant) =>
+        variant.color.color_id === selectedColor?.color_id && variant.size.size_name === selectedSize
+    );
     console.log("General product name is: ", product.general_product_name);
-    
+
     const renderColorOptions = () => {
         return (
             <div className="relative">
@@ -80,11 +120,11 @@ const ProductDetailPage: React.FC = () => {
                     id="menu-button"
                     aria-expanded={dropdownOpen}
                     aria-haspopup="true"
-                    onClick={() => setdropdownOpen(!dropdownOpen)}
+                    onClick={() => setDropdownOpen(!dropdownOpen)}
                 >
                     {selectedColor ? selectedColor.color_name : 'Select Color'}
                 </button>
-                {dropdownOpen && (
+                {dropdownOpen && product && (
                     <div className="absolute z-10 mt-2 bg-white shadow-lg rounded-md">
                         {product.products.map((variant, index) => (
                             <button
@@ -101,11 +141,7 @@ const ProductDetailPage: React.FC = () => {
         );
     }
 
-       
-
    
-    const selectedProductVariant = product.products.find((variant) => variant.color.color_id === selectedColor?.color_id);
-
     return (
        <>
         <MainLayout children={undefined} isAdmin={false} onCategoryChange={(_category: string) => {}}/>
@@ -137,13 +173,70 @@ const ProductDetailPage: React.FC = () => {
                         <p>${selectedProductVariant ? selectedProductVariant.value : ''}</p>
                     </div>
                     <div className="py-3 inline-block text-left">
-                        <h2>Select Color:</h2>
-                        <div className="flex">
-                            {renderColorOptions()}
+                            <h2>Select Color:</h2>
+                            <div className="flex">
+                                {renderColorOptions()}
                         </div>
+                        <div className="py-3 inline-block text-left">
+                            <h2>Select Size:</h2>
+                            <div className="flex">
+                                <button
+                                    className="block px-4 py-2 text-sm text-gray-700 bg-gray-200 hover:bg-gray-300"
+                                    onClick={() => handleSizeChange('Small')}
+                                >
+                                    Small
+                                </button>
+                                <button
+                                    className="block px-4 py-2 text-sm text-gray-700 bg-gray-200 hover:bg-gray-300"
+                                    onClick={() => handleSizeChange('Medium')}
+                                >
+                                    Medium
+                                </button>
+                                <button
+                                    className="block px-4 py-2 text-sm text-gray-700 bg-gray-200 hover:bg-gray-300"
+                                    onClick={() => handleSizeChange('Large')}
+                                >
+                                    Large
+                                </button>
+                                <button
+                                    className="block px-4 py-2 text-sm text-gray-700 bg-gray-200 hover:bg-gray-300"
+                                    onClick={() => handleSizeChange('XLarge')}
+                                >
+                                    XLarge
+                                </button>
+                             </div>
+                        </div>
+                       
+
+                   
+                   
+                        </div>
+                    <div className="flex items-center">
+                        <button
+                            onClick={handleDecrement}
+                            className="px-3 py-1 mr-2 text-sm bg-gray-200 rounded-full"
+                        >
+                            -
+                        </button>
+                        <input
+                            type="number"
+                            value={selectedQuantity}
+                            onChange={handleQuantityChange}
+                            min={1}
+                            max={Math.min(5, availableQuantity)}
+                            className="block w-24 px-4 py-2 text-sm text-gray-700 border border-gray-300 rounded-md"
+                        />
+                        <button
+                            onClick={handleIncrement}
+                            className="px-3 py-1 ml-2 text-sm bg-gray-200 rounded-full"
+                        >
+                            +
+                        </button>
                     </div>
                 </div>
-            </div>
+                   
+
+              </div>
         </div>
         </>
     );
