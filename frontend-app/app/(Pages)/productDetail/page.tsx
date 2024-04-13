@@ -141,103 +141,110 @@ const ProductDetailPage: React.FC = () => {
         );
     }
 
-   
+
     return (
-       <>
-        <MainLayout children={undefined} isAdmin={false} onCategoryChange={(_category: string) => {}}/>
-        <div className="container mx-auto">
-            <div className='flex flex-wrap gap-4'>
-                <div className='grid gap-4 grid-cols-2'>
-                    <img
-                        className='rounded-lg border border-transparent shadow-xl'
-                        src={selectedProductVariant ? selectedProductVariant.image_url : ''}
-                        alt={`Image of ${selectedProductVariant ? selectedProductVariant.color.color_name : ''}`}
-                    />
-                    <img
-                        className="rounded-lg border border-transparent shadow-xl"
-                        src={selectedProductVariant ? selectedProductVariant.hover_image_url : ''}
-                        alt={`Image of ${selectedProductVariant ? selectedProductVariant.color.color_name : ''}`}
-                    />
-                </div>
-                <div className='flex-1 p-4 rounded-lg border border-gray-200'>
-                    <div className='text-sm'>
-                        <p>{product.section.section_name}</p>
+        <>
+            <MainLayout children={undefined} isAdmin={false} onCategoryChange={(_category: string) => { }} />
+            <div className="container mx-auto">
+                <div className='flex flex-wrap gap-4'>
+                    <div className='grid gap-4 grid-cols-2'>
+                        <img
+                            className='rounded-lg border border-transparent shadow-xl'
+                            src={selectedProductVariant ? selectedProductVariant.image_url : ''}
+                            alt={`Image of ${selectedProductVariant ? selectedProductVariant.color.color_name : ''}`}
+                        />
+                        <img
+                            className="rounded-lg border border-transparent shadow-xl"
+                            src={selectedProductVariant ? selectedProductVariant.hover_image_url : ''}
+                            alt={`Image of ${selectedProductVariant ? selectedProductVariant.color.color_name : ''}`}
+                        />
                     </div>
-                    <div className='text-2xl'>
-                        <h1>{product.general_product_name}</h1>
-                    </div>
-                    <div className='py-3 text-base'>
-                        <p>{product.description}</p>
-                    </div>
-                    <div className='text-3xl'>
-                        <p>${selectedProductVariant ? selectedProductVariant.value : ''}</p>
-                    </div>
-                    <div className="py-3 inline-block text-left">
+                    <div className='flex-1 p-4 rounded-lg border border-gray-200'>
+                        <div className='text-sm'>
+                            <p>{product.section.section_name}</p>
+                        </div>
+                        <div className='text-2xl'>
+                            <h1>{product.general_product_name}</h1>
+                        </div>
+                        <div className='py-3 text-base'>
+                            <p>{product.description}</p>
+                        </div>
+                        <div className='text-3xl'>
+                            <p>${selectedProductVariant ? selectedProductVariant.value : ''}</p>
+                        </div>
+                        <div className="py-3 inline-block text-left">
                             <h2>Select Color:</h2>
                             <div className="flex">
                                 {renderColorOptions()}
-                        </div>
-                        <div className="py-3 inline-block text-left">
-                            <h2>Select Size:</h2>
-                            <div className="flex">
-                                <button
-                                    className="block px-4 py-2 text-sm text-gray-700 bg-gray-200 hover:bg-gray-300"
-                                    onClick={() => handleSizeChange('Small')}
-                                >
-                                    Small
-                                </button>
-                                <button
-                                    className="block px-4 py-2 text-sm text-gray-700 bg-gray-200 hover:bg-gray-300"
-                                    onClick={() => handleSizeChange('Medium')}
-                                >
-                                    Medium
-                                </button>
-                                <button
-                                    className="block px-4 py-2 text-sm text-gray-700 bg-gray-200 hover:bg-gray-300"
-                                    onClick={() => handleSizeChange('Large')}
-                                >
-                                    Large
-                                </button>
-                                <button
-                                    className="block px-4 py-2 text-sm text-gray-700 bg-gray-200 hover:bg-gray-300"
-                                    onClick={() => handleSizeChange('XLarge')}
-                                >
-                                    XLarge
-                                </button>
-                             </div>
-                        </div>
-                       
+                            </div>
+                            <div className="py-3 inline-block text-left">
+                                <h2>Select Size:</h2>
+                                <div className="flex">
+                                    <button
+                                        className="block px-4 py-2 text-sm text-gray-700 bg-gray-200 hover:bg-gray-300"
+                                        onClick={() => handleSizeChange('Small')}
+                                    >
+                                        Small
+                                    </button>
+                                    <button
+                                        className="block px-4 py-2 text-sm text-gray-700 bg-gray-200 hover:bg-gray-300"
+                                        onClick={() => handleSizeChange('Medium')}
+                                    >
+                                        Medium
+                                    </button>
+                                    <button
+                                        className="block px-4 py-2 text-sm text-gray-700 bg-gray-200 hover:bg-gray-300"
+                                        onClick={() => handleSizeChange('Large')}
+                                    >
+                                        Large
+                                    </button>
+                                    <button
+                                        className="block px-4 py-2 text-sm text-gray-700 bg-gray-200 hover:bg-gray-300"
+                                        onClick={() => handleSizeChange('XLarge')}
+                                    >
+                                        XLarge
+                                    </button>
+                                </div>
+                            </div>
 
-                   
-                   
+
+
+
                         </div>
-                    <div className="flex items-center">
-                        <button
-                            onClick={handleDecrement}
-                            className="px-3 py-1 mr-2 text-sm bg-gray-200 rounded-full"
-                        >
-                            -
-                        </button>
-                        <input
-                            type="number"
-                            value={selectedQuantity}
-                            onChange={handleQuantityChange}
-                            min={1}
-                            max={Math.min(5, availableQuantity)}
-                            className="block w-24 px-4 py-2 text-sm text-gray-700 border border-gray-300 rounded-md"
-                        />
-                        <button
-                            onClick={handleIncrement}
-                            className="px-3 py-1 ml-2 text-sm bg-gray-200 rounded-full"
-                        >
-                            +
-                        </button>
+                        <div className="flex items-center">
+                            <button
+                                onClick={handleDecrement}
+                                className="px-3 py-1 mr-2 text-sm bg-gray-200 rounded-full"
+                            >
+                                -
+                            </button>
+                            <input
+                                type="number"
+                                value={selectedQuantity}
+                                onChange={handleQuantityChange}
+                                min={1}
+                                max={Math.min(5, availableQuantity)}
+                                className="block w-24 px-4 py-2 text-sm text-gray-700 border border-gray-300 rounded-md"
+                            />
+                            <button
+                                onClick={handleIncrement}
+                                className="px-3 py-1 ml-2 text-sm bg-gray-200 rounded-full"
+                            >
+                                +
+                            </button>
+
+                            
+                        </div>
+                        <a href="#" className="flex mt-4 items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="mr-2 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                                Add to cart</a>
                     </div>
-                </div>
-                   
 
-              </div>
-        </div>
+
+                </div>
+            </div>
         </>
     );
 };
