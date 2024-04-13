@@ -1,6 +1,6 @@
 'use client'
 import React, { useState, useEffect } from 'react';
-import { ProductInterface, ProductVariant } from '../../lib/products/ProductInterface';
+import { ProductInterface } from '../../lib/products/ProductInterface';
 
 import { useRouter } from "next/navigation";
 

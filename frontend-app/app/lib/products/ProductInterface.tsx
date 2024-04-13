@@ -24,6 +24,8 @@ export interface ProductInterface {
   }
   
   export interface ColorInterface {
+    image_url: string | undefined;
+    hover_image_url: string | undefined;
     color_id: number;
     color_name: string;
   }
