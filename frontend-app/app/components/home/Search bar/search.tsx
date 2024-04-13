@@ -23,6 +23,10 @@ const Search = (props: SearchProps) => {
         }
     };
 
+    function handleChange(event: ChangeEvent<HTMLInputElement>): void {
+        throw new Error('Function not implemented.');
+    }
+
     return (
         <div className="relative px-2 py-4 w-2/4 text-gray-600">
             <input
@@ -30,9 +34,10 @@ const Search = (props: SearchProps) => {
                 name="search"
                 placeholder={value}
                 className="bg-white h-10 px-5 pr-10 w-full text-sm border border-gray-300 rounded-full focus:outline-none focus:border-gray-400 transition duration-300"
-                onChange={(event) => searchHandler(event)}
-                onKeyDown={handleKeyDown} />
-            <button type="submit" className="absolute right-0 top-1 mt-3 mr-4">
+                value={value}
+                onChange={handleChange}
+            />
+            <button type="submit" className="absolute py-2 right-0 top-1 mt-3 mr-4">
                 <svg
                     className="h-4 my-3 w-4 fill-current"
                     xmlns="http://www.w3.org/2000/svg"

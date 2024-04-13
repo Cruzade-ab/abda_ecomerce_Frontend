@@ -26,11 +26,7 @@ function LoginForm () {
         //Se descontruye la data ya que no queremos enviar el confirmPassword
 
         try{
-<<<<<<< HEAD:frontend-app/app/components/register-login/LoginForm.tsx
-            const response = await fetch('http://localhost:4000/api/login', { 
-=======
             const response = await fetch('http://localhost:4000/api/user/login',{ 
->>>>>>> b0088dfe99d25b69f37801d35cc3db7a4a80ae66:frontend-app/app/components/register-login/login/LoginForm.tsx
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
