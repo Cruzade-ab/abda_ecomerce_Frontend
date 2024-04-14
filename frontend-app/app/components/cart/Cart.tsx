@@ -9,44 +9,45 @@ export default function Cart() {
     const [totalPrice, setTotalPrice] = useState<number>(0);
 
     useEffect(() => {
-        // Load cart items from your API
+        // Carga los elementos del carrito desde tu API
         fetch('http://localhost:4000/api/cart/getCartInfo', {
             method: 'GET',
-            credentials: "include", // To send cookies with the request
+            credentials: "include",
             headers: {
                 'Content-Type': 'application/json',
-                // Ensure the server allows sending cookies and authentication tokens
             },
         })
         .then(response => response.json())
         .then(data => {
-            setCartItems(data); // Assuming the response is an array of items
-            // Calculate the total price based on the items received
+            setCartItems(data);
             const total = data.reduce((acc: number, item: { product_price: number; quantity: number; }) => acc + (item.product_price * item.quantity), 0);
             setTotalPrice(total);
         })
-        .catch(error => console.error('Error fetching cart items:', error));
+        .catch(error => console.error('Error al obtener los elementos del carrito:', error));
     }, []);
 
     const handleRemoveItem = (productId: number) => {
-        // Implement logic to remove a product from the cart
-        fetch(`http://localhost:4000/api/cart/removeFromCart/${productId}`, {
-            method: 'DELETE',
+        // Implementa la lógica para eliminar un producto del carrito
+        fetch('http://localhost:4000/api/cart/deleteCartItem', {
+            method: 'POST',
             credentials: "include",
             headers: {
                 'Content-Type': 'application/json',
-                // Ensure the server allows sending cookies and authentication tokens
             },
+            body: JSON.stringify({ productId }), // Envía el ID del producto en el cuerpo de la solicitud
         })
         .then(response => {
             if (response.ok) {
-                // Update the state to reflect the removed item
+                // Actualiza el estado para reflejar el elemento eliminado
                 setCartItems(currentItems => currentItems.filter(item => item.product_id !== productId));
-                // Recalculate the total price
+                // Recalcula el precio total
                 setTotalPrice(currentTotal => currentTotal - (cartItems.find(item => item.product_id === productId)?.product_price ?? 0) * (cartItems.find(item => item.product_id === productId)?.quantity ?? 0));
+            } else {
+                // Maneja los errores, como mostrar un mensaje al usuario
+                console.error('Error al eliminar el producto del carrito:', response.status);
             }
         })
-        .catch(error => console.error('Error removing item:', error));
+        .catch(error => console.error('Error al eliminar el producto del carrito:', error));
     };
 
     return (
@@ -70,5 +71,6 @@ export default function Cart() {
         </>
     );
 }
+
 
 
