@@ -5,7 +5,7 @@ import RegisterSchema from "@/app/lib/register-login/register/RegisterSchema"; /
 import FormField from "./FormField"; // Importación del componente FormField
 import { zodResolver } from "@hookform/resolvers/zod"; // Importación del resolver de zod
 import "@mdi/font/css/materialdesignicons.min.css"; // Importación del archivo de estilos de los iconos mdi
-import { useRouter } from "next/router"; // Importación del hook useRouter de Next.js
+import { useRouter } from "next/navigation"; // Importación del hook useRouter de Next.js
 
 function RegisterForm() {
   const router = useRouter(); // Inicialización del hook useRouter
