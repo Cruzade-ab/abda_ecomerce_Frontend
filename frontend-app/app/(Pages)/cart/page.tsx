@@ -1,9 +1,15 @@
 "use client"
-import Navbar from "@/app/components/home/navBar/Navbar"
+import MainLayout from "@/app/components/home/main-layout/MainLayout";
 import { useState, useEffect } from "react";
+import CartItem from "@/app/components/cart/CartItem";
+import Cart from "@/app/components/cart/Cart";
 
+<<<<<<< HEAD
 export default function Cart() {
     
+=======
+export default function CartPage() {
+>>>>>>> e3c29087b01069504f50eef17c3dbe83c19a12ee
     const [message, setMessage] = useState('');
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
@@ -45,8 +51,9 @@ export default function Cart() {
 
     return (
         <>
-            <Navbar onCategoryChange={handleCategoryChange} isAdmin={isAdmin} />
-
-        </>
+      <MainLayout isAdmin={isAdmin} onCategoryChange={handleCategoryChange} >
+        <Cart/>
+      </MainLayout>
+    </>
     )
 }

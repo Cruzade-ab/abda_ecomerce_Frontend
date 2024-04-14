@@ -1,5 +1,6 @@
 // Archivo para el componente RegisterForm  Para entender vea este orden(1- FieldType, 2- FormField , 3- UserSchema, 4-RegisterForm)
 import { SubmitHandler, useForm } from "react-hook-form";
+<<<<<<< HEAD
 //Libreria para manejar la logica y funcionalidad del formulario
 import  Link  from "next/link"
 import { FormData } from "@/app/lib/register-login/register/FieldType";
@@ -8,6 +9,15 @@ import FormField from "./FormField"
 import { zodResolver } from "@hookform/resolvers/zod";
 import '@mdi/font/css/materialdesignicons.min.css';
 import { useRouter } from "next/navigation";
+=======
+import Link from "next/link"; // Importación de la librería Link de Next.js
+import { FormData } from "@/app/lib/register-login/register/RegisterFieldType"; // Importación del tipo de datos FormData
+import RegisterSchema from "@/app/lib/register-login/register/RegisterSchema"; // Importación del esquema de usuario
+import FormField from "./FormField"; // Importación del componente FormField
+import { zodResolver } from "@hookform/resolvers/zod"; // Importación del resolver de zod
+import "@mdi/font/css/materialdesignicons.min.css"; // Importación del archivo de estilos de los iconos mdi
+import { useRouter } from "next/navigation"; // Importación del hook useRouter de Next.js
+>>>>>>> e3c29087b01069504f50eef17c3dbe83c19a12ee
 
 
 function RegisterForm () {
