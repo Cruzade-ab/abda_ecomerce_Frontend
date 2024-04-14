@@ -5,6 +5,11 @@ import Banner from "@/app/components/home/banner/banner1";
 import Navbar from "@/app/components/home/navBar/Navbar"
 import ProductsContainer from "@/app/components/products/ProductContainer";
 import { useState, useEffect } from "react"
+import MainLayout from "@/app/components/home/main-layout/MainLayout"
+import AdminTable from "@/app/components/admin/ProductTable/AdminTable";
+import FilterComponent from "@/app/components/admin/FilterComponent/FilterComponent";
+import { ProductInterface } from "@/app/lib/products/ProductInterface";
+import { FilterParams } from "@/app/lib/admin/Filter/FilterType";
 
 export default function Admin() {
     const [message, setMessage] = useState('');

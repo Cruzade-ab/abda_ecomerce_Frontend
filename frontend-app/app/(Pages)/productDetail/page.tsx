@@ -1,6 +1,6 @@
 "use client"
-import React, { useEffect, useState } from 'react';
-import { ProductInterface, ColorInterface } from '../../lib/products/ProductInterface';
+import React, { useCallback, useEffect, useState } from 'react';
+import { ProductInterface, ColorInterface, ProductVariant } from '../../lib/products/ProductInterface';
 import MainLayout from '@/app/components/home/main-layout/MainLayout';
 
 const ProductDetailPage: React.FC = () => {
@@ -11,38 +11,68 @@ const ProductDetailPage: React.FC = () => {
     const [selectedSize, setSelectedSize] = useState<string>('');
     const [selectedQuantity, setSelectedQuantity] = useState<number>(1);
     const [availableQuantity, setAvailableQuantity] = useState<number>(0);
+    const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(null);
+    const productColor = localStorage.getItem('selectedColorId');
+    const [uniqueColors, setUniqueColors] = useState<ColorInterface[]>([]);
 
+
+
+    //Is Admin MainLayout Logic 
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
     useEffect(() => {
+        (async () => {
+          try {
+            const response = await fetch('http://localhost:4000/api/user/getUser', {
+              credentials: "include",
+            });
+            if (response.ok) {
+              const content = await response.json();
+              setIsLoggedIn(true);
+              setIsAdmin(content.role_id === 2);
+              console.log(content);
+            } else {
+              setIsLoggedIn(false);
+              setIsAdmin(false);
+            }
+          } catch (error) {
+            console.error('Error fetching user data:', error);
+            setIsLoggedIn(false);
+            setIsAdmin(false);
+          }
+        })();
+      }, []);
+
+      useEffect(() => {
         const fetchProduct = async () => {
             const productVariantId = localStorage.getItem('selectedProductVariantId');
-
             if (!productVariantId) {
                 console.error('Product variant ID not found in localStorage');
                 setLoading(false);
                 return;
             }
-
+    
             try {
                 const response = await fetch('http://localhost:4000/api/products/getProductById', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ productVariantId }),
                 });
-
+    
                 if (!response.ok) {
                     throw new Error('Failed to fetch product details');
                 }
-
+    
                 const data = await response.json();
-                console.log("Fetched data:", data);
-
                 if (data && Array.isArray(data) && data.length > 0) {
-                    const initialProduct = data[0];
+                    const initialProduct: ProductInterface = data[0];
                     setProduct(initialProduct);
-
-                    setSelectedColor(initialProduct?.products[0]?.color || null);
-
-                    setSelectedSize(initialProduct?.products[0]?.size?.size_name || '');
+    
+                    const storedColorId = parseInt(localStorage.getItem('selectedColorId') || '0');
+                    const initialVariant = initialProduct.products.find(p => p.color.color_id === storedColorId) || initialProduct.products[0];
+                    setSelectedVariant(initialVariant);
+                    setSelectedColor(initialVariant.color);
+                    setSelectedSize(initialVariant.size.size_name);
                 } else {
                     console.error('Product data is not in expected format:', data);
                     setProduct(null);
@@ -53,31 +83,44 @@ const ProductDetailPage: React.FC = () => {
                 setLoading(false);
             }
         };
-
+    
         fetchProduct();
     }, []);
 
-    useEffect(() => {
-        if (product && selectedColor && selectedSize) {
-            const selectedProduct = product.products.find((variant) =>
-                variant.color.color_id === selectedColor.color_id &&
-                variant.size.size_name === selectedSize
-            );
-
-            if (selectedProduct) {
-                setAvailableQuantity(selectedProduct.size_amount.size_amount);
-            }
+    const handleColorChange = useCallback((color: ColorInterface) => {
+        const newVariant = product?.products.find(p => p.color.color_id === color.color_id && p.size.size_name === selectedSize);
+        if (newVariant) {
+            setSelectedVariant(newVariant);
+            setSelectedColor(color);
         }
-    }, [product, selectedColor, selectedSize]);
+    }, [product, selectedSize]);
 
-    const handleColorChange = (color: ColorInterface) => {
-        setSelectedColor(color);
-        setDropdownOpen(false);
-    };
+    const handleSizeChange = useCallback((size: string) => {
+        const newVariant = product?.products.find(p => p.size.size_name === size && p.color.color_id === selectedColor?.color_id);
+        if (newVariant) {
+            setSelectedVariant(newVariant);
+            setSelectedSize(size);
+        }
+        console.log(size)
+    }, [product, selectedColor]);
 
-    const handleSizeChange = (size: string) => {
-        setSelectedSize(size);
-    };
+    useEffect(() => {
+        if (product) {
+            // Crear un nuevo Map para almacenar solo colores únicos
+            const colorMap = new Map<number, ColorInterface>();
+            product.products.forEach(variant => {
+                if (!colorMap.has(variant.color.color_id)) {
+                    colorMap.set(variant.color.color_id, variant.color);
+                }
+            });
+            // Convertir el Map a un arreglo de valores y actualizar el estado
+            setUniqueColors(Array.from(colorMap.values()));
+        }
+    }, [product]);
+    
+    
+
+
 
     const handleIncrement = () => {
         if (selectedQuantity < Math.min(5, availableQuantity)) {
@@ -110,6 +153,7 @@ const ProductDetailPage: React.FC = () => {
         variant.color.color_id === selectedColor?.color_id && variant.size.size_name === selectedSize
     );
     console.log("General product name is: ", product.general_product_name);
+    console.log('Color is',productColor)
 
     const renderColorOptions = () => {
         return (
@@ -124,15 +168,15 @@ const ProductDetailPage: React.FC = () => {
                 >
                     {selectedColor ? selectedColor.color_name : 'Select Color'}
                 </button>
-                {dropdownOpen && product && (
+                {dropdownOpen && uniqueColors.length > 0 && (
                     <div className="absolute z-10 mt-2 bg-white shadow-lg rounded-md">
-                        {product.products.map((variant, index) => (
+                        {uniqueColors.map((color, index) => (
                             <button
                                 key={index}
                                 className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                onClick={() => handleColorChange(variant.color)}
+                                onClick={() => handleColorChange(color)}
                             >
-                                {variant.color.color_name}
+                                {color.color_name}
                             </button>
                         ))}
                     </div>
@@ -140,11 +184,12 @@ const ProductDetailPage: React.FC = () => {
             </div>
         );
     }
+    
 
 
     return (
         <>
-            <MainLayout children={undefined} isAdmin={false} onCategoryChange={(_category: string) => { }} />
+            <MainLayout children={undefined} isAdmin={ isAdmin} onCategoryChange={(_category: string) => { }} />
             <div className="container mx-auto">
                 <div className='flex flex-wrap gap-4'>
                     <div className='grid gap-4 grid-cols-2'>
@@ -235,7 +280,7 @@ const ProductDetailPage: React.FC = () => {
 
                             
                         </div>
-                        <a href="#" className="flex mt-4 items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                        <a href="#" className="flex mt-8 items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="mr-2 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                                 </svg>
@@ -250,3 +295,4 @@ const ProductDetailPage: React.FC = () => {
 };
 
 export default ProductDetailPage;
+
