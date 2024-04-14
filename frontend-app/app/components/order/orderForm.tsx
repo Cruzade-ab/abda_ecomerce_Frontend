@@ -1,3 +1,4 @@
+'use client'
 import { SubmitHandler, useForm } from "react-hook-form";
 import Link from "next/link"; // Importación de la librería Link de Next.js
 import { FormData } from "@/app/lib/order/OrderFieldType"; // Importación del tipo de datos FormData
