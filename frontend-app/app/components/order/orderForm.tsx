@@ -29,7 +29,7 @@ function OrderForm() {
   const onSubmit: SubmitHandler<FormData> = async (data, event) => {
     event?.preventDefault(); // Prevenir el comportamiento por defecto del evento
     try {
-      const response = await fetch("http://localhost:4000/api/", {
+      const response = await fetch("http://localhost:4000/api/order/orderConfirmation", {
         // Envío de la data mediante una solicitud HTTP
         method: "POST",
         headers: {

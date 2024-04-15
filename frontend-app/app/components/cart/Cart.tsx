@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { CartDisplayDto } from '@/app/lib/cart/cartInterface';
 import CartItem from './CartItem';
 import OrderForm from '../order/orderForm';
+import Link from 'next/link';
 
 
 export default function Cart() {
@@ -52,9 +53,7 @@ export default function Cart() {
             })
             .catch(error => console.error('Error al eliminar el producto del carrito:', error));
     };
-    const toggleFormVisibility = () => {
-        setShowForm(!showForm);
-    };
+
 
     return (
         <>
@@ -74,16 +73,10 @@ export default function Cart() {
                     Total: ${totalPrice.toFixed(2)}
                 </div>
             </div>
-            <div>
-                <button className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow" onClick={toggleFormVisibility}>
-                    {showForm ? 'CheckOut' : '   Close Checkout   '}
-                </button>
-            </div>
-            {showForm &&
-                <div className="">
-                    <OrderForm />
-                </div>
-            }
+            <Link className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"  href='/order'>
+                Checkout
+            </Link>
+            
         </>
     );
 }
