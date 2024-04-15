@@ -26,13 +26,12 @@ const Navbar: React.FC<NavbarProps> = ({ onCategoryChange, isAdmin }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [navbar, setNavbar] = useState(false);
 
-
   useEffect(() => {
-    const userLoggedIn = Cookies.get("isLoggedIn");
-    if (userLoggedIn === "true") {
-      setIsLoggedIn(true);
-    }
-  }, []);
+    const userLoggedIn = Cookies.get("isLoggedIn") === 'true';
+    setIsLoggedIn(userLoggedIn);
+}, []);
+
+
 
   return (
     <div>

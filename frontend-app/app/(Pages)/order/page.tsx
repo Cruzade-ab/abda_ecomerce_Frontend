@@ -1,20 +1,16 @@
 "use client"
+import MainLayout from "@/app/components/home/main-layout/MainLayout";
+import OrderForm from "@/app/components/order/orderForm";
+import { useEffect, useState } from "react";
 
-import Navbar from "@/app/components/home/navBar/Navbar"
-import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
-import Cookies from 'js-cookie';
 
-export default function Admin() {
-    const router = useRouter();
+export default function Order() {
     const [message, setMessage] = useState('');
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
 
     const [apiUrl, setApiUrl] = useState('http://localhost:4000/api/products/getAllProducts');
     const [sectionName, setSectionName] = useState('Most Wanted Products');
-
-
 
 
     useEffect(() => {
@@ -48,46 +44,10 @@ export default function Admin() {
         setSectionName(category === 'men' ? 'Men\'s Collection' : 'Women\'s Collection');
     };
 
-    const handleLogout = async () => {
-        try {
-            // Make a request to the backend logout endpoint
-            const response = await fetch('http://localhost:4000/api/user/logout', {
-                method: 'POST',
-                credentials: 'include',
-            });
 
-            if (response.ok) {
-                console.log('Logout successful');
-                Cookies.set('isLoggedIn', 'false');
-                setIsLoggedIn(false);
-                router.push('/')
-
-            } else {
-                console.error('Logout failed:', await response.text());
-            }
-        } catch (error) {
-            console.error('Logout error:', error);
-        }
-    };
-
-
-    return (
-        <>
-
-            <Navbar onCategoryChange={handleCategoryChange} isAdmin={isAdmin} />
-            <div className="mt-20">
-                <p className="text-center">
-                    {isLoggedIn ? message : 'You need to log in.'}
-                </p>
-            </div>
-            <div className="my-y">
-
-                <button onClick={handleLogout} className="logout-button">
-                    Log Out
-                </button>
-
-            </div>
-
-        </>
-    )
+    return(<>
+        <MainLayout isAdmin={isAdmin} onCategoryChange={handleCategoryChange}>
+            <OrderForm/>
+        </MainLayout>
+    </>)
 }
