@@ -2,14 +2,19 @@
 
 import Navbar from "@/app/components/home/navBar/Navbar"
 import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
+import Cookies from 'js-cookie';
 
 export default function Admin() {
+    const router = useRouter();
     const [message, setMessage] = useState('');
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
 
     const [apiUrl, setApiUrl] = useState('http://localhost:4000/api/products/getAllProducts');
     const [sectionName, setSectionName] = useState('Most Wanted Products');
+
+
 
 
     useEffect(() => {
@@ -53,8 +58,9 @@ export default function Admin() {
 
             if (response.ok) {
                 console.log('Logout successful');
+                Cookies.set('isLoggedIn', 'false');
                 setIsLoggedIn(false);
-                window.location.href = '/';
+                router.push('/')
 
             } else {
                 console.error('Logout failed:', await response.text());
