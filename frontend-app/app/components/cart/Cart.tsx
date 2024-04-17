@@ -56,29 +56,36 @@ export default function Cart() {
 
 
     return (
-        <>
-            <div className="flex flex-row ">
-                {cartItems.map(item => (
-                    <CartItem
-                        key={item.product_id}
-                        product_id={item.product_id}
-                        product_price={item.product_price}
-                        quantity={item.quantity}
-                        size_available={item.size_available}
-                        image_url={item.image_url}
-                        onRemoveItem={handleRemoveItem}
-                    />
-                ))}
-                <div className="total-price">
-                    Total: ${totalPrice.toFixed(2)}
+        <div className="flex flex-col md:flex-row md:items-start justify-between">
+            <div className="flex-1">
+                <h2 className='text-center text-2xl md:text-4xl font-bold mb-8'>Your Cart</h2>
+                <div className="flex flex-wrap">
+                    {cartItems.map(item => (
+                        <CartItem
+                            key={item.product_id}
+                            product_id={item.product_id}
+                            product_price={item.product_price}
+                            quantity={item.quantity}
+                            size_available={item.size_available}
+                            image_url={item.image_url}
+                            onRemoveItem={handleRemoveItem}
+                        />
+                    ))}
                 </div>
             </div>
-            <Link className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"  href='/order'>
-                Checkout
-            </Link>
-            
-        </>
+            <div className="md:w-1/4 p-8 bg-gray-100 rounded-lg shadow-md sticky top-20 ml-4">
+                <div className="mb-4 text-xl font-bold">
+                    Total: ${totalPrice.toFixed(2)}
+                </div>
+                <Link href='/order' className="block mx-auto w-3/4 lg:w-1/2 bg-blue-500 hover:bg-blue-600 text-white text-center font-semibold py-3 px-4 rounded shadow-md transition duration-300 ease-in-out transform hover:scale-105">
+                    Proceed to Checkout
+                </Link>
+
+            </div>
+        </div>
     );
+    
+    
 }
 
 
