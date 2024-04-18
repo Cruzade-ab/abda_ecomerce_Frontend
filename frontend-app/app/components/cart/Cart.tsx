@@ -75,7 +75,7 @@ export default function Cart() {
             </div>
             <div className=" mb-10 md:w-1/4 mt-20 bg-gray-100 rounded-lg shadow-md sticky top-20 ml-4 p-8">
                 <div className="mb-4 text-xl font-bold">
-                    Total: ${totalPrice.toFixed(2)}
+                    Total: <span className="text-green-600">${totalPrice.toFixed(2)}</span>
                 </div>
                 <Link href='/order' className="block mx-auto w-3/4 lg:w-1/2 bg-blue-500 hover:bg-blue-600 text-white text-center font-semibold py-3 px-4 rounded shadow-md transition duration-300 ease-in-out transform hover:scale-105">
                     Proceed to Checkout
@@ -83,9 +83,7 @@ export default function Cart() {
 
             </div>
         </div>
-    );
-    
-    
+    );  
 }
 
 
