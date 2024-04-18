@@ -58,7 +58,7 @@ export default function Cart() {
     return (
         <div className="flex flex-col md:flex-row md:items-start justify-between">
             <div className="flex-1">
-                <h2 className='text-center text-2xl md:text-4xl font-bold mb-8'>Your Cart</h2>
+                <h2 className='text-center text-2xl md:text-4xl font-bold mb-8' style={{ fontFamily: 'Roboto, sans-serif' }}>Your Cart</h2>
                 <div className="flex flex-wrap">
                     {cartItems.map(item => (
                         <CartItem
@@ -73,7 +73,7 @@ export default function Cart() {
                     ))}
                 </div>
             </div>
-            <div className="md:w-1/4 p-8 bg-gray-100 rounded-lg shadow-md sticky top-20 ml-4">
+            <div className=" mb-10 md:w-1/4 mt-20 bg-gray-100 rounded-lg shadow-md sticky top-20 ml-4 p-8">
                 <div className="mb-4 text-xl font-bold">
                     Total: ${totalPrice.toFixed(2)}
                 </div>
