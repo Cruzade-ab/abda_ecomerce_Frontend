@@ -1,4 +1,8 @@
 "use client"
+
+import React, { useState } from "react";
+import Modal from "./Confirm_Product_Elimination";
+
 // CartItem component with TypeScript props
 // CartItem component with TypeScript props
 type CartItemProps = {
@@ -12,11 +16,16 @@ type CartItemProps = {
 
 // CartItem component with dual images and refined layout
 export default function CartItem({ product_id, product_price, quantity, size_available, image_url, onRemoveItem }: CartItemProps) {
+    const [isModalOpen, setModalOpen] = useState(false);
+
     const handleRemoveClick = () => {
-        const confirmDelete = window.confirm('Are you sure you want to remove this product from your cart?');
-        if (confirmDelete) {
-            onRemoveItem(product_id);
-        }
+        // Instead of using window.confirm, we'll open the modal
+        setModalOpen(true);
+    };
+
+    const handleConfirmRemove = () => {
+        onRemoveItem(product_id);
+        setModalOpen(false);
     };
 
     return (
@@ -34,6 +43,12 @@ export default function CartItem({ product_id, product_price, quantity, size_ava
                     </button>
                 </div>
             </div>
+            {/* Modal for confirming product removal */}
+            <Modal
+                isOpen={isModalOpen}
+                onClose={() => setModalOpen(false)}
+                onConfirm={handleConfirmRemove}
+            />
         </div>
     );
 }
