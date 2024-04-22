@@ -1,5 +1,6 @@
 // LoginModal.tsx
 import React from 'react';
+import Link from 'next/link';
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -8,6 +9,11 @@ interface LoginModalProps {
 }
 
 const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin }) => {
+  const handleLogin = () => {
+    onLogin(); // Execute the login action
+    onClose(); // Close the modal
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -19,8 +25,8 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin }) => 
           <button onClick={onClose} className="px-4 py-2 rounded text-white bg-gray-500 hover:bg-gray-600">
             Cancel
           </button>
-          <button onClick={onLogin} className="px-4 py-2 rounded text-white bg-blue-600 hover:bg-blue-700">
-            Log In
+          <button onClick={handleLogin} className="px-4 py-2 rounded text-white bg-blue-600 hover:bg-blue-700">
+            <Link href="/login">Log In</Link>
           </button>
         </div>
       </div>
