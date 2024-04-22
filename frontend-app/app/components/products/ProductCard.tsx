@@ -1,4 +1,3 @@
-'use client'
 import React, { useState, useEffect } from 'react';
 import { ProductInterface } from '../../lib/products/ProductInterface';
 
@@ -10,7 +9,6 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
-
     const [selectedColor, setSelectedColor] = useState<string>('');
     const [selectedSize, setSelectedSize] = useState<string>('');
     const [selectedVariant, setSelectedVariant] = useState(product.products[0]);
@@ -18,9 +16,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     const [uniqueSizes, setUniqueSizes] = useState<string[]>([]);
     const [uniqueColors, setUniqueColors] = useState<string[]>([]);
     const router = useRouter();
-
-    
-
 
     useEffect(() => {
         if (product.products.length > 0) {
@@ -70,7 +65,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     
         localStorage.setItem('selectedProductVariantId', selectedVariant.product_id.toString());
         localStorage.setItem('selectedColorId', selectedVariant.color.color_id.toString());
-        console.log(selectedVariant.color.color_id)
         
         router.push('/productDetail');
     };
@@ -99,7 +93,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 throw new Error('Failed to add product to cart');
             }
         } catch (error) {
-            console.log("Error en last error")
             console.error('Error adding product to cart:', error);
         }
         
@@ -111,12 +104,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <div className="m-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
             <div onClick={handleViewDetails} className='cursor-pointer'>
                
-                    <div className='mx-3 mt-3 h-90 rounded-xl overflow-clip'
-                        onMouseEnter={() => setHoverImage(true)}
-                        onMouseLeave={() => setHoverImage(false)}
-                    >
+                    <div className='mx-3 mt-3 h-80 rounded-xl overflow-hidden flex justify-center items-center'>
                         <img
-                            className="object-cover w-full h-full"
+                            className="object-contain max-h-full max-w-full"
                             src={hoverImage ? selectedVariant?.hover_image_url : selectedVariant?.image_url}
                             alt={product.general_product_name}
                         />
@@ -132,41 +122,43 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                         </h5>
                     </div>
             </div>
-            <div className=" px-5 `">
-                <div className="flex items-center justify-between">
-                    {/* aquí esta el color del precio por si desean cambiarlo */}
-                    <span className="text-3xl font-bold text-green-600 ">
-                        ${selectedVariant?.value}
-                    </span>
-                    <div className='flex items-center justify-between'>
-                        <div>
-                        <p>Size:</p>
-                        <select value={selectedSize} onChange={e => handleSizeChange(e.target.value)}>
-                            {uniqueSizes.map(size => (
-                                <option key={size} value={size}>
-                                    {size}
-                                </option>
-                            ))}
-                        </select>
+            <div className=" px-5 ">
+                <div className="flex flex-col justify-between h-full">
+                    <div className="flex flex-col justify-between">
+                        <div className="flex justify-between mb-2">
+                            <span className="text-3xl font-bold text-green-600 ">
+                                ${selectedVariant?.value}
+                            </span>
                         </div>
-                        <div>
-                        <p>Color:</p>
-                        <select value={selectedColor} onChange={e => handleColorChange(e.target.value)}>
-                            {uniqueColors.map(color => (
-                                <option key={color} value={color}>
-                                    {color}
-                                </option>
-                            ))}
-                        </select>
+                        <div className="flex justify-between">
+                            <div>
+                                <p className="mb-1">Size:</p>
+                                <select value={selectedSize} onChange={e => handleSizeChange(e.target.value)}>
+                                    {uniqueSizes.map(size => (
+                                        <option key={size} value={size}>
+                                            {size}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div>
+                                <p className="mb-1">Color:</p>
+                                <select value={selectedColor} onChange={e => handleColorChange(e.target.value)}>
+                                    {uniqueColors.map(color => (
+                                        <option key={color} value={color}>
+                                            {color}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
                         </div>
-                        
+                    </div>
+                    <div className="flex justify-center">
+                        <button onClick={handleAddToCart} className="w-full py-2.5 bg-slate-900 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                            Add to Cart
+                        </button>
                     </div>
                 </div>
-                <a onClick={handleAddToCart}  href="#" className="flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="mr-2 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg>
-                    Add to cart</a>
             </div>
         </div>
     );
