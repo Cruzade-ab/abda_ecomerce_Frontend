@@ -1,49 +1,54 @@
-"use client"
+// ProductDetailPage.tsx
+'use client';
+
 import React, { useCallback, useEffect, useState } from 'react';
-import { ProductInterface, ColorInterface, ProductVariant } from '../../lib/products/ProductInterface';
+import { ProductInterface, ColorInterface, ProductVariant, SizeAmountInterface } from '../../lib/products/ProductInterface';
 import MainLayout from '@/app/components/home/main-layout/MainLayout';
 
-const ProductDetailPage: React.FC = () => {
+function ProductDetailPage() {
     const [product, setProduct] = useState<ProductInterface | null>(null);
     const [loading, setLoading] = useState(true);
     const [selectedColor, setSelectedColor] = useState<ColorInterface | null>(null);
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [selectedSize, setSelectedSize] = useState<string>('');
     const [selectedQuantity, setSelectedQuantity] = useState<number>(1);
-    const [availableQuantity, setAvailableQuantity] = useState<number>(0);
+    const [sizeAmountInterface, setSizeAmountInterface] = useState<SizeAmountInterface | null>(null);
+    const [availableQuantity, setAvailableQuantity] = useState<number>(1);
     const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(null);
     const productColor = localStorage.getItem('selectedColorId');
     const [uniqueColors, setUniqueColors] = useState<ColorInterface[]>([]);
-
-
-
-    //Is Admin MainLayout Logic 
+    const [uniqueSizes, setUniqueSizes] = useState<string[]>([]);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
+
+    useEffect(() => {
+        setAvailableQuantity(sizeAmountInterface?.size_amount || 1);
+    }, [sizeAmountInterface]);
+
     useEffect(() => {
         (async () => {
-          try {
-            const response = await fetch('http://localhost:4000/api/user/getUser', {
-              credentials: "include",
-            });
-            if (response.ok) {
-              const content = await response.json();
-              setIsLoggedIn(true);
-              setIsAdmin(content.role_id === 2);
-              console.log(content);
-            } else {
-              setIsLoggedIn(false);
-              setIsAdmin(false);
+            try {
+                const response = await fetch('http://localhost:4000/api/user/getUser', {
+                    credentials: "include",
+                });
+                if (response.ok) {
+                    const content = await response.json();
+                    setIsLoggedIn(true);
+                    setIsAdmin(content.role_id === 2);
+                    console.log(content);
+                } else {
+                    setIsLoggedIn(false);
+                    setIsAdmin(false);
+                }
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+                setIsLoggedIn(false);
+                setIsAdmin(false);
             }
-          } catch (error) {
-            console.error('Error fetching user data:', error);
-            setIsLoggedIn(false);
-            setIsAdmin(false);
-          }
         })();
-      }, []);
+    }, []);
 
-      useEffect(() => {
+    useEffect(() => {
         const fetchProduct = async () => {
             const productVariantId = localStorage.getItem('selectedProductVariantId');
             if (!productVariantId) {
@@ -51,28 +56,29 @@ const ProductDetailPage: React.FC = () => {
                 setLoading(false);
                 return;
             }
-    
+
             try {
                 const response = await fetch('http://localhost:4000/api/products/getProductById', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ productVariantId }),
                 });
-    
+
                 if (!response.ok) {
                     throw new Error('Failed to fetch product details');
                 }
-    
+
                 const data = await response.json();
                 if (data && Array.isArray(data) && data.length > 0) {
                     const initialProduct: ProductInterface = data[0];
                     setProduct(initialProduct);
-    
+
                     const storedColorId = parseInt(localStorage.getItem('selectedColorId') || '0');
                     const initialVariant = initialProduct.products.find(p => p.color.color_id === storedColorId) || initialProduct.products[0];
+
                     setSelectedVariant(initialVariant);
                     setSelectedColor(initialVariant.color);
-                    setSelectedSize(initialVariant.size.size_name);
+
                 } else {
                     console.error('Product data is not in expected format:', data);
                     setProduct(null);
@@ -83,9 +89,20 @@ const ProductDetailPage: React.FC = () => {
                 setLoading(false);
             }
         };
-    
+
         fetchProduct();
     }, []);
+
+    const handleSizeChange = (size: string) => {
+        setSelectedSize(size);
+        const newVariant = product?.products.find(p => p.color.color_id === (selectedColor?.color_id || 0) && p.size.size_name === size);
+        if (newVariant) {
+            setSelectedVariant(newVariant);
+        }
+        const newSizeAmount = newVariant?.size_amount || null;
+        setSizeAmountInterface(newSizeAmount);
+        setAvailableQuantity(newSizeAmount?.size_amount || 1);
+    };
 
     const handleColorChange = useCallback((color: ColorInterface) => {
         const newVariant = product?.products.find(p => p.color.color_id === color.color_id && p.size.size_name === selectedSize);
@@ -93,51 +110,38 @@ const ProductDetailPage: React.FC = () => {
             setSelectedVariant(newVariant);
             setSelectedColor(color);
         }
+        const newSizeAmount = newVariant?.size_amount || null;
+        setSizeAmountInterface(newSizeAmount);
+        setAvailableQuantity(newSizeAmount?.size_amount || 1);
     }, [product, selectedSize]);
-
-    const handleSizeChange = useCallback((size: string) => {
-        const newVariant = product?.products.find(p => p.size.size_name === size && p.color.color_id === selectedColor?.color_id);
-        if (newVariant) {
-            setSelectedVariant(newVariant);
-            setSelectedSize(size);
-        }
-        console.log(size)
-    }, [product, selectedColor]);
 
     useEffect(() => {
         if (product) {
-            // Crear un nuevo Map para almacenar solo colores únicos
             const colorMap = new Map<number, ColorInterface>();
             product.products.forEach(variant => {
                 if (!colorMap.has(variant.color.color_id)) {
                     colorMap.set(variant.color.color_id, variant.color);
                 }
             });
-            // Convertir el Map a un arreglo de valores y actualizar el estado
             setUniqueColors(Array.from(colorMap.values()));
+            const sizes = new Set(product.products.map(p => p.size.size_name));
+            setUniqueSizes(Array.from(sizes));
+            setSelectedSize(product.products[0].size.size_name);
         }
     }, [product]);
-    
-    
 
+    const handleIncrement = useCallback(() => {
+        setSelectedQuantity(Math.min(selectedQuantity + 1, availableQuantity));
+    }, [selectedQuantity, availableQuantity]);
 
-
-    const handleIncrement = () => {
-        if (selectedQuantity < Math.min(5, availableQuantity)) {
-            setSelectedQuantity(selectedQuantity + 1);
-        }
-    };
-
-    const handleDecrement = () => {
-        if (selectedQuantity > 1) {
-            setSelectedQuantity(selectedQuantity - 1);
-        }
-    };
+    const handleDecrement = useCallback(() => {
+        setSelectedQuantity(Math.max(selectedQuantity - 1, 1));
+    }, [selectedQuantity]);
 
     const handleQuantityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const value = parseInt(event.target.value);
-        if (!isNaN(value) && value >= 1 && value <= 5 && value <= availableQuantity) {
-            setSelectedQuantity(value);
+        const quantity = parseInt(event.target.value);
+        if (!isNaN(quantity) && quantity > 0 && quantity <= availableQuantity) {
+            setSelectedQuantity(quantity);
         }
     };
 
@@ -153,14 +157,16 @@ const ProductDetailPage: React.FC = () => {
         variant.color.color_id === selectedColor?.color_id && variant.size.size_name === selectedSize
     );
     console.log("General product name is: ", product.general_product_name);
-    console.log('Color is',productColor)
+    console.log('Color is', productColor);
+    console.log("size amount",sizeAmountInterface?.size_amount);
+    console.log("size amount",sizeAmountInterface?.size_amount_id);
 
     const renderColorOptions = () => {
         return (
             <div className="relative">
                 <button
                     type="button"
-                    className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                    className={`inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 ${dropdownOpen ? 'focus:ring-blue-500' : ''}`}
                     id="menu-button"
                     aria-expanded={dropdownOpen}
                     aria-haspopup="true"
@@ -173,7 +179,7 @@ const ProductDetailPage: React.FC = () => {
                         {uniqueColors.map((color, index) => (
                             <button
                                 key={index}
-                                className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                className={`block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none ${color.color_id === selectedColor?.color_id ? 'bg-gray-100' : ''}`}
                                 onClick={() => handleColorChange(color)}
                             >
                                 {color.color_name}
@@ -183,13 +189,11 @@ const ProductDetailPage: React.FC = () => {
                 )}
             </div>
         );
-    }
-    
-
+    };
 
     return (
         <>
-            <MainLayout children={undefined} isAdmin={ isAdmin} onCategoryChange={(_category: string) => { }} />
+            <MainLayout children={undefined} isAdmin={isAdmin} onCategoryChange={(_category: string) => { }} />
             <div className="container mx-auto">
                 <div className='flex flex-wrap gap-4'>
                     <div className='grid gap-4 grid-cols-2'>
@@ -208,6 +212,9 @@ const ProductDetailPage: React.FC = () => {
                         <div className='text-sm'>
                             <p>{product.section.section_name}</p>
                         </div>
+                        <div className="text-sm">
+                            <p>{product.brand.brand_name}</p>
+                        </div>
                         <div className='text-2xl'>
                             <h1>{product.general_product_name}</h1>
                         </div>
@@ -222,44 +229,22 @@ const ProductDetailPage: React.FC = () => {
                             <div className="flex">
                                 {renderColorOptions()}
                             </div>
-                            <div className="py-3 inline-block text-left">
-                                <h2>Select Size:</h2>
-                                <div className="flex">
-                                    <button
-                                        className="block px-4 py-2 text-sm text-gray-700 bg-gray-200 hover:bg-gray-300"
-                                        onClick={() => handleSizeChange('Small')}
-                                    >
-                                        Small
-                                    </button>
-                                    <button
-                                        className="block px-4 py-2 text-sm text-gray-700 bg-gray-200 hover:bg-gray-300"
-                                        onClick={() => handleSizeChange('Medium')}
-                                    >
-                                        Medium
-                                    </button>
-                                    <button
-                                        className="block px-4 py-2 text-sm text-gray-700 bg-gray-200 hover:bg-gray-300"
-                                        onClick={() => handleSizeChange('Large')}
-                                    >
-                                        Large
-                                    </button>
-                                    <button
-                                        className="block px-4 py-2 text-sm text-gray-700 bg-gray-200 hover:bg-gray-300"
-                                        onClick={() => handleSizeChange('XLarge')}
-                                    >
-                                        XLarge
-                                    </button>
-                                </div>
-                            </div>
-
-
-
-
                         </div>
+                        <div>
+                            <p>Size:</p>
+                            <select value={selectedSize} onChange={e => handleSizeChange(e.target.value)}>
+                                {uniqueSizes.map(size => (
+                                    <option key={size} value={size}>
+                                        {size}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
                         <div className="flex items-center">
                             <button
-                                onClick={handleDecrement}
                                 className="px-3 py-1 mr-2 text-sm bg-gray-200 rounded-full"
+                                onClick={handleDecrement}
                             >
                                 -
                             </button>
@@ -268,31 +253,27 @@ const ProductDetailPage: React.FC = () => {
                                 value={selectedQuantity}
                                 onChange={handleQuantityChange}
                                 min={1}
-                                max={Math.min(5, availableQuantity)}
+                                max={availableQuantity}
                                 className="block w-24 px-4 py-2 text-sm text-gray-700 border border-gray-300 rounded-md"
                             />
                             <button
-                                onClick={handleIncrement}
                                 className="px-3 py-1 ml-2 text-sm bg-gray-200 rounded-full"
+                                onClick={handleIncrement}
                             >
                                 +
                             </button>
-
-                            
                         </div>
                         <a href="#" className="flex mt-8 items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="mr-2 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                                </svg>
-                                Add to cart</a>
+                            <svg xmlns="http://www.w3.org/2000/svg" className="mr-2 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0 2 2 0 010 4zm-8 2a2 2 0 100 4 2 2 0 000-4zm-8-6a2 2 0 114 0 2 2 0 01-4 0z" />
+                            </svg>
+                            Add to cart
+                        </a>
                     </div>
-
-
                 </div>
             </div>
         </>
     );
-};
+}
 
 export default ProductDetailPage;
-
