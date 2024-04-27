@@ -4,8 +4,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { ProductInterface, ColorInterface, ProductVariant, SizeAmountInterface } from '../../lib/products/ProductInterface';
 import MainLayout from '@/app/components/home/main-layout/MainLayout';
+import ProductCard from '@/app/components/products/ProductCard'; // Importing the ProductCard component
 import LoginModal from '@/app/components/cart/LoginModal';
-import Link from 'next/link';
+import { useRouter } from "next/navigation";
 
 function ProductDetailPage() {
     const [product, setProduct] = useState<ProductInterface | null>(null);
@@ -20,9 +21,12 @@ function ProductDetailPage() {
     const productColor = localStorage.getItem('selectedColorId');
     const [uniqueColors, setUniqueColors] = useState<ColorInterface[]>([]);
     const [uniqueSizes, setUniqueSizes] = useState<string[]>([]);
+    const router = useRouter();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
-    const [showLoginModal, setShowLoginModal] = useState(false); // modal logic
+
+    // state variabe for the modal. 
+    const [showLoginModal, setShowLoginModal] = useState(false);
 
     useEffect(() => {
         setAvailableQuantity(sizeAmountInterface?.size_amount || 1);
@@ -96,7 +100,53 @@ function ProductDetailPage() {
         fetchProduct();
     }, []);
     
+    // FUNCTION TO ADD PRODUCT TO CART
+    function addToCart(selectedProductVariant: ProductVariant | undefined) {
+        if (selectedProductVariant) {
+            // Add logic here to add the selected product variant to the cart
+            console.log('Adding product to cart:', selectedProductVariant);
+        } else {
+            console.error('No product variant selected to add to cart.');
+        }
+    }
     
+    // LOGIC TO SHOW THE MODAL IF THE USER IS NOT LOGGED IN.
+    const handleCartClick = async() => {
+        if (!isLoggedIn) {
+            console.log("Not logged in!");
+            setShowLoginModal(true); // Show the login modal if user is not logged in
+        } else {
+            console.log("Logged in!");
+            if (selectedProductVariant){
+                addToCart(selectedProductVariant);
+            }
+        } try {
+            const response = await fetch('http://localhost:4000/api/cart/addToCart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                    // No es necesario el header 'Authorization' si usas cookies
+                },
+                credentials: 'include', // Asegúrate de incluir las cookies en la solicitud
+                body: JSON.stringify({
+                    productId: selectedProductVariant?.product_id,
+                    quantity: 1 // Assuming quantity is always 1 for now
+                })
+            });
+
+            const data = await response.json(); // Esto convierte la respuesta del servidor en un objeto JSON
+            console.log('Response from server:', data); // Aquí se registra la respuesta del servidor
+            
+            if (response.ok) {
+                console.log('Product added to cart successfully');
+            } else {
+                throw new Error('Failed to add product to cart');
+            }
+        } catch (error) {
+            console.error('Error adding product to cart:', error);
+        }
+
+    }
 
     const handleSizeChange = (size: string) => {
         setSelectedSize(size);
@@ -196,114 +246,98 @@ function ProductDetailPage() {
         );
     };
 
-    function addToCart(selectedProductVariant: ProductVariant | undefined) {
-        if (selectedProductVariant) {
-            // Add logic here to add the selected product variant to the cart
-            console.log('Adding product to cart:', selectedProductVariant);
-        } else {
-            console.error('No product variant selected to add to cart.');
-        }
-    }
-
-    const handleCartClick = () => {
-        if (!isLoggedIn) {
-            console.log("Not logged in!");
-            setShowLoginModal(true);
-        } else {
-            console.log("Logged in!");
-            addToCart(selectedProductVariant);
-        }
-    }
-
     return (
-        <>
-            <MainLayout children={undefined} isAdmin={isAdmin} onCategoryChange={(_category: string) => { }} />
-            <div className="container mx-auto">
-                <div className='flex flex-wrap gap-4'>
-                    <div className='grid gap-4 grid-cols-2'>
-                        <img
-                            className='rounded-lg border border-transparent shadow-xl'
-                            src={selectedProductVariant ? selectedProductVariant.image_url : ''}
-                            alt={`Image of ${selectedProductVariant ? selectedProductVariant.color.color_name : ''}`}
-                        />
-                        <img
-                            className="rounded-lg border border-transparent shadow-xl"
-                            src={selectedProductVariant ? selectedProductVariant.hover_image_url : ''}
-                            alt={`Image of ${selectedProductVariant ? selectedProductVariant.color.color_name : ''}`}
-                        />
+    <>
+        <MainLayout children={undefined} isAdmin={isAdmin} onCategoryChange={(_category: string) => { }} />
+        <div className="container mx-auto">
+            <div className='flex flex-wrap gap-4'>
+                <div className='grid gap-4 grid-cols-2'>
+                    <img
+                        className='rounded-lg border border-transparent shadow-xl'
+                        src={selectedProductVariant ? selectedProductVariant.image_url : ''}
+                        alt={`Image of ${selectedProductVariant ? selectedProductVariant.color.color_name : ''}`}
+                    />
+                    <img
+                        className="rounded-lg border border-transparent shadow-xl"
+                        src={selectedProductVariant ? selectedProductVariant.hover_image_url : ''}
+                        alt={`Image of ${selectedProductVariant ? selectedProductVariant.color.color_name : ''}`}
+                    />
+                </div>
+                <div className='flex-1 p-4 rounded-lg border border-gray-200'>
+                    <div className='text-sm'>
+                        <p>{product.section.section_name}</p>
                     </div>
-                    <div className='flex-1 p-4 rounded-lg border border-gray-200'>
-                        <div className='text-sm'>
-                            <p>{product.section.section_name}</p>
+                    <div className="text-sm">
+                        <p>{product.brand.brand_name}</p>
+                    </div>
+                    <div className='text-2xl'>
+                        <h1>{product.general_product_name}</h1>
+                    </div>
+                    <div className='py-3 text-base'>
+                        <p>{product.description}</p>
+                    </div>
+                    <div className='text-3xl'>
+                        <p>${selectedProductVariant ? selectedProductVariant.value : ''}</p>
+                    </div>
+                    <div className="py-3 inline-block text-left">
+                        <h2>Select Color:</h2>
+                        <div className="flex">
+                            {renderColorOptions()}
                         </div>
-                        <div className="text-sm">
-                            <p>{product.brand.brand_name}</p>
-                        </div>
-                        <div className='text-2xl'>
-                            <h1>{product.general_product_name}</h1>
-                        </div>
-                        <div className='py-3 text-base'>
-                            <p>{product.description}</p>
-                        </div>
-                        <div className='text-3xl'>
-                            <p>${selectedProductVariant ? selectedProductVariant.value : ''}</p>
-                        </div>
-                        <div className="py-3 inline-block text-left">
-                            <h2>Select Color:</h2>
-                            <div className="flex">
-                                {renderColorOptions()}
-                            </div>
-                        </div>
-                        <div>
-                            <p>Size:</p>
-                            <select value={selectedSize} onChange={e => handleSizeChange(e.target.value)}>
-                                {uniqueSizes.map(size => (
-                                    <option key={size} value={size}>
-                                        {size}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
+                    </div>
+                    <div>
+                        <p>Size:</p>
+                        <select value={selectedSize} onChange={e => handleSizeChange(e.target.value)}>
+                            {uniqueSizes.map(size => (
+                                <option key={size} value={size}>
+                                    {size}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
 
-                        <div className="flex items-center">
-                            <button
-                                className="px-3 py-1 mr-2 text-sm bg-gray-200 rounded-full"
-                                onClick={handleDecrement}
-                            >
-                                -
-                            </button>
-                            <input
-                                type="number"
-                                value={selectedQuantity}
-                                onChange={handleQuantityChange}
-                                min={1}
-                                max={availableQuantity}
-                                className="block w-24 px-4 py-2 text-sm text-gray-700 border border-gray-300 rounded-md"
-                            />
-                            <button
-                                className="px-3 py-1 ml-2 text-sm bg-gray-200 rounded-full"
-                                onClick={handleIncrement}
-                            >
-                                +
-                            </button>
-                        </div>
-                        <a
-                            href="#"
-                            className="flex mt-8 items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
-                            onClick={handleCartClick}
+                    <div className="flex items-center">
+                        <button
+                            className="px-3 py-1 mr-2 text-sm bg-gray-200 rounded-full"
+                            onClick={handleDecrement}
                         >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="mr-2 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0 2 2 0 010 4zm-8 2a2 2 0 100 4 2 2 0 000-4zm-8-6a2 2 0 114 0 2 2 0 01-4 0z" />
-                            </svg>
-                            Add to cart
-                        </a>
-
+                            -
+                        </button>
+                        <input
+                            type="number"
+                            value={selectedQuantity}
+                            onChange={handleQuantityChange}
+                            min={1}
+                            max={availableQuantity}
+                            className="block w-24 px-4 py-2 text-sm text-gray-700 border border-gray-300 rounded-md"
+                        />
+                        <button
+                            className="px-3 py-1 ml-2 text-sm bg-gray-200 rounded-full"
+                            onClick={handleIncrement}
+                        >
+                            +
+                        </button>
                     </div>
+                    <a
+                        href="#"
+                        className="flex mt-8 items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
+                        onClick={handleCartClick}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="mr-2 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0 2 2 0 010 4zm-8 2a2 2 0 100 4 2 2 0 000-4zm-8-6a2 2 0 114 0 2 2 0 01-4 0z" />
+                        </svg>
+                        Add to cart
+                    </a>
                 </div>
             </div>
-        </>
-    );
+        </div>
+        <LoginModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} onLogin={() => console.log("User logged in")} />
+    </>
+);
+
 }
 
 export default ProductDetailPage;
+
+
 

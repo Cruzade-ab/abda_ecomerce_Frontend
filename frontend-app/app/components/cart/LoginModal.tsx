@@ -8,6 +8,7 @@ interface LoginModalProps {
   onLogin: () => void; // Function to handle login action
 }
 
+
 const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin }) => {
   const handleLogin = () => {
     onLogin(); // Execute the login action
