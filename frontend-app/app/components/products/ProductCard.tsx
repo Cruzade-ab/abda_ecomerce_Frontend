@@ -81,9 +81,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
-                    // No es necesario el header 'Authorization' si usas cookies
                 },
-                credentials: 'include', // Asegúrate de incluir las cookies en la solicitud
+                credentials: 'include', 
                 body: JSON.stringify({
                     productId: selectedVariant.product_id,
                     quantity: 1
