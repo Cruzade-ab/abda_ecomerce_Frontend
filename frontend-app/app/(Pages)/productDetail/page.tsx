@@ -130,7 +130,7 @@ function ProductDetailPage() {
                 credentials: 'include', // Asegúrate de incluir las cookies en la solicitud
                 body: JSON.stringify({
                     productId: selectedProductVariant?.product_id,
-                    quantity: 1 // Assuming quantity is always 1 for now
+                    quantity: selectedQuantity // Assuming quantity is always 1 for now
                 })
             });
 
@@ -276,7 +276,7 @@ function ProductDetailPage() {
                     <div className='py-3 text-base'>
                         <p>{product.description}</p>
                     </div>
-                    <div className='text-3xl'>
+                    <div className='text-3xl font-bold text-green-600 '>
                         <p>${selectedProductVariant ? selectedProductVariant.value : ''}</p>
                     </div>
                     <div className="py-3 inline-block text-left">

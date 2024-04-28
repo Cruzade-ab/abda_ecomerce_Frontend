@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { ProductInterface } from '../../lib/products/ProductInterface';
+import LoginModal from '@/app/components/cart/LoginModal';
 
 import { useRouter } from "next/navigation";
+import { colors } from '@mui/material';
 
 interface ProductCardProps {
     product: ProductInterface;
@@ -15,7 +17,30 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     const [hoverImage, setHoverImage] = useState<boolean>(false);
     const [uniqueSizes, setUniqueSizes] = useState<string[]>([]);
     const [uniqueColors, setUniqueColors] = useState<string[]>([]);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    // state variabe for the modal. 
+    const [showLoginModal, setShowLoginModal] = useState(false);
     const router = useRouter();
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const response = await fetch('http://localhost:4000/api/user/getUser', {
+                    credentials: "include",
+                });
+                if (response.ok) {
+                    const content = await response.json();
+                    setIsLoggedIn(true);
+                } else {
+                    setIsLoggedIn(false);
+                }
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+                setIsLoggedIn(false);
+            }
+        })();
+    }, []);
+
 
     useEffect(() => {
         if (product.products.length > 0) {
@@ -68,37 +93,40 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         
         router.push('/productDetail');
     };
-
-    const handleAddToCart = async () => {
-        try {
-            const response = await fetch('http://localhost:4000/api/cart/addToCart', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                    // No es necesario el header 'Authorization' si usas cookies
-                },
-                credentials: 'include', // Asegúrate de incluir las cookies en la solicitud
-                body: JSON.stringify({
-                    productId: selectedVariant.product_id,
-                    quantity: 1
-                })
-            });
     
-            const data = await response.json(); // Esto convierte la respuesta del servidor en un objeto JSON
-            console.log('Response from server:', data); // Aquí se registra la respuesta del servidor
-            
-            if (response.ok) {
-                console.log('Product added to cart successfully');
-            } else {
-                throw new Error('Failed to add product to cart');
+    const handleAddToCart = async () => {
+        if (!isLoggedIn) {
+            setShowLoginModal(true);
+        } else {
+            try {
+                const response = await fetch('http://localhost:4000/api/cart/addToCart', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                        // No es necesario el header 'Authorization' si usas cookies
+                    },
+                    credentials: 'include', // Asegúrate de incluir las cookies en la solicitud
+                    body: JSON.stringify({
+                        productId: selectedVariant?.product_id,
+                        quantity: 1 // Assuming quantity is always 1 for now
+                    })
+                });
+    
+                const data = await response.json(); // Esto convierte la respuesta del servidor en un objeto JSON
+                console.log('Response from server:', data); // Aquí se registra la respuesta del servidor
+    
+                if (response.ok) {
+                    console.log('Product added to cart successfully');
+                } else {
+                    throw new Error('Failed to add product to cart');
+                }
+            } catch (error) {
+                console.error('Error adding product to cart:', error);
             }
-        } catch (error) {
-            console.error('Error adding product to cart:', error);
         }
-        
     };
     
-    
+
 
     return (
         <div className="m-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
@@ -131,37 +159,59 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                             </span>
                         </div>
                         <div className="flex justify-between">
-                            <div>
-                                <p className="mb-1">Size:</p>
-                                <select value={selectedSize} onChange={e => handleSizeChange(e.target.value)}>
-                                    {uniqueSizes.map(size => (
-                                        <option key={size} value={size}>
-                                            {size}
-                                        </option>
-                                    ))}
-                                </select>
+                            <div className="flex justify-between">
+                                <div className="flex flex-col">
+                                    <p className="mb-1">Size:</p>
+                                </div>
+                                <div className="flex flex-col">
+                                    <select value={selectedSize} onChange={e => handleSizeChange(e.target.value)}>
+                                        {uniqueSizes.map(size => (
+                                            <option key={size} value={size}>
+                                                {size}
+                                            </option>
+                                        ))}
+                                    </select>
                             </div>
-                            <div>
-                                <p className="mb-1">Color:</p>
-                                <select value={selectedColor} onChange={e => handleColorChange(e.target.value)}>
-                                    {uniqueColors.map(color => (
-                                        <option key={color} value={color}>
-                                            {color}
-                                        </option>
-                                    ))}
-                                </select>
+                        </div>
+                            <div className="flex justify-between">
+                                <div className="flex flex-col">
+                                    <p className="mb-2">Color:</p>
+                                </div>
+                                <div className="flex flex-col">
+                                    <select value={selectedColor} onChange={e => handleColorChange(e.target.value)}>
+                                        {uniqueColors.map(color => (
+                                            <option key={color} value={color}>
+                                                {color}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div className="flex justify-center">
+                    <div className=" mt-4 flex justify-center mb-3">
                         <button onClick={handleAddToCart} className="w-full py-2.5 bg-slate-900 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300">
                             Add to Cart
                         </button>
                     </div>
                 </div>
             </div>
+            {showLoginModal && (
+                <LoginModal 
+                isOpen={showLoginModal} 
+                onClose={() => setShowLoginModal(false)} 
+                onLogin={() => {
+                    setIsLoggedIn(true);
+                    setShowLoginModal(false);
+                }}
+            />
+            )}
         </div>
     );
 };
 
 export default ProductCard;
+function setIsAdmin(arg0: boolean) {
+    throw new Error('Function not implemented.');
+}
+
