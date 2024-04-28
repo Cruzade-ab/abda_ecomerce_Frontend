@@ -276,7 +276,7 @@ function ProductDetailPage() {
                     <div className='py-3 text-base'>
                         <p>{product.description}</p>
                     </div>
-                    <div className='text-3xl'>
+                    <div className='text-3xl font-bold text-green-600 '>
                         <p>${selectedProductVariant ? selectedProductVariant.value : ''}</p>
                     </div>
                     <div className="py-3 inline-block text-left">
