@@ -9,13 +9,14 @@ type CartItemProps = {
     product_id: number;
     product_price: number;
     quantity: number;
+    size: string;
     size_available: number;
     image_url: string;
     onRemoveItem: (productId: number) => void;
 };
 
 // CartItem component with dual images and refined layout
-export default function CartItem({ product_id, product_price, quantity, size_available, image_url, onRemoveItem }: CartItemProps) {
+export default function CartItem({ product_id, product_price, quantity,size, size_available, image_url, onRemoveItem }: CartItemProps) {
     const [isModalOpen, setModalOpen] = useState(false);
 
     const handleRemoveClick = () => {
@@ -36,7 +37,8 @@ export default function CartItem({ product_id, product_price, quantity, size_ava
                     <div>
                         <p className="text-base text-gray-900 mb-2">Price: <span className="font-semibold text-green-600">${product_price.toFixed(2)}</span></p>
                         <p className="text-base text-dark-900 mb-2">Quantity: {quantity}</p>
-                        <p className="text-base text-gray-900 mb-2">Size Available: {size_available}</p>
+                        <p className="text-base text-dark-900 mb-2">Size: {size}</p>
+                        <p className="text-base text-gray-900 mb-2">In STock: {size_available}</p>
                     </div>
                     <button onClick={handleRemoveClick} className="mt-4 bg-red-500 hover:bg-red-600 text-white font-medium rounded-lg text-sm px-4 py-2 focus:outline-none focus:ring-red-300">
                         Remove Product

@@ -26,6 +26,7 @@ export default function Cart() {
                 setCartItems(data);
                 const total = data.reduce((acc: number, item: { product_price: number; quantity: number; }) => acc + (item.product_price * item.quantity), 0);
                 setTotalPrice(total);
+                console.log(cartItems)
             })
             .catch(error => console.error('Error al obtener los elementos del carrito:', error));
     }, []);
@@ -66,6 +67,7 @@ export default function Cart() {
                   product_id={item.product_id}
                   product_price={item.product_price}
                   quantity={item.quantity}
+                  size= {item.size}
                   size_available={item.size_available}
                   image_url={item.image_url}
                   onRemoveItem={handleRemoveItem}
