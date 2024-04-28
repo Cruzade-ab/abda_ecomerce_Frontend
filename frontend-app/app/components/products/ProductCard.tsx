@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ProductInterface } from '../../lib/products/ProductInterface';
+import LoginModal from '@/app/components/cart/LoginModal';
 
 import { useRouter } from "next/navigation";
 
@@ -15,7 +16,30 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     const [hoverImage, setHoverImage] = useState<boolean>(false);
     const [uniqueSizes, setUniqueSizes] = useState<string[]>([]);
     const [uniqueColors, setUniqueColors] = useState<string[]>([]);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    // state variabe for the modal. 
+    const [showLoginModal, setShowLoginModal] = useState(false);
     const router = useRouter();
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const response = await fetch('http://localhost:4000/api/user/getUser', {
+                    credentials: "include",
+                });
+                if (response.ok) {
+                    const content = await response.json();
+                    setIsLoggedIn(true);
+                } else {
+                    setIsLoggedIn(false);
+                }
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+                setIsLoggedIn(false);
+            }
+        })();
+    }, []);
+
 
     useEffect(() => {
         if (product.products.length > 0) {
@@ -68,37 +92,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         
         router.push('/productDetail');
     };
-
-    const handleAddToCart = async () => {
-        try {
-            const response = await fetch('http://localhost:4000/api/cart/addToCart', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                    // No es necesario el header 'Authorization' si usas cookies
-                },
-                credentials: 'include', // Asegúrate de incluir las cookies en la solicitud
-                body: JSON.stringify({
-                    productId: selectedVariant.product_id,
-                    quantity: 1
-                })
-            });
     
-            const data = await response.json(); // Esto convierte la respuesta del servidor en un objeto JSON
-            console.log('Response from server:', data); // Aquí se registra la respuesta del servidor
-            
-            if (response.ok) {
-                console.log('Product added to cart successfully');
-            } else {
-                throw new Error('Failed to add product to cart');
-            }
-        } catch (error) {
-            console.error('Error adding product to cart:', error);
+    const handleAddToCart = () => {
+        if (!isLoggedIn) {
+            setShowLoginModal(true);
+        } else {
+            console.log("Add to cart functionality here");
         }
-        
     };
-    
-    
+
 
     return (
         <div className="m-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
@@ -160,8 +162,22 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                     </div>
                 </div>
             </div>
+            {showLoginModal && (
+                <LoginModal 
+                isOpen={showLoginModal} 
+                onClose={() => setShowLoginModal(false)} 
+                onLogin={() => {
+                    setIsLoggedIn(true);
+                    setShowLoginModal(false);
+                }}
+            />
+            )}
         </div>
     );
 };
 
 export default ProductCard;
+function setIsAdmin(arg0: boolean) {
+    throw new Error('Function not implemented.');
+}
+

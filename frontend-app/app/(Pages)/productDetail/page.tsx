@@ -130,7 +130,7 @@ function ProductDetailPage() {
                 credentials: 'include', // Asegúrate de incluir las cookies en la solicitud
                 body: JSON.stringify({
                     productId: selectedProductVariant?.product_id,
-                    quantity: 1 // Assuming quantity is always 1 for now
+                    quantity: selectedQuantity // Assuming quantity is always 1 for now
                 })
             });
 
