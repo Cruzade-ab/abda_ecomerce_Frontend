@@ -4,7 +4,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { ProductInterface, ColorInterface, ProductVariant, SizeAmountInterface } from '../../lib/products/ProductInterface';
 import MainLayout from '@/app/components/home/main-layout/MainLayout';
-import ProductCard from '@/app/components/products/ProductCard'; // Importing the ProductCard component
 import LoginModal from '@/app/components/cart/LoginModal';
 import { useRouter } from "next/navigation";
 
@@ -55,51 +54,51 @@ function ProductDetailPage() {
         })();
     }, []);
 
-    useEffect(() => {
-        const fetchProduct = async () => {
-            const productVariantId = localStorage.getItem('selectedProductVariantId');
-            if (!productVariantId) {
-                console.error('Product variant ID not found in localStorage');
-                setLoading(false);
-                return;
+   useEffect(() => {
+    const fetchProduct = async () => {
+        const productVariantId = localStorage.getItem('selectedProductVariantId');
+        if (!productVariantId) {
+            console.error('Product variant ID not found in localStorage');
+            setLoading(false);
+            return;
+        }
+
+        try {
+            const response = await fetch('http://localhost:4000/api/products/getProductById', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ productVariantId }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch product details');
             }
 
-            try {
-                const response = await fetch('http://localhost:4000/api/products/getProductById', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ productVariantId }),
-                });
+            const data = await response.json();
+            if (data && Array.isArray(data) && data.length > 0) {
+                const initialProduct: ProductInterface = data[0];
+                setProduct(initialProduct);
 
-                if (!response.ok) {
-                    throw new Error('Failed to fetch product details');
-                }
+                const storedColorId = parseInt(localStorage.getItem('selectedColorId') || '0');
+                const initialVariant = initialProduct.products.find(p => p.color.color_id === storedColorId) || initialProduct.products[0];
 
-                const data = await response.json();
-                if (data && Array.isArray(data) && data.length > 0) {
-                    const initialProduct: ProductInterface = data[0];
-                    setProduct(initialProduct);
-
-                    const storedColorId = parseInt(localStorage.getItem('selectedColorId') || '0');
-                    const initialVariant = initialProduct.products.find(p => p.color.color_id === storedColorId) || initialProduct.products[0];
-
-                    setSelectedVariant(initialVariant);
-                    setSelectedColor(initialVariant.color);
-
-                } else {
-                    console.error('Product data is not in expected format:', data);
-                    setProduct(null);
-                }
-            } catch (error) {
-                console.error('Error fetching product details:', error);
-            } finally {
-                setLoading(false);
+                setSelectedVariant(initialVariant);
+                setSelectedColor(initialVariant.color);
+                setSizeAmountInterface(initialVariant.size_amount); 
+                setAvailableQuantity(initialVariant.size_amount.size_amount || 1);
+            } else {
+                console.error('Product data is not in expected format:', data);
+                setProduct(null);
             }
-        };
+        } catch (error) {
+            console.error('Error fetching product details:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
-        fetchProduct();
-    }, []);
-    
+    fetchProduct();
+}, []);
     // FUNCTION TO ADD PRODUCT TO CART
     function addToCart(selectedProductVariant: ProductVariant | undefined) {
         if (selectedProductVariant) {
@@ -285,8 +284,8 @@ function ProductDetailPage() {
                             {renderColorOptions()}
                         </div>
                     </div>
-                    <div>
-                        <p>Size:</p>
+                    <div className='flex m-2'>
+                        <p className='mx-2'>Size:</p>
                         <select value={selectedSize} onChange={e => handleSizeChange(e.target.value)}>
                             {uniqueSizes.map(size => (
                                 <option key={size} value={size}>
@@ -294,6 +293,10 @@ function ProductDetailPage() {
                                 </option>
                             ))}
                         </select>
+                    </div>
+
+                    <div>
+                        <p className='' >Stock: {availableQuantity}</p>
                     </div>
 
                     <div className="flex items-center">
@@ -307,7 +310,7 @@ function ProductDetailPage() {
                             type="number"
                             value={selectedQuantity}
                             onChange={handleQuantityChange}
-                            min={1}
+                            min={0}
                             max={availableQuantity}
                             className="block w-24 px-4 py-2 text-sm text-gray-700 border border-gray-300 rounded-md"
                         />
@@ -317,6 +320,8 @@ function ProductDetailPage() {
                         >
                             +
                         </button>
+
+                        
                     </div>
                     <a
                         href="#"
