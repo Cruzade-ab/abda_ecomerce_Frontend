@@ -73,21 +73,25 @@ export default function Admin() {
 
     return (
         <>
-
             <Navbar onCategoryChange={handleCategoryChange} isAdmin={isAdmin} />
             <div className="mt-20">
-                <p className="text-center">
+                <p className="text-center text-gray-800">
                     {isLoggedIn ? message : 'You need to log in.'}
                 </p>
             </div>
-            <div className="my-y">
-
-                <button onClick={handleLogout} className="logout-button">
-                    Log Out
-                </button>
-
-            </div>
-
+            {isLoggedIn && (
+                <div className="flex justify-center mt-4">
+                    <div className="flex items-center space-x-4">
+                        {/* Logout Button */}
+                        <button onClick={handleLogout} className="px-4 py-2 text-sm font-semibold text-white bg-red-500 rounded-lg shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400">
+                            Log Out
+                        </button>
+                    </div>
+                </div>
+            )}
         </>
-    )
+    );
+    
+    
+    
 }
