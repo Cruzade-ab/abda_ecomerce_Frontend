@@ -159,20 +159,20 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                             </span>
                         </div>
                         <div className="flex justify-between">
-                            <div className="flex justify-between">
-                                <div className="flex flex-col">
+                            <div className="">
+                                <div className="flex">
                                     <p className="mb-1">Size:</p>
-                                </div>
-                                <div className="flex flex-col">
                                     <select value={selectedSize} onChange={e => handleSizeChange(e.target.value)}>
                                         {uniqueSizes.map(size => (
                                             <option key={size} value={size}>
                                                 {size}
                                             </option>
                                         ))}
-                                    </select>
+                                    </select>  
+                                </div>
+                                <div className=''> Stock: {selectedVariant.size_amount.size_amount}</div>
+                                
                             </div>
-                        </div>
                             <div className="flex justify-between">
                                 <div className="flex flex-col">
                                     <p className="mb-2">Color:</p>
