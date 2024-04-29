@@ -58,9 +58,9 @@ function OrderForm() {
 
   return (
     <div className="max-w-md mx-auto">
-      <div className="bg-gray-100 text-gray-600 rounded-3xl shadow-xl px-6 py-10">
+      <div className="bg-gray-100 text-gray-600 rounded-3xl shadow-xl px-4 py-10">
         <h1 className="font-bold text-3xl text-gray-900 mb-6">Processing Order</h1>
-        <p className="mb-6">Please enter your information to confirm your order</p>
+        <p className="mb-2">Please enter your information to confirm your order</p>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <OrderFormField
             label="Address"
@@ -109,9 +109,13 @@ function OrderForm() {
           <div className="flex justify-center">
             <p>Do you want to edit your cart? <Link href="/cart" className="text-blue-500 hover:underline">Cart</Link></p>
           </div>
-          <button type="submit" className="block w-full bg-gray-500 hover:bg-zinc-800 focus:bg-gray-900 text-white rounded-lg py-3 font-semibold">
-            Submit
+          <button type="submit" className="flex items-center justify-center w-full bg-green-500 hover:bg-green-600 focus:bg-green-700 text-white rounded-lg py-3 font-semibold">
+            <img src="https://res.cloudinary.com/dcldzjq9s/image/upload/v1714370326/eccomerce_shirt_images/final_cart_icon_yq2qqq.webp" alt="Cart Icon" className="w-6 h-6 mr-2" />
+            CONFIRM PURCHASE
           </button>
+
+
+
         </form>
       </div>
     </div>

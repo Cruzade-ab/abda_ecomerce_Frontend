@@ -39,14 +39,15 @@ const Navbar: React.FC<NavbarProps> = ({ onCategoryChange, isAdmin }) => {
   const handleCartClick = () => {
     if (!isLoggedIn) {
       // Show the login modal only if the user is not logged in
+      console.log("User is not logged in, showing login modal");
       setShowLoginModal(true);
     } else {
       // Redirect to the cart page using Next.js router
       window.location.href = '/cart'; // Use window.location.href for client-side navigation
     }
   };
-
-
+  
+  
   return (
     <div>
       <nav className="W-full h-16 bg-white border-b-2 border-gray-300 fixed top-0 left-0 right-0  ">
