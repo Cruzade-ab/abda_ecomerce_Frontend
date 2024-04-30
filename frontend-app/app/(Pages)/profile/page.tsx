@@ -1,18 +1,20 @@
 "use client"
 
-import AdminForm from "@/app/components/admin/AdminForm"
-import Banner from "@/app/components/home/banner/banner1";
 import Navbar from "@/app/components/home/navBar/Navbar"
-import ProductsContainer from "@/app/components/products/ProductContainer";
 import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
+import Cookies from 'js-cookie';
 
 export default function Admin() {
+    const router = useRouter();
     const [message, setMessage] = useState('');
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
 
     const [apiUrl, setApiUrl] = useState('http://localhost:4000/api/products/getAllProducts');
     const [sectionName, setSectionName] = useState('Most Wanted Products');
+
+
 
 
     useEffect(() => {
@@ -56,8 +58,9 @@ export default function Admin() {
 
             if (response.ok) {
                 console.log('Logout successful');
+                Cookies.set('isLoggedIn', 'false');
                 setIsLoggedIn(false);
-                window.location.href = '/';
+                router.push('/')
 
             } else {
                 console.error('Logout failed:', await response.text());
@@ -71,19 +74,24 @@ export default function Admin() {
     return (
         <>
             <Navbar onCategoryChange={handleCategoryChange} isAdmin={isAdmin} />
-            <div className="my-4">
-                <p className="text-center">
+            <div className="mt-20">
+                <p className="text-center text-gray-800">
                     {isLoggedIn ? message : 'You need to log in.'}
                 </p>
             </div>
-            <div className="my-y">
-
-                <button onClick={handleLogout} className="logout-button">
-                    Log Out
-                </button>
-
-            </div>
-
+            {isLoggedIn && (
+                <div className="flex justify-center mt-4">
+                    <div className="flex items-center space-x-4">
+                        {/* Logout Button */}
+                        <button onClick={handleLogout} className="px-4 py-2 text-sm font-semibold text-white bg-red-500 rounded-lg shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400">
+                            Log Out
+                        </button>
+                    </div>
+                </div>
+            )}
         </>
-    )
+    );
+    
+    
+    
 }

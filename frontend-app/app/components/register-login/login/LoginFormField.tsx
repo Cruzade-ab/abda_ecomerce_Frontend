@@ -1,8 +1,4 @@
-//Componente inputField. Para entender vea este orden(1- FieldType, 2- FormField , 3- UserSchema, 4-RegisterForm)
-
-import { FormFieldProps } from "@/app/lib/register-login/login/LoginType"
-//Se trae todos props ya especificados con su tipado(Type)
-
+import { FormFieldProps } from "@/app/lib/register-login/login/LoginFieldType"; // Importación de los props definidos en LoginFieldType
 
 const FormField: React.FC<FormFieldProps> = ({
     type,
@@ -14,29 +10,28 @@ const FormField: React.FC<FormFieldProps> = ({
     inputStyle,
     labelStyle,
     inputIcon
-//Se asignan los props que se utilizaran en este React Function Component llamado Form Field que contiene un tipado ya definido.
-
 }) => (
     <>
+        {/* Etiqueta que almacena el label del input field */}
         {<label htmlFor={name} className={labelStyle}>{label}</label>}
-        {/* Etiqueta que va almacenar el Label referente a un input field, ademas se le pasa un prop para definir su estilo al momento de la inicializacion de este compponente*/}
 
-
-        <div className="flex"> {/*Div como contenedor para el inputfield, se expecifica flex(Un tipo de display Box [CSS]), para manejar las relacion entre los hijos de este contenedor*/}
-
+        {/* Contenedor del input field */}
+        <div className="flex">
+            {/* Contenedor para el ícono */}
             <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center"><i className={inputIcon}></i></div>
-            {/* Contenedor del incono referenta al input field, */}
-
-            <input className={inputStyle}
-            type={type}
-            placeholder={placeholder}
-            {...register(name)}/>
-            {/* input tag, Se asigna los diferentes props a los atributos del input*/}
+            
+            {/* Input field */}
+            <input
+                className={inputStyle}
+                type={type}
+                placeholder={placeholder}
+                {...register(name)}
+            />
         </div>
         
+        {/* Mostrar el mensaje de error si existe */}
         {error && <span className="text-red-600">{error.message}</span>}
-        {/* De haber un error se muestra en la etiqueta span(Se utiliza como una etiqueta p) */}
     </>
-)
+);
 
-export default FormField
+export default FormField;

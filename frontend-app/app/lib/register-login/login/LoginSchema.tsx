@@ -3,7 +3,7 @@
 import { z, ZodType } from "zod";
 //Lirberias necesarias para utilizar la validacion de datos mediante zod 
 
-import { FormData } from "./LoginType";
+import { FormData } from "./LoginFieldType";
 //Se trae el FormData para utilizar sus valores como referencia a las propiedades del z.Object
 
 
