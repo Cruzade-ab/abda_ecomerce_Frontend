@@ -59,15 +59,21 @@ export default function Admin() {
     // };
 
     const fetchProducts = async (filters: FilterParams = {}) => {
-        const hasFilters = Object.keys(filters).some(key => filters[key as keyof FilterParams]);
+        const activeFilters = Object.entries(filters).reduce((acc, [key, value]) => {
+            if (value) {  // Checks for non-empty, non-null, and non-undefined values
+                acc[key] = value;
+            }
+            return acc;
+        }, {} as FilterParams);
+    
+        const hasFilters = Object.keys(activeFilters).length > 0;
         const baseUrl = 'http://localhost:4000/api/products';
         const allProductsUrl = `${baseUrl}/getAllProducts`;
         const filteredUrl = `${baseUrl}/filter`;
-
-
-        const url = hasFilters ? `${filteredUrl}?${new URLSearchParams(filters as any)}` : allProductsUrl;
-
-
+    
+        // Use getAllProducts URL when no filters are applied, otherwise use the filtered URL
+        const url = hasFilters ? `${filteredUrl}?${new URLSearchParams(activeFilters as any)}` : allProductsUrl;
+    
         try {
             const response = await fetch(url, {
                 credentials: 'include',
