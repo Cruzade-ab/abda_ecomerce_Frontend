@@ -7,13 +7,17 @@ import AdminTable from "@/app/components/admin/ProductTable/AdminTable";
 import FilterComponent from "@/app/components/admin/FilterComponent/FilterComponent";
 import { ProductInterface } from "@/app/lib/products/ProductInterface";
 import { FilterParams } from "@/app/lib/admin/Filter/FilterType";
+import Modal from "@/app/components/admin/Modal/Modal";
 
 export default function Admin() {
     const [isAdmin, setIsAdmin] = useState(false);
-    const [showForm, setShowForm] = useState(false); 
     const [products, setProducts] = useState<ProductInterface[]>([]);
     const [apiUrl, setApiUrl] = useState('http://localhost:4000/api/products/wantedProducts');
     const [sectionName, setSectionName] = useState('Most Wanted Products');
+
+    const [isCreateModalOpen, setCreateModalOpen] = useState(false);
+    const openCreateModal = () => setCreateModalOpen(true);
+    const handleCloseCreateModal = () => setCreateModalOpen(false);
 
     useEffect(() => {
         (async () => {
@@ -44,10 +48,10 @@ export default function Admin() {
         Object.keys(filters).forEach(key => {
             const value = filters[key as keyof FilterParams];
             if (value) {
-                query.append(key, value);
+                query.append(key, String(value));
             }
         });
-        const url = `http://localhost:4000/api/filter?${query.toString()}`
+        const url = `http://localhost:4000/api/products/filter?${query.toString()}`
         console.log(url)
         const response = await fetch(url);
         if (response.ok) {
@@ -58,9 +62,7 @@ export default function Admin() {
         }
     };
 
-    const toggleFormVisibility = () => {
-        setShowForm(!showForm);
-    };
+   
 
     const handleFilterChange = (filters: {} | undefined) => {
         console.log(filters);
@@ -114,18 +116,18 @@ export default function Admin() {
             <div className="border border-rounded">
                 <FilterComponent onFilterChange={handleFilterChange} />
             </div>
+            <div className="">
+                <Modal  isOpen={isCreateModalOpen} onClose={handleCloseCreateModal} >
+                <AdminForm  onSubmitSuccess={handleCloseCreateModal}
+                handleCloseEditModal={handleCloseCreateModal} />
+                </Modal>
+            </div>
             <div>
-                <button className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow" onClick={toggleFormVisibility}>
-                        {showForm ? 'Hide Create Form' : '   Create  Product   '}
+                <button className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow" onClick={openCreateModal}>
+                    Create  Product
                 </button>
             </div> 
         </div>
-        
-        {showForm && 
-        <div className=""> 
-                <AdminForm/>
-        </div>
-        }
 
             <AdminTable 
               products={products} 
