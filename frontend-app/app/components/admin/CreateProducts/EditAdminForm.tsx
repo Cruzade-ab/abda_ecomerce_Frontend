@@ -1,24 +1,38 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import FormField from './AdminFormField';
 import { MyFormData, FormProduct } from '../../../lib/admin/createProduct/adminType';
 import { zodResolver } from '@hookform/resolvers/zod';
 import AdminFormSchema from '../../../lib/admin/createProduct/AdminFormSchema';
+import { ProductInterface } from '@/app/lib/products/ProductInterface';
+import { convertProductToFormData } from '@/app/lib/admin/EditProduct/DataConversion';
 
 
 
 
 
-interface AdminFormProps {
+interface EditAdminFormProps {
+  product?: ProductInterface;
   onSubmitSuccess: () => void;
   handleCloseEditModal: () => void;
 }
 
 
-const AdminForm: React.FC<AdminFormProps>= ({onSubmitSuccess, handleCloseEditModal}) => {
-  const { register, handleSubmit, formState: { errors }, control } = useForm<MyFormData>({
+const EditAdminForm: React.FC<EditAdminFormProps>= ({onSubmitSuccess, handleCloseEditModal, product}) => {
+  const { register, handleSubmit, reset, formState: { errors }, control } = useForm<MyFormData>({
     resolver: zodResolver(AdminFormSchema),
   });
+
+  useEffect(() => {
+    if (product) {
+      console.log('Converting Product: ', product);
+      const formData = convertProductToFormData(product);
+      console.log('Data converted', formData);
+      reset(formData); 
+      setProducts(formData.products);  
+    }
+  }, [product, reset]);
+  
 
   const [products, setProducts] = useState<FormProduct[]>([{
     value: '',
@@ -95,7 +109,7 @@ const AdminForm: React.FC<AdminFormProps>= ({onSubmitSuccess, handleCloseEditMod
       <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col w-full max-w-4xl p-5 bg-white shadow-md rounded-lg items-center'>
 
         <h1 className='text-center font-bold text-xl'>
-          Creating a Product
+          Editing The Product
         </h1>
     
         <FormField
@@ -143,66 +157,55 @@ const AdminForm: React.FC<AdminFormProps>= ({onSubmitSuccess, handleCloseEditMod
           inputIcon=''
         />
 
-        {products.map((product, index) => (
-          <div key={index} className='flex flex-col gap-4 my-4 items-center'>
-            <h3 className='text-center font-bold'>Product Details of Variant {index + 1}</h3>
-            <FormField
-              type="text"
-              placeholder={`Enter product ${index + 1} value`}
-              label={`Product ${index + 1} Value`}
-              name={`products.${index}.value`}
-              register={register}
-              inputStyle='w-auto -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-gray-500'
-              labelStyle=''
-              inputIcon=''
-              error={undefined}
-            />
-            <FormField
-              type="text"
-              placeholder={`Enter product ${index + 1} color`}
-              label={`Product ${index + 1} Color`}
-              name={`products.${index}.color_name`}
-              register={register}
-              inputStyle='w-auto -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-gray-500'
-              error={undefined}
-              labelStyle=''
-              inputIcon=''
-            />
-
-            <div className='flex flex-col justify-center gap-2'>
-              {['S', 'M', 'L', 'XL'].map((size) => (
-                <FormField
-                  key={size}
-                  type="text"
-                  label={`Enter amount for size ${size}`}
-                  name={`products[${index}].sizes.${size}`}
-                  register={register}
-                  error={errors.products?.[index]?.sizes?.[size]}
-                  inputStyle='w-auto -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-gray-500'
-                  inputIcon=''
-                  labelStyle=''
-                />
-              ))}
-            </div>
-
-            <div className='flex flex-col gap-4'>
-              <Controller
-                name={`products[${index}].imageFile`  as keyof MyFormData}
-                control={control}
-                render={({ field }) => (
-                  <input type="file" onChange={(e) => e.target.files && field.onChange(e.target.files[0])} className="form-input rounded" />
-                )}
-              />
-              <Controller
-                name={`products[${index}].hoverImageFile`  as keyof MyFormData}
-                control={control}
-                render={({ field }) => (
-                  <input type="file" onChange={(e) => e.target.files && field.onChange(e.target.files[0])} className="form-input rounded" />
-                )}
-              />
-            </div>
-          </div>
-        ))}
+{products.map((product, index) => (
+  <div key={index} className='flex flex-col gap-4 my-4 items-center'>
+    <h3 className='text-center font-bold'>{`Details for ${product.color_name} Variant`}</h3>
+    <FormField
+      type="text"
+      placeholder={`Value for ${product.color_name}`}
+      label="Value"
+      name={`products[${index}].value`}
+      register={register}
+      error={errors.section}
+      inputStyle='w-auto -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-gray-500'
+      labelStyle=''
+      inputIcon=''
+      defaultValue={product.value}
+    />
+    {Object.entries(product.sizes).map(([sizeKey, sizeValue]) => (
+      <FormField
+        key={`${index}-${sizeKey}`}
+        type="text"
+        label={`Size ${sizeKey}`}
+        name={`products[${index}].sizes.${sizeKey}`}
+        register={register}
+        defaultValue={sizeValue}
+        error={undefined}
+        inputStyle='w-auto -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-gray-500'
+        labelStyle=''
+        inputIcon=''
+      />
+    ))}
+    <div className='flex flex-col gap-4'>
+      <img src={product.imageUrl || 'default-image-url'} alt="Product" style={{ width: '100px', height: '100px' }} />
+      <Controller
+        name={`products[${index}].imageFile` as keyof MyFormData}
+        control={control}
+        render={({ field }) => (
+          <input type="file" onChange={(e) => e.target.files && field.onChange(e.target.files[0])} className="form-input rounded" />
+        )}
+      />
+      <img src={product.hoverImageUrl || 'default-hover-image-url'} alt="Hover Image" style={{ width: '100px', height: '100px' }} />
+      <Controller
+        name={`products[${index}].hoverImageFile` as keyof MyFormData}
+        control={control}
+        render={({ field }) => (
+          <input type="file" onChange={(e) => e.target.files && field.onChange(e.target.files[0])} className="form-input rounded" />
+        )}
+      />
+    </div>
+  </div>
+))}
         <div className='flex gap-3 my-3'>
           <button type="button" onClick={addProduct} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>Add Product</button>
           <button type="submit" className='bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'>Submit</button>
@@ -213,4 +216,4 @@ const AdminForm: React.FC<AdminFormProps>= ({onSubmitSuccess, handleCloseEditMod
     </>);
 };
 
-export default AdminForm;
+export default EditAdminForm;

@@ -8,12 +8,20 @@ import FilterComponent from "@/app/components/admin/FilterComponent/FilterCompon
 import { ProductInterface } from "@/app/lib/products/ProductInterface";
 import { FilterParams } from "@/app/lib/admin/Filter/FilterType";
 import Modal from "@/app/components/admin/Modal/Modal";
+import EditAdminForm from "@/app/components/admin/CreateProducts/EditAdminForm";
 
 export default function Admin() {
     const [isAdmin, setIsAdmin] = useState(false);
     const [products, setProducts] = useState<ProductInterface[]>([]);
     const [apiUrl, setApiUrl] = useState('http://localhost:4000/api/products/wantedProducts');
     const [sectionName, setSectionName] = useState('Most Wanted Products');
+
+    
+    const [selectedProduct, setSelectedProduct] = useState<ProductInterface | null>(null);
+    const [isEditModalOpen, setEditModalOpen] = useState(false);
+    const openEditModal = () => setEditModalOpen(true);
+    const handleCloseEditModal = () => setEditModalOpen(false);
+
 
     const [isCreateModalOpen, setCreateModalOpen] = useState(false);
     const openCreateModal = () => setCreateModalOpen(true);
@@ -71,12 +79,17 @@ export default function Admin() {
 
 
     const handleEdit = (productId: number) => {
+        const product = products.find(p => p.general_product_id === productId);
+        if(product!) 
+        setSelectedProduct(product);
+        setEditModalOpen(true);
     
     };
       
       
     const handleRemove = (productId: number) => {
-      
+        setEditModalOpen(false);
+        setSelectedProduct(null);
     };
 
     
@@ -134,6 +147,16 @@ export default function Admin() {
               onEdit={handleEdit} 
               onRemove={handleRemove}
             />
+
+                <Modal isOpen={isEditModalOpen} onClose={handleCloseEditModal}>
+                    {selectedProduct && (
+                        <EditAdminForm
+                            product={selectedProduct}  // Pass the selected product to the form
+                            onSubmitSuccess={handleCloseEditModal}
+                            handleCloseEditModal={handleCloseEditModal}
+                        />
+                    )}
+                </Modal>
         
         </MainLayout>
       </>
