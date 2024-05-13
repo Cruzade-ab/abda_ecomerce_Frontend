@@ -7,13 +7,25 @@ import AdminTable from "@/app/components/admin/ProductTable/AdminTable";
 import FilterComponent from "@/app/components/admin/FilterComponent/FilterComponent";
 import { ProductInterface } from "@/app/lib/products/ProductInterface";
 import { FilterParams } from "@/app/lib/admin/Filter/FilterType";
+import Modal from "@/app/components/admin/Modal/Modal";
+import EditAdminForm from "@/app/components/admin/CreateProducts/EditAdminForm";
 
 export default function Admin() {
     const [isAdmin, setIsAdmin] = useState(false);
-    const [showForm, setShowForm] = useState(false); 
     const [products, setProducts] = useState<ProductInterface[]>([]);
     const [apiUrl, setApiUrl] = useState('http://localhost:4000/api/products/wantedProducts');
     const [sectionName, setSectionName] = useState('Most Wanted Products');
+
+    
+    const [selectedProduct, setSelectedProduct] = useState<ProductInterface | null>(null);
+    const [isEditModalOpen, setEditModalOpen] = useState(false);
+    const openEditModal = () => setEditModalOpen(true);
+    const handleCloseEditModal = () => setEditModalOpen(false);
+
+
+    const [isCreateModalOpen, setCreateModalOpen] = useState(false);
+    const openCreateModal = () => setCreateModalOpen(true);
+    const handleCloseCreateModal = () => setCreateModalOpen(false);
 
     useEffect(() => {
         (async () => {
@@ -44,10 +56,10 @@ export default function Admin() {
         Object.keys(filters).forEach(key => {
             const value = filters[key as keyof FilterParams];
             if (value) {
-                query.append(key, value);
+                query.append(key, String(value));
             }
         });
-        const url = `http://localhost:4000/api/filter?${query.toString()}`
+        const url = `http://localhost:4000/api/products/filter?${query.toString()}`
         console.log(url)
         const response = await fetch(url);
         if (response.ok) {
@@ -58,9 +70,7 @@ export default function Admin() {
         }
     };
 
-    const toggleFormVisibility = () => {
-        setShowForm(!showForm);
-    };
+   
 
     const handleFilterChange = (filters: {} | undefined) => {
         console.log(filters);
@@ -69,12 +79,17 @@ export default function Admin() {
 
 
     const handleEdit = (productId: number) => {
+        const product = products.find(p => p.general_product_id === productId);
+        if(product!) 
+        setSelectedProduct(product);
+        setEditModalOpen(true);
     
     };
       
       
     const handleRemove = (productId: number) => {
-      
+        setEditModalOpen(false);
+        setSelectedProduct(null);
     };
 
     
@@ -114,24 +129,34 @@ export default function Admin() {
             <div className="border border-rounded">
                 <FilterComponent onFilterChange={handleFilterChange} />
             </div>
+            <div className="">
+                <Modal  isOpen={isCreateModalOpen} onClose={handleCloseCreateModal} >
+                <AdminForm  onSubmitSuccess={handleCloseCreateModal}
+                handleCloseEditModal={handleCloseCreateModal} />
+                </Modal>
+            </div>
             <div>
-                <button className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow" onClick={toggleFormVisibility}>
-                        {showForm ? 'Hide Create Form' : '   Create  Product   '}
+                <button className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow" onClick={openCreateModal}>
+                    Create  Product
                 </button>
             </div> 
         </div>
-        
-        {showForm && 
-        <div className=""> 
-                <AdminForm/>
-        </div>
-        }
 
             <AdminTable 
               products={products} 
               onEdit={handleEdit} 
               onRemove={handleRemove}
             />
+
+                <Modal isOpen={isEditModalOpen} onClose={handleCloseEditModal}>
+                    {selectedProduct && (
+                        <EditAdminForm
+                            product={selectedProduct}  // Pass the selected product to the form
+                            onSubmitSuccess={handleCloseEditModal}
+                            handleCloseEditModal={handleCloseEditModal}
+                        />
+                    )}
+                </Modal>
         
         </MainLayout>
       </>

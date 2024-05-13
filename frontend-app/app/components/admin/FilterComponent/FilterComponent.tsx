@@ -23,9 +23,9 @@ const FilterComponent: React.FC<FilterComponentProps> = ({ onFilterChange }) => 
     const fetchFiltersData = async () => {
         try {
             const [brandsResponse, colorsResponse, sectionsResponse] = await Promise.all([
-              fetch('http://localhost:4000/api/filter/brands'),
-              fetch('http://localhost:4000/api/filter/colors'),
-              fetch('http://localhost:4000/api/filter/sections')
+              fetch('http://localhost:4000/api/products/filter/brands'),
+              fetch('http://localhost:4000/api/products/filter/colors'),
+              fetch('http://localhost:4000/api/products/filter/sections')
             ]);
     
             if (brandsResponse.ok) {
