@@ -6,9 +6,9 @@ function groupByColor(variants: ProductVariant[]): Record<string, FormProduct> {
     const colorKey = variant.color.color_name;
     if (!acc[colorKey]) {
       acc[colorKey] = {
-        value: variant.value.toString(), // Assume the first encountered value is representative
+        value: variant.value.toString(), 
         color_name: colorKey,
-        imageUrl: variant.image_url, // Assume the first encountered image is representative
+        imageUrl: variant.image_url, 
         hoverImageUrl: variant.hover_image_url,
         sizes: {
           S: getSizeAmount(variants, 'S'),
