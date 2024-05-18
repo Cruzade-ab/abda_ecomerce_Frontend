@@ -12,9 +12,9 @@ const CheckoutContainer = () => {
           >
               Proceed to Checkout
           </button>
-          {showForm && <OrderForm />}
+          {showForm && <OrderForm />} 
       </div>
   );
 };
 
-export default CheckoutContainer;;
+export default CheckoutContainer;
