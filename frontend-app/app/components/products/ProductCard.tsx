@@ -48,7 +48,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             setUniqueSizes(Array.from(sizes));
             const colors = new Set(product.products.map(p => p.color.color_name));
             setUniqueColors(Array.from(colors));
-
+            
             setSelectedColor(product.products[0].color.color_name);
             setSelectedSize(product.products[0].size.size_name);
             setSelectedVariant(product.products[0]);
@@ -103,17 +103,16 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
-                        // No es necesario el header 'Authorization' si usas cookies
                     },
-                    credentials: 'include', // Asegúrate de incluir las cookies en la solicitud
+                    credentials: 'include', 
                     body: JSON.stringify({
                         productId: selectedVariant?.product_id,
-                        quantity: 1 // Assuming quantity is always 1 for now
+                        quantity: 1 
                     })
                 });
     
-                const data = await response.json(); // Esto convierte la respuesta del servidor en un objeto JSON
-                console.log('Response from server:', data); // Aquí se registra la respuesta del servidor
+                const data = await response.json(); 
+                console.log('Response from server:', data); 
     
                 if (response.ok) {
                     console.log('Product added to cart successfully');
@@ -132,7 +131,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <div className="m-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
             <div onClick={handleViewDetails} className='cursor-pointer'>
                
-                    <div className='mx-3 mt-3 h-80 rounded-xl overflow-hidden flex justify-center items-center'>
+                    <div className='mx-3 mt-3 h-80 rounded-xl overflow-hidden flex justify-center items-center'
+                         onMouseEnter={() => setHoverImage(true)}
+                         onMouseLeave={() => setHoverImage(false)}
+                    >
                         <img
                             className="object-contain max-h-full max-w-full"
                             src={hoverImage ? selectedVariant?.hover_image_url : selectedVariant?.image_url}
