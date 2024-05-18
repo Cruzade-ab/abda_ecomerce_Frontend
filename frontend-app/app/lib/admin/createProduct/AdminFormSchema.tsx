@@ -1,5 +1,5 @@
 import { z, ZodType } from "zod";
-import { MyFormData, Product } from "./adminType";
+import { MyFormData } from "./adminType";
 
 const AdminFormSchema: ZodType<MyFormData> = z.object({
     general_product_name: z.string().nonempty(),
