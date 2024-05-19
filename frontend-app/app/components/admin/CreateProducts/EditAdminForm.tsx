@@ -84,7 +84,7 @@ const EditAdminForm: React.FC<EditAdminFormProps> = ({ onSubmitSuccess, handleCl
     });
 
     try {
-      const response = await fetch('http://localhost:4000/api/admin/product/create', {
+      const response = await fetch('http://localhost:4000/api/admin/product/edit', {
         method: 'POST',
         body: formData,
       });
