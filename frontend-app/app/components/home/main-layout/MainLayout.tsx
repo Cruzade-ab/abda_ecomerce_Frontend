@@ -12,7 +12,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children , isAdmin, onCategoryC
   return (
     <div>
       <Navbar onCategoryChange={onCategoryChange} isAdmin={isAdmin} />
-      <main className="mt-24"> 
+      <main className="mt-16"> 
         {children}
       </main>
     </div>
