@@ -30,7 +30,7 @@ export type FormFieldProps = {
   type: string;
   placeholder?: string;
   label: string;
-  name: string; 
+  name: FormFieldNames; 
   register: UseFormRegister<MyFormData>;
   error: FieldError | undefined;
   defaultValue?: string;
@@ -40,4 +40,4 @@ export type FormFieldProps = {
 };
 //Tipado para los props(Atributos que se utilizaran en el FormField component)
 
-
+export type FormFieldNames = keyof MyFormData | `products.${number}.${keyof FormProduct}` | `products.${number}.sizes.${keyof FormProduct['sizes']}`;

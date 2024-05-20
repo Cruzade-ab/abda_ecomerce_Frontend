@@ -17,13 +17,17 @@ export default function Admin() {
     const [sectionName, setSectionName] = useState('Most Wanted Products');
 
     
+    const [selectedColorId, setSelectedColorId] = useState<number | null>(null);
     const [selectedProduct, setSelectedProduct] = useState<ProductInterface | null>(null);
+    
     const [isEditModalOpen, setEditModalOpen] = useState(false);
+    const [isCreateModalOpen, setCreateModalOpen] = useState(false);
+    
+
     const openEditModal = () => setEditModalOpen(true);
     const handleCloseEditModal = () => setEditModalOpen(false);
 
 
-    const [isCreateModalOpen, setCreateModalOpen] = useState(false);
     const openCreateModal = () => setCreateModalOpen(true);
     const handleCloseCreateModal = () => setCreateModalOpen(false);
 
@@ -78,12 +82,13 @@ export default function Admin() {
     };
 
 
-    const handleEdit = (productId: number) => {
+    const handleEdit = (productId: number, colorId: number) => {
         const product = products.find(p => p.general_product_id === productId);
-        if(product!) 
-        setSelectedProduct(product);
-        setEditModalOpen(true);
-    
+        if (product) {
+            setSelectedProduct(product);
+            setSelectedColorId(colorId);
+            setEditModalOpen(true);
+        }
     };
       
       
@@ -151,7 +156,8 @@ export default function Admin() {
                 <Modal isOpen={isEditModalOpen} onClose={handleCloseEditModal}>
                     {selectedProduct && (
                         <EditAdminForm
-                            product={selectedProduct}  // Pass the selected product to the form
+                            product={selectedProduct}  
+                            colorId={selectedColorId}
                             onSubmitSuccess={handleCloseEditModal}
                             handleCloseEditModal={handleCloseEditModal}
                         />
