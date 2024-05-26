@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Banner from "./components/home/banner/banner1";
 import { useEffect, useState } from "react";
 import ProductsContainer from "./components/products/ProductContainer";
@@ -10,7 +10,6 @@ export default function Home() {
 
   const [apiUrl, setApiUrl] = useState('http://localhost:4000/api/products/wantedProducts');
   const [sectionName, setSectionName] = useState('Most Wanted Products');
-
 
   useEffect(() => {
     (async () => {
@@ -55,17 +54,15 @@ export default function Home() {
         setSectionName(sectionNameMap[key]);
     } else {
         console.error('Invalid category:', category);
-
     }
   };
 
-
   return (
-    <>
-      <MainLayout isAdmin={isAdmin} onCategoryChange={handleCategoryChange} >
-        <Banner/>
-        <ProductsContainer apiUrl={apiUrl} section_name={sectionName}/>
+    <div className="bg-[#FBF8F3 ] min-h-screen">
+      <MainLayout isAdmin={isAdmin} onCategoryChange={handleCategoryChange}>
+        <Banner />
+        <ProductsContainer apiUrl={apiUrl} section_name={sectionName} />
       </MainLayout>
-    </>
+    </div>
   );
 }

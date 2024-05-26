@@ -1,4 +1,3 @@
-// LoginModal.tsx
 import React from 'react';
 import Link from 'next/link';
 
@@ -18,7 +17,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin }) => 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-gray-800 bg-opacity-50 z-50 flex justify-center items-center">
+    <div className="fixed inset-0 bg-[#FBF8F3] bg-opacity-50 z-50 flex justify-center items-center">
       <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
         <h4 className="text-lg font-semibold mb-4">Log In Required</h4>
         <p>You need to log in before adding a product to your cart.</p>

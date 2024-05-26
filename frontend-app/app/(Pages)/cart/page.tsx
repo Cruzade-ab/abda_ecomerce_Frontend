@@ -45,10 +45,10 @@ export default function CartPage() {
     };
 
     return (
-        <>
-      <MainLayout isAdmin={isAdmin} onCategoryChange={handleCategoryChange} >
-        <Cart/>
-      </MainLayout>
-    </>
-    )
+        <div className="bg-[#FBF8F3] min-h-screen">
+            <MainLayout isAdmin={isAdmin} onCategoryChange={handleCategoryChange}>
+                <Cart/>
+            </MainLayout>
+        </div>
+    );
 }

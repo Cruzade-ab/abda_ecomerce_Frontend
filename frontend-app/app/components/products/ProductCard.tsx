@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ProductInterface } from '../../lib/products/ProductInterface';
 import LoginModal from '@/app/components/cart/LoginModal';
-
 import { useRouter } from "next/navigation";
 import { colors } from '@mui/material';
 
@@ -18,7 +17,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     const [uniqueSizes, setUniqueSizes] = useState<string[]>([]);
     const [uniqueColors, setUniqueColors] = useState<string[]>([]);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    // state variabe for the modal. 
     const [showLoginModal, setShowLoginModal] = useState(false);
     const router = useRouter();
 
@@ -40,7 +38,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             }
         })();
     }, []);
-
 
     useEffect(() => {
         if (product.products.length > 0) {
@@ -77,7 +74,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ productId: selectedVariant.product_id }), // Pass only the product_id
+                body: JSON.stringify({ productId: selectedVariant.product_id }),
             });
             if (response.ok) {
                 console.log('Product variant sent successfully');
@@ -124,39 +121,31 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             }
         }
     };
-    
-
 
     return (
-        <div className="m-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
+        <div className="m-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg transition-shadow duration-300 hover:shadow-xl">
             <div onClick={handleViewDetails} className='cursor-pointer'>
-               
-                    <div className='mx-3 mt-3 h-80 rounded-xl overflow-hidden flex justify-center items-center'
-                         onMouseEnter={() => setHoverImage(true)}
-                         onMouseLeave={() => setHoverImage(false)}
-                    >
-                        <img
-                            className="object-contain max-h-full max-w-full"
-                            src={hoverImage ? selectedVariant?.hover_image_url : selectedVariant?.image_url}
-                            alt={product.general_product_name}
-                        />
-                    </div>
-                    <div className="px-5 pb-5">
-                        <h5 className="text-xl tracking-tight text-slate-900">
-                            <span className='font-medium'>
-                            {product.general_product_name},  
-                            </span>
-                            <span className='italic mx-1'>
-                            { product.brand.brand_name}
-                            </span>
-                        </h5>
-                    </div>
+                <div className='mx-3 mt-3 h-80 rounded-xl overflow-hidden flex justify-center items-center'
+                     onMouseEnter={() => setHoverImage(true)}
+                     onMouseLeave={() => setHoverImage(false)}>
+                    <img
+                        className="object-contain max-h-full max-w-full"
+                        src={hoverImage ? selectedVariant?.hover_image_url : selectedVariant?.image_url}
+                        alt={product.general_product_name}
+                    />
+                </div>
+                <div className="px-5 pb-5">
+                    <h5 className="text-xl tracking-tight text-slate-900">
+                        <span className='font-medium'>{product.general_product_name},</span>
+                        <span className='italic mx-1'>{product.brand.brand_name}</span>
+                    </h5>
+                </div>
             </div>
-            <div className=" px-5 ">
+            <div className="px-5">
                 <div className="flex flex-col justify-between h-full">
                     <div className="flex flex-col justify-between">
                         <div className="flex justify-between mb-2">
-                            <span className="text-3xl font-bold text-green-600 ">
+                            <span className="text-3xl font-bold text-green-600">
                                 ${selectedVariant?.value}
                             </span>
                         </div>
@@ -170,10 +159,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                                                 {size}
                                             </option>
                                         ))}
-                                    </select>  
+                                    </select>
                                 </div>
-                                <div className=''> Stock: {selectedVariant.size_amount.size_amount}</div>
-                                
+                                <div>Stock: {selectedVariant.size_amount.size_amount}</div>
                             </div>
                             <div className="flex justify-between">
                                 <div className="flex flex-col">
@@ -191,7 +179,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                             </div>
                         </div>
                     </div>
-                    <div className=" mt-4 flex justify-center mb-3">
+                    <div className="mt-4 flex justify-center mb-3">
                         <button onClick={handleAddToCart} className="w-full py-2.5 bg-slate-900 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300">
                             Add to Cart
                         </button>
@@ -213,7 +201,3 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 };
 
 export default ProductCard;
-function setIsAdmin(arg0: boolean) {
-    throw new Error('Function not implemented.');
-}
-

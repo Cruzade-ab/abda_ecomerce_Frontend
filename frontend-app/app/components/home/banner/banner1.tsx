@@ -18,14 +18,14 @@ const Banner = () => {
   const backgroundImage = "url('/banner_image.jpeg')";
 
   return (
-      <div
-    className="h-80 md:h-96 mx-auto flex flex-col justify-center items-center relative mb-8"
-    style={{
-      backgroundImage,
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      width: "100vw",
-    }}
+    <div
+      className="h-80 md:h-96 mx-auto flex flex-col justify-center items-center relative mb-8 border border-gray-300 rounded-md"
+      style={{
+        backgroundImage,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        width: "100vw",
+      }}
     >
       {/* Semi-transparent overlay */}
       <div className="absolute inset-0 bg-black opacity-30"></div>

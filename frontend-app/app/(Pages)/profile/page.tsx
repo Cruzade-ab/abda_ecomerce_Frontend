@@ -4,6 +4,7 @@ import Navbar from "@/app/components/home/navBar/Navbar"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Cookies from 'js-cookie';
+import MainLayout from "@/app/components/home/main-layout/MainLayout";
 
 export default function Admin() {
     const router = useRouter();
@@ -73,22 +74,27 @@ export default function Admin() {
 
     return (
         <>
-            <Navbar onCategoryChange={handleCategoryChange} isAdmin={isAdmin} />
-            <div className="mt-20">
-                <p className="text-center text-gray-800">
-                    {isLoggedIn ? message : 'You need to log in.'}
-                </p>
-            </div>
-            {isLoggedIn && (
-                <div className="flex justify-center mt-4">
-                    <div className="flex items-center space-x-4">
-                        {/* Logout Button */}
-                        <button onClick={handleLogout} className="px-4 py-2 text-sm font-semibold text-white bg-red-500 rounded-lg shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400">
-                            Log Out
-                        </button>
+            <div>
+                <MainLayout isAdmin={isAdmin} onCategoryChange={handleCategoryChange}>
+                    <div className="bg-[#FBF8F3] min-h-screen">
+                        <div className="p-10">
+                            <p className="text-center text-gray-800">
+                                {isLoggedIn ? message : 'You need to log in.'}
+                            </p>
+                        </div>
+                        {isLoggedIn && (
+                            <div className="flex justify-center">
+                                <div className="flex items-center space-x-4">
+                                    {/* Logout Button */}
+                                    <button onClick={handleLogout} className="px-4 py-2 text-sm font-semibold text-white bg-red-500 rounded-lg shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400">
+                                        Log Out
+                                    </button>
+                                </div>
+                            </div>
+                        )}
                     </div>
-                </div>
-            )}
+                </MainLayout>
+            </div>
         </>
     );
     
