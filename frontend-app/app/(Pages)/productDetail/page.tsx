@@ -160,7 +160,7 @@ function ProductDetailPage() {
     };
 
     const handleColorChange = useCallback((color: ColorInterface) => {
-        setDropdownOpen(!dropdownOpen)
+        setDropdownOpen(false)
         const newVariant = product?.products.find(p => p.color.color_id === color.color_id && p.size.size_name === selectedSize);
         if (newVariant) {
             setSelectedVariant(newVariant);
