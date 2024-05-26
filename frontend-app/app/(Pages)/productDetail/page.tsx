@@ -284,9 +284,9 @@ function ProductDetailPage() {
                             {renderColorOptions()}
                         </div>
                     </div>
-                    <div className='flex m-2'>
-                        <p className='mx-2'>Size:</p>
-                        <select value={selectedSize} onChange={e => handleSizeChange(e.target.value)}>
+                    <div className="flex py-3 items-center">
+                        <h2 className="mr-2">Size:</h2>
+                        <select value={selectedSize} onChange={e => handleSizeChange(e.target.value)} className="p-2 border border-gray-300 rounded-md">
                             {uniqueSizes.map(size => (
                                 <option key={size} value={size}>
                                     {size}
@@ -295,8 +295,8 @@ function ProductDetailPage() {
                         </select>
                     </div>
 
-                    <div>
-                        <p className='' >Stock: {availableQuantity}</p>
+                    <div className="py-3">
+                        <p>Stock: {availableQuantity}</p>
                     </div>
 
                     <div className="flex items-center">
@@ -329,7 +329,7 @@ function ProductDetailPage() {
                         onClick={handleCartClick}
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" className="mr-2 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0 2 2 0 010 4zm-8 2a2 2 0 100 4 2 2 0 000-4zm-8-6a2 2 0 114 0 2 2 0 01-4 0z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0 2 2 010 4zm-8 2a2 2 0 100 4 2 2 000-4zm-8-6a2 2 114 0 2 2 014 0 2 2 01-4 0z" />
                         </svg>
                         Add to cart
                     </a>
@@ -343,6 +343,3 @@ function ProductDetailPage() {
 }
 
 export default ProductDetailPage;
-
-
-
