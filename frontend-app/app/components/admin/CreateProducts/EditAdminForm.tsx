@@ -28,12 +28,14 @@ const EditAdminForm: React.FC<EditAdminFormProps> = ({ onSubmitSuccess, handleCl
 
       if (selectedVariant) {
         const formData: MyFormData = {
+          general_product_id: String(product.general_product_id),
           general_product_name: product.general_product_name,
           brand_name: product.brand.brand_name,
           description: product.description,
           section: product.section.section_name,
           products: [
             {
+              product_id: selectedVariant.product_id,
               value: selectedVariant.value.toString(),
               color_name: selectedVariant.color.color_name,
               imageUrl: selectedVariant.image_url,
@@ -62,6 +64,7 @@ const EditAdminForm: React.FC<EditAdminFormProps> = ({ onSubmitSuccess, handleCl
   const onSubmit: SubmitHandler<MyFormData> = async (data) => {
     const formData = new FormData();
 
+    formData.append("general_product_id", data.general_product_id);
     formData.append("general_product_name", data.general_product_name);
     formData.append("brand_name", data.brand_name);
     formData.append("description", data.description);
@@ -84,8 +87,8 @@ const EditAdminForm: React.FC<EditAdminFormProps> = ({ onSubmitSuccess, handleCl
     });
 
     try {
-      const response = await fetch('http://localhost:4000/api/admin/product/edit', {
-        method: 'POST',
+      const response = await fetch('http://localhost:4000/api/admin/product/update', {
+        method: 'PUT',
         body: formData,
       });
 

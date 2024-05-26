@@ -2,6 +2,7 @@
 import { FieldError, UseFormRegister } from "react-hook-form";
 
 export interface FormProduct {
+  product_id: number,
   value: string;
   color_name: string;
   imageUrl: string;
@@ -17,6 +18,7 @@ export interface FormProduct {
 }
 
 export interface MyFormData {
+  general_product_id: string;
   general_product_name: string;
   brand_name: string;
   description: string;
