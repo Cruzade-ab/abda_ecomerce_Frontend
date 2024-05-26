@@ -6,6 +6,7 @@ import { ProductInterface, ColorInterface, ProductVariant, SizeAmountInterface }
 import MainLayout from '@/app/components/home/main-layout/MainLayout';
 import LoginModal from '@/app/components/cart/LoginModal';
 import { useRouter } from "next/navigation";
+import Loader from '@/app/lib/loader';
 
 function ProductDetailPage() {
     const [product, setProduct] = useState<ProductInterface | null>(null);
@@ -201,7 +202,7 @@ function ProductDetailPage() {
     };
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <Loader/>;
     }
 
     if (!product) {

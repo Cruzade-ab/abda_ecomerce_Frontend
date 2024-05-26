@@ -6,10 +6,13 @@ import OrderFormField from "./orderFormField";
 import { zodResolver } from "@hookform/resolvers/zod";
 import "@mdi/font/css/materialdesignicons.min.css";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import Loader from "@/app/lib/loader";
 
 function OrderForm() {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
 
   const {
     register,
@@ -20,6 +23,7 @@ function OrderForm() {
   });
 
   const onSubmit: SubmitHandler<FormData> = async (data, event) => {
+    setLoading(true)
     event?.preventDefault();
     try {
       const response = await fetch("http://localhost:4000/api/order/orderConfirmation", {
@@ -31,6 +35,7 @@ function OrderForm() {
         body: JSON.stringify(data),
       });
       if (response.ok) {
+        setLoading(false)
         console.log("Formulario enviado correctamente");
         router.push("/");
       } else {
@@ -56,6 +61,9 @@ function OrderForm() {
       .catch(error => console.error('Error al obtener los elementos del carrito:', error));
   }, []);
 
+  if (loading) {
+    return <Loader/>;
+}
   return (
     <div className="max-w-md mx-auto">
       <div className="bg-gray-100 text-gray-600 rounded-3xl shadow-xl px-4 py-10">

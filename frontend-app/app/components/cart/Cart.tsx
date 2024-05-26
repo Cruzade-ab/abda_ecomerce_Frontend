@@ -5,12 +5,14 @@ import CartItem from './CartItem';
 import OrderForm from '../order/orderForm';
 import Link from 'next/link';
 import CheckoutContainer from '../checkout_container/Checkout';
+import Loader from '@/app/lib/loader';
 
 
 export default function Cart() {
     const [cartItems, setCartItems] = useState<CartDisplayDto[]>([]);
     const [totalPrice, setTotalPrice] = useState<number>(0);
     const [showForm, setShowForm] = useState(false); 
+    const [loading, setLoading] = useState(true);
 
 
     useEffect(() => {
@@ -28,6 +30,7 @@ export default function Cart() {
                 const total = data.reduce((acc: number, item: { product_price: number; quantity: number; }) => acc + (item.product_price * item.quantity), 0);
                 setTotalPrice(total);
                 console.log(cartItems)
+                setLoading(false);
             })
             .catch(error => console.error('Error al obtener los elementos del carrito:', error));
     }, []);
@@ -56,7 +59,10 @@ export default function Cart() {
             .catch(error => console.error('Error al eliminar el producto del carrito:', error));
     };
 
-
+    if (loading) {
+      return <Loader/>;
+    }
+    
     return (
       <div className="flex flex-col md:flex-row md:items-start justify-between">
         <div className="flex-1">
