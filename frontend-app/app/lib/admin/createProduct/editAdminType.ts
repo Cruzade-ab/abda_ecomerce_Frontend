@@ -2,7 +2,12 @@
 import { FieldError, UseFormRegister } from "react-hook-form";
 
 export interface FormProduct {
-  product_id: number,
+  product_ids: {
+    S: number;
+    M: number;
+    L: number;
+    XL: number;
+  };
   value: string;
   color_name: string;
   imageUrl: string;
@@ -39,4 +44,4 @@ export type FormFieldProps = {
   inputIcon: string;
 };
 
-export type FormFieldNames = keyof MyFormData | `products.${number}.${keyof FormProduct}` | `products.${number}.sizes.${keyof FormProduct['sizes']}`;
+export type FormFieldNames = keyof MyFormData | `products.${number}.${keyof FormProduct}` | `products.${number}.sizes.${keyof FormProduct['sizes']}` | `products.${number}.product_ids.${'S' | 'M' | 'L' | 'XL'}`; ;

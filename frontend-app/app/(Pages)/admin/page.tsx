@@ -8,8 +8,9 @@ import FilterComponent from "@/app/components/admin/FilterComponent/FilterCompon
 import { ProductInterface } from "@/app/lib/products/ProductInterface";
 import { FilterParams } from "@/app/lib/admin/Filter/FilterType";
 import Modal from "@/app/components/admin/Modal/Modal";
-import EditAdminForm from "@/app/components/admin/CreateProducts/EditAdminForm";
+import EditAdminForm from "@/app/components/admin/EditProduct/EditAdminForm";
 import Loader from "@/app/lib/loader";
+import DeleteAdminForm from "@/app/components/admin/DeleteProduct/DeleteProductForm";
 
 export default function Admin() {
     const [isAdmin, setIsAdmin] = useState(false);
@@ -22,11 +23,15 @@ export default function Admin() {
     const [selectedProduct, setSelectedProduct] = useState<ProductInterface | null>(null);
     
     const [isEditModalOpen, setEditModalOpen] = useState(false);
+    const [isDeletemModalOpen, setDeleteModalOpen] = useState(false);
     const [isCreateModalOpen, setCreateModalOpen] = useState(false);
     
 
     const openEditModal = () => setEditModalOpen(true);
     const handleCloseEditModal = () => setEditModalOpen(false);
+
+    const openDeleteModal = () => setDeleteModalOpen(true);
+    const handleCloseDeleteModal = () => setDeleteModalOpen(false);
 
 
     const openCreateModal = () => setCreateModalOpen(true);
@@ -100,8 +105,7 @@ export default function Admin() {
       
       
     const handleRemove = (productId: number) => {
-        setEditModalOpen(false);
-        setSelectedProduct(null);
+        setDeleteModalOpen(true);
     };
 
     
@@ -172,6 +176,16 @@ export default function Admin() {
                             onSubmitSuccess={handleCloseEditModal}
                             handleCloseEditModal={handleCloseEditModal}
                         />
+                    )}
+                </Modal>
+
+                <Modal isOpen={isDeletemModalOpen} onClose={handleCloseDeleteModal}>
+                    {selectedProduct && (
+                        <DeleteAdminForm
+                            product={selectedProduct}
+                            colorId={selectedColorId}
+                            onSubmitSuccess={handleCloseDeleteModal}
+                            handleCloseDeleteModal={handleCloseDeleteModal}/>
                     )}
                 </Modal>
         
