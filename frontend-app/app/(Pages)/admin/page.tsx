@@ -9,6 +9,7 @@ import { ProductInterface } from "@/app/lib/products/ProductInterface";
 import { FilterParams } from "@/app/lib/admin/Filter/FilterType";
 import Modal from "@/app/components/admin/Modal/Modal";
 import EditAdminForm from "@/app/components/admin/CreateProducts/EditAdminForm";
+import Loader from "@/app/lib/loader";
 
 export default function Admin() {
     const [isAdmin, setIsAdmin] = useState(false);
@@ -31,13 +32,17 @@ export default function Admin() {
     const openCreateModal = () => setCreateModalOpen(true);
     const handleCloseCreateModal = () => setCreateModalOpen(false);
 
+    const [loader, setLoader] = useState(true)
+    
     useEffect(() => {
         (async () => {
             try {
                 const response = await fetch('http://localhost:4000/api/user/getUser', {
                     credentials: "include",
                 });
+
                 if (response.ok) {
+                 setLoader(false)
                     const content = await response.json();
                     setIsAdmin(content.role_id === 2);
                     console.log(content);
@@ -54,6 +59,8 @@ export default function Admin() {
     useEffect(() => {
         fetchProducts();
     }, []);
+
+    
     
     const fetchProducts = async (filters: FilterParams = {}) => {
         const query = new URLSearchParams();
@@ -123,11 +130,13 @@ export default function Admin() {
     }
   };
 
-
+  if (loader) {
+    return <Loader/>;
+}
     return (
         <>
         <MainLayout isAdmin={isAdmin} onCategoryChange={handleCategoryChange}>
-        <div className="m-6 flex justify-around">
+        <div className="mt-20 flex justify-around">
             <div className="text-4xl">
                 Administrate Products
             </div>
@@ -141,17 +150,19 @@ export default function Admin() {
                 </Modal>
             </div>
             <div>
-                <button className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow" onClick={openCreateModal}>
+                <button  className="px-6 mt-6 flex items-center justify-center w-full bg-green-500 hover:bg-green-600 focus:bg-green-700 text-white rounded-lg py-3 font-semibold" onClick={openCreateModal}>
                     Create  Product
                 </button>
             </div> 
         </div>
 
-            <AdminTable 
+        <div className="mt-10 w-full flex items-center justify-center">
+        <AdminTable 
               products={products} 
               onEdit={handleEdit} 
               onRemove={handleRemove}
             />
+        </div>
 
                 <Modal isOpen={isEditModalOpen} onClose={handleCloseEditModal}>
                     {selectedProduct && (

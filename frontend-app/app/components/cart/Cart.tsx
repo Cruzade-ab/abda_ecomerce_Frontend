@@ -5,6 +5,7 @@ import OrderForm from '../order/orderForm';
 import Link from 'next/link';
 import CheckoutContainer from '../checkout_container/Checkout';
 import Loader from '@/app/lib/loader';
+import LoginModal from './LoginModal';
 
 
 export default function Cart() {

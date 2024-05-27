@@ -20,6 +20,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     const [showLoginModal, setShowLoginModal] = useState(false);
     const router = useRouter();
 
+    
+
     useEffect(() => {
         (async () => {
             try {

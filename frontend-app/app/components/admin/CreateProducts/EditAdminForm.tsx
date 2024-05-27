@@ -15,6 +15,8 @@ interface EditAdminFormProps {
 }
 
 const EditAdminForm: React.FC<EditAdminFormProps> = ({ onSubmitSuccess, handleCloseEditModal, product, colorId }) => {
+  
+  const [hoverImage, setHoverImage] = useState<Record<number, boolean>>({})
   const { register, handleSubmit, reset, formState: { errors }, control } = useForm<MyFormData>({
     resolver: zodResolver(EditAdminFormSchema),
   });
@@ -186,7 +188,19 @@ const EditAdminForm: React.FC<EditAdminFormProps> = ({ onSubmitSuccess, handleCl
               />
             ))}
             <div className='flex flex-col gap-4'>
-              <img src={variant.image_url || 'default-image-url'} alt="Product" style={{ width: '100px', height: '100px' }} />
+            <div
+              className='mx-3 mt-3 h-80 rounded-xl overflow-hidden flex justify-center items-center'
+              onMouseEnter={() => setHoverImage(prev => ({ ...prev, [product!.general_product_id]: true }))}
+              onMouseLeave={() => setHoverImage(prev => ({ ...prev, [product!.general_product_id]: false }))}
+            >
+              <img
+                className="object-contain max-h-full max-w-full"
+                src={hoverImage[product!.general_product_id] ? variant.hover_image_url : variant.image_url}
+                alt={'Product Images'}
+              />
+            </div>
+
+              <label className='font-bold' htmlFor="">Change First Image</label>
               <Controller
                 name={`products.0.imageFile`}
                 control={control}
@@ -194,7 +208,7 @@ const EditAdminForm: React.FC<EditAdminFormProps> = ({ onSubmitSuccess, handleCl
                   <input type="file" onChange={(e) => e.target.files && field.onChange(e.target.files[0])} className="form-input rounded" />
                 )}
               />
-              <img src={variant.hover_image_url || 'default-hover-image-url'} alt="Hover Image" style={{ width: '100px', height: '100px' }} />
+              <label className='font-bold' htmlFor="">Change Second Image</label>
               <Controller
                 name={`products.0.hoverImageFile`}
                 control={control}
