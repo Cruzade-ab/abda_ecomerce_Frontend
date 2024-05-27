@@ -4,7 +4,7 @@ import { ProductInterface, ProductVariant } from '../../../lib/products/ProductI
 type ProductTableProps = {
     products: ProductInterface[];
     onEdit: (productId: number, colorId: number) => void;
-    onRemove: (id: number) => void;
+    onRemove: (id: number, color_id: number) => void;
 };
 
 const AdminTable: React.FC<ProductTableProps> = ({ products, onEdit, onRemove }) => {
@@ -115,7 +115,13 @@ const AdminTable: React.FC<ProductTableProps> = ({ products, onEdit, onRemove })
                                         </button>
                                         <button
                                             className="w-3/4 px-4 mt-4 bg-red-500 hover:bg-red-600 text-white font-medium rounded-lg text-sm px-4 py-2 focus:outline-none focus:ring-red-300"
-                                            onClick={() => onRemove(product.general_product_id)}
+                                            onClick={() => {
+                                                
+                                                const selectedVariant = product.products.find(v => v.color.color_name === selectedColor);
+                                                if (selectedVariant){
+                                                    onRemove(product.general_product_id, selectedVariant.color.color_id)
+                                                }
+                                                }}
                                         >
                                             Remove
                                         </button>

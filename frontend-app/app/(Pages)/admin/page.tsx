@@ -104,8 +104,13 @@ export default function Admin() {
     };
       
       
-    const handleRemove = (productId: number) => {
-        setDeleteModalOpen(true);
+    const handleRemove = (productId: number, colorId: number) => {
+        const product = products.find(p => p.general_product_id === productId);
+        if (product){
+            setSelectedProduct(product);
+            setSelectedColorId(colorId);
+            setDeleteModalOpen(true);
+        }
     };
 
     
