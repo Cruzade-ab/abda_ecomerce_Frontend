@@ -4,13 +4,15 @@ import CartItem from './CartItem';
 import OrderForm from '../order/orderForm';
 import Link from 'next/link';
 import CheckoutContainer from '../checkout_container/Checkout';
-import LoginModal from './LoginModal'; // Import the LoginModal component
+import LoginModal from './LoginModal'; // Import the LoginModal componentimport Loader from '@/app/lib/loader';
+
 
 export default function Cart() {
     const [cartItems, setCartItems] = useState<CartDisplayDto[]>([]);
     const [totalPrice, setTotalPrice] = useState<number>(0);
     const [showForm, setShowForm] = useState(false);
-    const [isModalOpen, setModalOpen] = useState(false); // State for modal visibility
+    const [isModalOpen, setModalOpen] = useState(false); // State for modal visibility    const [loading, setLoading] = useState(true);
+
 
     useEffect(() => {
         // Carga los elementos del carrito desde tu API
@@ -27,6 +29,7 @@ export default function Cart() {
                 const total = data.reduce((acc: number, item: { product_price: number; quantity: number; }) => acc + (item.product_price * item.quantity), 0);
                 setTotalPrice(total);
                 console.log(cartItems)
+                setLoading(false);
             })
             .catch(error => console.error('Error al obtener los elementos del carrito:', error));
     }, []);
@@ -54,7 +57,10 @@ export default function Cart() {
             })
             .catch(error => console.error('Error al eliminar el producto del carrito:', error));
     };
-
+    if (loading) {
+      return <Loader/>;
+    }
+    
     return (
         <div className="flex flex-col md:flex-row md:items-start justify-between bg-[#FBF8F3]">
             <div className="flex-1">

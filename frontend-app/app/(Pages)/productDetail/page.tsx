@@ -6,6 +6,7 @@ import { ProductInterface, ColorInterface, ProductVariant, SizeAmountInterface }
 import MainLayout from '@/app/components/home/main-layout/MainLayout';
 import LoginModal from '@/app/components/cart/LoginModal';
 import { useRouter } from "next/navigation";
+import Loader from '@/app/lib/loader';
 
 function ProductDetailPage() {
     const [product, setProduct] = useState<ProductInterface | null>(null);
@@ -159,6 +160,7 @@ function ProductDetailPage() {
     };
 
     const handleColorChange = useCallback((color: ColorInterface) => {
+        setDropdownOpen(false)
         const newVariant = product?.products.find(p => p.color.color_id === color.color_id && p.size.size_name === selectedSize);
         if (newVariant) {
             setSelectedVariant(newVariant);
@@ -200,7 +202,7 @@ function ProductDetailPage() {
     };
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <Loader/>;
     }
 
     if (!product) {
