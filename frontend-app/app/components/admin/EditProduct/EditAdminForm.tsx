@@ -12,6 +12,7 @@ interface EditAdminFormProps {
   colorId?: number | null;
   onSubmitSuccess: () => void;
   handleCloseEditModal: () => void;
+  onProductsChange: () => void; 
 }
 interface ProductIds {
   S: number;
@@ -22,7 +23,7 @@ interface ProductIds {
 
 const defaultProductIds: ProductIds = { S: 0, M: 0, L: 0, XL: 0 };
 
-const EditAdminForm: React.FC<EditAdminFormProps> = ({ onSubmitSuccess, handleCloseEditModal, product, colorId }) => {
+const EditAdminForm: React.FC<EditAdminFormProps> = ({ onProductsChange, onSubmitSuccess, handleCloseEditModal, product, colorId }) => {
   const [productIds, setProductIds] = useState<ProductIds>(defaultProductIds);
   
   const [hoverImage, setHoverImage] = useState<Record<number, boolean>>({})
@@ -142,6 +143,7 @@ const EditAdminForm: React.FC<EditAdminFormProps> = ({ onSubmitSuccess, handleCl
       if (response.ok) {
         console.log('Form submitted successfully');
         onSubmitSuccess();
+        onProductsChange();
       } else {
         console.error('Error submitting form');
       }

@@ -139,6 +139,11 @@ export default function Admin() {
     }
   };
 
+  const reloadProducts = () => {
+    fetchProducts();
+    setDeleteModalOpen(false); 
+};
+
   if (loader) {
     return <Loader/>;
 }
@@ -149,13 +154,15 @@ export default function Admin() {
             <div className="text-4xl">
                 Administrate Products
             </div>
-            <div className="border border-rounded">
+            <div className="">
                 <FilterComponent onFilterChange={handleFilterChange} />
             </div>
             <div className="">
                 <Modal  isOpen={isCreateModalOpen} onClose={handleCloseCreateModal} >
                 <AdminForm  onSubmitSuccess={handleCloseCreateModal}
-                handleCloseEditModal={handleCloseCreateModal} />
+                handleCloseEditModal={handleCloseCreateModal} 
+                onProductsChange={reloadProducts}
+                />
                 </Modal>
             </div>
             <div>
@@ -179,6 +186,7 @@ export default function Admin() {
                             product={selectedProduct}  
                             colorId={selectedColorId}
                             onSubmitSuccess={handleCloseEditModal}
+                            onProductsChange={reloadProducts}
                             handleCloseEditModal={handleCloseEditModal}
                         />
                     )}
@@ -190,6 +198,7 @@ export default function Admin() {
                             product={selectedProduct}
                             colorId={selectedColorId}
                             onSubmitSuccess={handleCloseDeleteModal}
+                            onProductsChange={reloadProducts}
                             handleCloseDeleteModal={handleCloseDeleteModal}/>
                     )}
                 </Modal>

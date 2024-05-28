@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { ProductInterface, ProductVariant } from '@/app/lib/products/ProductInterface';
 import Modal from '../Modal/Modal';
+import ErrorModal from '../Modal/ErrorModal';
+import Loader from '@/app/lib/loader';
 
 interface EditAdminFormProps {
   product?: ProductInterface;
   colorId?: number | null;
   onSubmitSuccess: () => void;
   handleCloseDeleteModal: () => void;
+  onProductsChange: () => void; 
 }
 
 const DeleteAdminForm: React.FC<EditAdminFormProps> = ({
-  onSubmitSuccess,
+  onProductsChange,
   handleCloseDeleteModal,
   product,
   colorId
@@ -19,6 +22,12 @@ const DeleteAdminForm: React.FC<EditAdminFormProps> = ({
   const [isModalOpen, setModalOpen] = useState(false);
   const [variant, setVariant] = useState<ProductVariant | null>(null);
 
+  const [isErrorModalOpen, setErrorModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const [loader, setLoader] = useState(false)
+
+
   useEffect(() => {
     if (product && colorId != null) {
       const selectedVariant = product.products.find(p => p.color.color_id === colorId);
@@ -26,35 +35,58 @@ const DeleteAdminForm: React.FC<EditAdminFormProps> = ({
     }
   }, [product, colorId]);
 
+  const handleError = (message: string) => {
+    setErrorMessage(message);
+    setErrorModalOpen(true);
+  };
+
   const deleteSpecificColor = async () => {
     try {
-      const response = await fetch('/api/delete-color', {
-        method: 'POST',
+      setLoader(true)
+      const response = await fetch('http://localhost:4000/api/admin/product/delete/color', {
+        method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ productId: product?.general_product_id, colorId })
+        body: JSON.stringify({ general_product_id: product?.general_product_id, color_id: colorId })
       });
       if (response.ok) {
-        onSubmitSuccess();
+        onProductsChange();
+        setLoader(false)
+    } else {
+      const error = await response.json();
+      handleError(error.message || 'Failed to delete specific color.');
+      setLoader(false)
+    }
+  } catch (error) {
+    setLoader(false)
+    handleError('Failed to delete specific color.');
+  }
+};
+
+  const deleteGeneralProduct = async () => {
+    try {
+      setLoader(true)
+      const response = await fetch('http://localhost:4000/api/admin/product/delete/generalProduct', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ general_product_id: product?.general_product_id }) 
+      });
+      if (response.ok) {
+        onProductsChange();
+        setLoader(false)
+      } else {
+        const error = await response.json();
+        handleError(error.message || 'Failed to delete all colors.');
+        setLoader(false)
       }
     } catch (error) {
-      console.error('Failed to delete specific color:', error);
+      handleError('Failed to delete all colors.');
+      setLoader(false)
     }
   };
 
-  const deleteAllColors = async () => {
-    try {
-      const response = await fetch('/api/delete-product', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ productId: product?.general_product_id })
-      });
-      if (response.ok) {
-        onSubmitSuccess();
-      }
-    } catch (error) {
-      console.error('Failed to delete all colors:', error);
-    }
-  };
+  if(loader) {
+    return <Loader/>
+  }
 
   return (
     <>
@@ -80,11 +112,17 @@ const DeleteAdminForm: React.FC<EditAdminFormProps> = ({
           </h1>
           <p className='my-3'>Are you sure you want to delete all this product?</p>
           <div className='flex justify-between'>
-            <button onClick={deleteAllColors} className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'>Delete All Colors</button>
+            <button onClick={deleteGeneralProduct} className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'>Delete All Colors</button>
             <button onClick={() => setModalOpen(false)} className='bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded'>Close</button>
           </div>
         </div>
       </Modal>
+
+      <ErrorModal
+        isOpen={isErrorModalOpen}
+        onClose={() => setErrorModalOpen(false)}
+        errorMessage={errorMessage}
+      />
     </>
   );
 };

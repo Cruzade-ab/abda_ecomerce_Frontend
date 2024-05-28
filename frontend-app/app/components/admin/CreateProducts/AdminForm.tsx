@@ -4,6 +4,7 @@ import FormField from './AdminFormField';
 import { MyFormData, FormProduct } from '../../../lib/admin/createProduct/adminType';
 import { zodResolver } from '@hookform/resolvers/zod';
 import AdminFormSchema from '../../../lib/admin/createProduct/AdminFormSchema';
+import Loader from '@/app/lib/loader';
 
 
 
@@ -12,14 +13,17 @@ import AdminFormSchema from '../../../lib/admin/createProduct/AdminFormSchema';
 interface AdminFormProps {
   onSubmitSuccess: () => void;
   handleCloseEditModal: () => void;
+  onProductsChange: () => void; 
+
 }
 
 
-const AdminForm: React.FC<AdminFormProps>= ({onSubmitSuccess, handleCloseEditModal}) => {
+const AdminForm: React.FC<AdminFormProps>= ({ onProductsChange, onSubmitSuccess, handleCloseEditModal}) => {
   const { register, handleSubmit, formState: { errors }, control } = useForm<MyFormData>({
     resolver: zodResolver(AdminFormSchema),
   });
-
+  const [loader, setLoader] = useState(false)
+  
   const [products, setProducts] = useState<FormProduct[]>([{
     value: '',
     color_name: '',
@@ -55,6 +59,8 @@ const AdminForm: React.FC<AdminFormProps>= ({onSubmitSuccess, handleCloseEditMod
     console.log(formData)
 
     try {
+      setLoader(true)
+      handleCloseEditModal();
       const response = await fetch('http://localhost:4000/api/admin/product/create', {
         method: 'POST',
         body: formData,
@@ -65,14 +71,18 @@ const AdminForm: React.FC<AdminFormProps>= ({onSubmitSuccess, handleCloseEditMod
       if (response.ok) {
         console.log('Form submitted successfully');
         console.log(formData)
+        onProductsChange();
         onSubmitSuccess();
+        setLoader(false)
       } else {
         console.error('Error submitting form');
         console.log(formData)
+        setLoader(false)
       }
     } catch (error) {
       console.error('Error:', error);
       console.log(formData)
+      setLoader(false)
     }
   };
 
@@ -87,6 +97,9 @@ const AdminForm: React.FC<AdminFormProps>= ({onSubmitSuccess, handleCloseEditMod
     }]);
   };
 
+  if (loader) {
+    return <Loader/>;
+}
 
   return (
     <>
