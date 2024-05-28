@@ -8,7 +8,11 @@ import Loader from '@/app/lib/loader';
 import LoginModal from './LoginModal';
 
 
-export default function Cart() {
+interface CartProps {
+    fetchCartItemCount: () => void;
+}
+
+export default function Cart({fetchCartItemCount}: CartProps) {
     const [cartItems, setCartItems] = useState<CartDisplayDto[]>([]);
     const [totalPrice, setTotalPrice] = useState<number>(0);
     const [showForm, setShowForm] = useState(false);
@@ -36,28 +40,27 @@ export default function Cart() {
     }, []);
 
     const handleRemoveItem = (productId: number) => {
-        // Implementa la lógica para eliminar un producto del carrito
         fetch('http://localhost:4000/api/cart/deleteCartItem', {
             method: 'POST',
             credentials: "include",
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ productId }), // Envía el ID del producto en el cuerpo de la solicitud
+            body: JSON.stringify({ productId }),
         })
-            .then(response => {
-                if (response.ok) {
-                    // Actualiza el estado para reflejar el elemento eliminado
-                    setCartItems(currentItems => currentItems.filter(item => item.product_id !== productId));
-                    // Recalcula el precio total
-                    setTotalPrice(currentTotal => currentTotal - (cartItems.find(item => item.product_id === productId)?.product_price ?? 0) * (cartItems.find(item => item.product_id === productId)?.quantity ?? 0));
-                } else {
-                    // Maneja los errores, como mostrar un mensaje al usuario
-                    console.error('Error al eliminar el producto del carrito:', response.status);
-                }
-            })
-            .catch(error => console.error('Error al eliminar el producto del carrito:', error));
+        .then(response => {
+            if (response.ok) {
+                setCartItems(currentItems => currentItems.filter(item => item.product_id !== productId));
+                setTotalPrice(currentTotal => currentTotal - (cartItems.find(item => item.product_id === productId)?.product_price ?? 0) * (cartItems.find(item => item.product_id === productId)?.quantity ?? 0));
+                // Llama a fetchCartItemCount para actualizar el conteo del carrito
+                fetchCartItemCount();
+            } else {
+                console.error('Error al eliminar el producto del carrito:', response.status);
+            }
+        })
+        .catch(error => console.error('Error al eliminar el producto del carrito:', error));
     };
+    
     if (loading) {
       return <Loader/>;
     }
