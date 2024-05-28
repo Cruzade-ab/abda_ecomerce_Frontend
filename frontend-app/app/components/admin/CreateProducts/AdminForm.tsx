@@ -60,7 +60,6 @@ const AdminForm: React.FC<AdminFormProps>= ({ onProductsChange, onSubmitSuccess,
 
     try {
       setLoader(true)
-      handleCloseEditModal();
       const response = await fetch('http://localhost:4000/api/admin/product/create', {
         method: 'POST',
         body: formData,

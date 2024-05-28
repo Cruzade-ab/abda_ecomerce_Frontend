@@ -68,6 +68,7 @@ export default function Admin() {
     
     
     const fetchProducts = async (filters: FilterParams = {}) => {
+        setLoader(true)
         const query = new URLSearchParams();
         Object.keys(filters).forEach(key => {
             const value = filters[key as keyof FilterParams];
@@ -79,9 +80,11 @@ export default function Admin() {
         console.log(url)
         const response = await fetch(url);
         if (response.ok) {
+            setLoader(false)
             const data = await response.json();
             setProducts(data);
         } else {
+            setLoader(false)
             console.error('Failed to fetch products');
         }
     };

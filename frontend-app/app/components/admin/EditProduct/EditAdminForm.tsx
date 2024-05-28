@@ -6,6 +6,7 @@ import FormField from './EditAdminFormField';
 import { MyFormData, FormProduct} from '../../../lib/admin/createProduct/editAdminType';
 import EditAdminFormSchema from '../../../lib/admin/createProduct/EditAdminFormSchema';
 import { ProductInterface, ProductVariant } from '@/app/lib/products/ProductInterface';
+import Loader from '@/app/lib/loader';
 
 interface EditAdminFormProps {
   product?: ProductInterface;
@@ -25,6 +26,8 @@ const defaultProductIds: ProductIds = { S: 0, M: 0, L: 0, XL: 0 };
 
 const EditAdminForm: React.FC<EditAdminFormProps> = ({ onProductsChange, onSubmitSuccess, handleCloseEditModal, product, colorId }) => {
   const [productIds, setProductIds] = useState<ProductIds>(defaultProductIds);
+  const [loader, setLoader] = useState(false)
+
   
   const [hoverImage, setHoverImage] = useState<Record<number, boolean>>({})
   const { register, handleSubmit, reset, formState: { errors }, control } = useForm<MyFormData>({
@@ -135,6 +138,7 @@ const EditAdminForm: React.FC<EditAdminFormProps> = ({ onProductsChange, onSubmi
     });
 
     try {
+      setLoader(true)
       const response = await fetch('http://localhost:4000/api/admin/product/update', {
         method: 'PUT',
         body: formData,
@@ -142,15 +146,22 @@ const EditAdminForm: React.FC<EditAdminFormProps> = ({ onProductsChange, onSubmi
 
       if (response.ok) {
         console.log('Form submitted successfully');
+        setLoader(false)
         onSubmitSuccess();
         onProductsChange();
       } else {
+        setLoader(false)
         console.error('Error submitting form');
       }
     } catch (error) {
+      setLoader(false)
       console.error('Error:', error);
     }
   };
+
+  if (loader) {
+    return <Loader/>;
+}
 
   return (
     <div className='flex items-center justify-center'>
