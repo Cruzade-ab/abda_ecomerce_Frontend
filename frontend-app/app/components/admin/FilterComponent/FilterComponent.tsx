@@ -23,9 +23,9 @@ const FilterComponent: React.FC<FilterComponentProps> = ({ onFilterChange }) => 
     const fetchFiltersData = async () => {
         try {
             const [brandsResponse, colorsResponse, sectionsResponse] = await Promise.all([
-              fetch('http://localhost:4000/api/filter/brands'),
-              fetch('http://localhost:4000/api/filter/colors'),
-              fetch('http://localhost:4000/api/filter/sections')
+              fetch('http://localhost:4000/api/products/filter/brands'),
+              fetch('http://localhost:4000/api/products/filter/colors'),
+              fetch('http://localhost:4000/api/products/filter/sections')
             ]);
     
             if (brandsResponse.ok) {
@@ -56,9 +56,12 @@ const FilterComponent: React.FC<FilterComponentProps> = ({ onFilterChange }) => 
       };
     
       return (
-        <div>
+        <div className="">
+          <h1 className="text-center font-bold">Filter Options</h1>
+        <div className="flex justify-between">
+
           {/* Brand dropdown */}
-          <select value={selectedBrand} onChange={e => setSelectedBrand(e.target.value)}>
+          <select  className='p-1 border-2 border-gray-600 rounded-lg m-3' value={selectedBrand} onChange={e => setSelectedBrand(e.target.value)}>
             <option value="">Select Brand</option>
             {brands.map(brand => (
               <option key={brand.brand_id} value={brand.brand_name}>
@@ -68,7 +71,7 @@ const FilterComponent: React.FC<FilterComponentProps> = ({ onFilterChange }) => 
           </select>
     
           {/* Color dropdown */}
-          <select value={selectedColor} onChange={e => setSelectedColor(e.target.value)}>
+          <select className='p-1 border-2 border-gray-600 rounded-lg m-3' value={selectedColor} onChange={e => setSelectedColor(e.target.value)}>
             <option value="">Select Color</option>
             {colors.map(color => (
               <option key={color.color_id} value={color.color_name}>
@@ -78,7 +81,7 @@ const FilterComponent: React.FC<FilterComponentProps> = ({ onFilterChange }) => 
           </select>
     
           {/* Section dropdown */}
-          <select value={selectedSection} onChange={e => setSelectedSection(e.target.value)}>
+          <select className='p-1 border-2 border-gray-600 rounded-lg m-3' value={selectedSection} onChange={e => setSelectedSection(e.target.value)}>
             <option value="">Select Section</option>
             {sections.map(section => (
               <option key={section.section_id} value={section.section_name}>
@@ -87,20 +90,21 @@ const FilterComponent: React.FC<FilterComponentProps> = ({ onFilterChange }) => 
             ))}
           </select>
 
-          <input
+          <input className='p-1 border-2 border-gray-600 rounded-lg w-28 m-3'
                 type="number"
                 placeholder="Min Price"
                 value={selectedMinValue}
                 onChange={e => setSelectedMinValue(e.target.value)}
             />
-            <input
+            <input className='p-1 border-2 border-gray-600 rounded-lg w-28 m-3'
                 type="number"
                 placeholder="Max Price"
                 value={selectedMaxValue}
                 onChange={e => setSelectedMaxValue(e.target.value)}
             />
     
-          <button onClick={handleFilterChange}>Apply Filters</button>
+          <button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded h-10 mt-2" onClick={handleFilterChange}>Apply Filters</button>
+        </div>
         </div>
       );
     };

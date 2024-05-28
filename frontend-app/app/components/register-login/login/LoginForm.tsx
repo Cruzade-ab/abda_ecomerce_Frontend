@@ -7,8 +7,13 @@ import '@mdi/font/css/materialdesignicons.min.css'; // Importación de los estil
 import Link from "next/link"; // Importación de Link de Next.js
 import Cookies from "js-cookie"; // Importación de Cookies para manejar las cookies en el cliente
 import { useRouter } from "next/navigation"; // Importación de useRouter de Next.js para manejar la navegación
+import { useState } from "react";
+import Loader from "@/app/lib/loader";
+
 
 function LoginForm() {
+  const [loading, setLoading] = useState(false);
+
   const router = useRouter(); // Inicialización del hook useRouter para la navegación
   const {
     register,
@@ -20,6 +25,7 @@ function LoginForm() {
 
   // Función para manejar la lógica cuando se envía el formulario
   const onSubmit = async (data: FormData) => {
+    setLoading(true)
     try {
       const response = await fetch('http://localhost:4000/api/user/login', { 
         method: 'POST',
@@ -30,17 +36,24 @@ function LoginForm() {
         body: JSON.stringify(data), // Convertir la data a formato JSON
       });
       if (response.ok) {
+        setLoading(false)
         console.log('Formulario enviado correctamente');
         router.push('/');
         // Después del inicio de sesión exitoso, se establece la cookie de isLoggedIn en true
         Cookies.set('isLoggedIn', 'true');
       } else {
+        setLoading(false)
         console.error('Error al enviar el formulario');
       }
     } catch (error) {
+      setLoading(false)
       console.error('');
-    }
+    } 
   };
+
+  if (loading) {
+    return <Loader/>;
+}
 
   return (
     <div className="min-w-screen min-h-screen bg-gray-900 flex items-center justify-center px-5 py-5">

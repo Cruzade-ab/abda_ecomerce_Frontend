@@ -6,8 +6,12 @@ import FormField from "./FormField"; // Importación del componente FormField
 import { zodResolver } from "@hookform/resolvers/zod"; // Importación del resolver de zod
 import "@mdi/font/css/materialdesignicons.min.css"; // Importación del archivo de estilos de los iconos mdi
 import { useRouter } from "next/navigation"; // Importación del hook useRouter de Next.js
+import Loader from "@/app/lib/loader";
+import { useState } from "react";
 
 function RegisterForm() {
+  const [loading, setLoading] = useState(false);
+
   const router = useRouter(); // Inicialización del hook useRouter
   const {
     register,
@@ -20,6 +24,7 @@ function RegisterForm() {
 
   // Función para manejar la lógica cuando se envía el formulario
   const onSubmit: SubmitHandler<FormData> = async (data, event) => {
+    setLoading(true)
     event?.preventDefault(); // Prevenir el comportamiento por defecto del evento
     const { confirmPassword, ...FormData } = data; // Extracción de la confirmación de la contraseña de los datos
     try {
@@ -32,15 +37,23 @@ function RegisterForm() {
         body: JSON.stringify(FormData), // Conversión de la data a JSON para el cuerpo de la solicitud
       });
       if (response.ok) {
+        setLoading(false)
         console.log("Formulario enviado correctamente");
         router.push("/login"); // Redirección a la página de inicio de sesión en caso de éxito
       } else {
+        setLoading(false)
         console.error("Error al enviar el formulario");
       }
     } catch (error) {
       console.error("Error:", error); // Manejo de errores
+      setLoading(false)
     }
   };
+
+  if (loading) {
+    return <Loader/>;
+}
+
 
   return (
     // Contenedor principal del formulario

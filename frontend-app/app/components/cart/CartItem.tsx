@@ -38,7 +38,7 @@ export default function CartItem({ product_id, product_price, quantity,size, siz
                         <p className="text-base text-gray-900 mb-2">Price: <span className="font-semibold text-green-600">${product_price.toFixed(2)}</span></p>
                         <p className="text-base text-dark-900 mb-2">Quantity: {quantity}</p>
                         <p className="text-base text-dark-900 mb-2">Size: {size}</p>
-                        <p className="text-base text-gray-900 mb-2">In STock: {size_available}</p>
+                        <p className="text-base text-gray-900 mb-2">In Stock: {size_available}</p>
                     </div>
                     <button onClick={handleRemoveClick} className="mt-4 bg-red-500 hover:bg-red-600 text-white font-medium rounded-lg text-sm px-4 py-2 focus:outline-none focus:ring-red-300">
                         Remove Product

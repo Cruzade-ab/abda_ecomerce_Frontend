@@ -7,21 +7,47 @@ import AdminTable from "@/app/components/admin/ProductTable/AdminTable";
 import FilterComponent from "@/app/components/admin/FilterComponent/FilterComponent";
 import { ProductInterface } from "@/app/lib/products/ProductInterface";
 import { FilterParams } from "@/app/lib/admin/Filter/FilterType";
+import Modal from "@/app/components/admin/Modal/Modal";
+import EditAdminForm from "@/app/components/admin/EditProduct/EditAdminForm";
+import Loader from "@/app/lib/loader";
+import DeleteAdminForm from "@/app/components/admin/DeleteProduct/DeleteProductForm";
 
 export default function Admin() {
     const [isAdmin, setIsAdmin] = useState(false);
-    const [showForm, setShowForm] = useState(false); 
     const [products, setProducts] = useState<ProductInterface[]>([]);
     const [apiUrl, setApiUrl] = useState('http://localhost:4000/api/products/wantedProducts');
     const [sectionName, setSectionName] = useState('Most Wanted Products');
 
+    
+    const [selectedColorId, setSelectedColorId] = useState<number | null>(null);
+    const [selectedProduct, setSelectedProduct] = useState<ProductInterface | null>(null);
+    
+    const [isEditModalOpen, setEditModalOpen] = useState(false);
+    const [isDeletemModalOpen, setDeleteModalOpen] = useState(false);
+    const [isCreateModalOpen, setCreateModalOpen] = useState(false);
+    
+
+    const openEditModal = () => setEditModalOpen(true);
+    const handleCloseEditModal = () => setEditModalOpen(false);
+
+    const openDeleteModal = () => setDeleteModalOpen(true);
+    const handleCloseDeleteModal = () => setDeleteModalOpen(false);
+
+
+    const openCreateModal = () => setCreateModalOpen(true);
+    const handleCloseCreateModal = () => setCreateModalOpen(false);
+
+    const [loader, setLoader] = useState(true)
+    
     useEffect(() => {
         (async () => {
             try {
                 const response = await fetch('http://localhost:4000/api/user/getUser', {
                     credentials: "include",
                 });
+
                 if (response.ok) {
+                 setLoader(false)
                     const content = await response.json();
                     setIsAdmin(content.role_id === 2);
                     console.log(content);
@@ -38,29 +64,32 @@ export default function Admin() {
     useEffect(() => {
         fetchProducts();
     }, []);
+
+    
     
     const fetchProducts = async (filters: FilterParams = {}) => {
+        setLoader(true)
         const query = new URLSearchParams();
         Object.keys(filters).forEach(key => {
             const value = filters[key as keyof FilterParams];
             if (value) {
-                query.append(key, value);
+                query.append(key, String(value));
             }
         });
-        const url = `http://localhost:4000/api/filter?${query.toString()}`
+        const url = `http://localhost:4000/api/products/filter?${query.toString()}`
         console.log(url)
         const response = await fetch(url);
         if (response.ok) {
+            setLoader(false)
             const data = await response.json();
             setProducts(data);
         } else {
+            setLoader(false)
             console.error('Failed to fetch products');
         }
     };
 
-    const toggleFormVisibility = () => {
-        setShowForm(!showForm);
-    };
+   
 
     const handleFilterChange = (filters: {} | undefined) => {
         console.log(filters);
@@ -68,13 +97,23 @@ export default function Admin() {
     };
 
 
-    const handleEdit = (productId: number) => {
-    
+    const handleEdit = (productId: number, colorId: number) => {
+        const product = products.find(p => p.general_product_id === productId);
+        if (product) {
+            setSelectedProduct(product);
+            setSelectedColorId(colorId);
+            setEditModalOpen(true);
+        }
     };
       
       
-    const handleRemove = (productId: number) => {
-      
+    const handleRemove = (productId: number, colorId: number) => {
+        const product = products.find(p => p.general_product_id === productId);
+        if (product){
+            setSelectedProduct(product);
+            setSelectedColorId(colorId);
+            setDeleteModalOpen(true);
+        }
     };
 
     
@@ -103,35 +142,69 @@ export default function Admin() {
     }
   };
 
+  const reloadProducts = () => {
+    fetchProducts();
+    setDeleteModalOpen(false); 
+};
 
+  if (loader) {
+    return <Loader/>;
+}
     return (
         <>
         <MainLayout isAdmin={isAdmin} onCategoryChange={handleCategoryChange}>
-        <div className="m-6 flex justify-around">
+        <div className="mt-20 flex justify-around">
             <div className="text-4xl">
                 Administrate Products
             </div>
-            <div className="border border-rounded">
+            <div className="">
                 <FilterComponent onFilterChange={handleFilterChange} />
             </div>
+            <div className="">
+                <Modal  isOpen={isCreateModalOpen} onClose={handleCloseCreateModal} >
+                <AdminForm  onSubmitSuccess={handleCloseCreateModal}
+                handleCloseEditModal={handleCloseCreateModal} 
+                onProductsChange={reloadProducts}
+                />
+                </Modal>
+            </div>
             <div>
-                <button className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow" onClick={toggleFormVisibility}>
-                        {showForm ? 'Hide Create Form' : '   Create  Product   '}
+                <button  className="px-6 mt-6 flex items-center justify-center w-full bg-green-500 hover:bg-green-600 focus:bg-green-700 text-white rounded-lg py-3 font-semibold" onClick={openCreateModal}>
+                    Create  Product
                 </button>
             </div> 
         </div>
-        
-        {showForm && 
-        <div className=""> 
-                <AdminForm/>
-        </div>
-        }
 
-            <AdminTable 
+        <div className="mt-10 w-full flex items-center justify-center">
+        <AdminTable 
               products={products} 
               onEdit={handleEdit} 
               onRemove={handleRemove}
             />
+        </div>
+
+                <Modal isOpen={isEditModalOpen} onClose={handleCloseEditModal}>
+                    {selectedProduct && (
+                        <EditAdminForm
+                            product={selectedProduct}  
+                            colorId={selectedColorId}
+                            onSubmitSuccess={handleCloseEditModal}
+                            onProductsChange={reloadProducts}
+                            handleCloseEditModal={handleCloseEditModal}
+                        />
+                    )}
+                </Modal>
+
+                <Modal isOpen={isDeletemModalOpen} onClose={handleCloseDeleteModal}>
+                    {selectedProduct && (
+                        <DeleteAdminForm
+                            product={selectedProduct}
+                            colorId={selectedColorId}
+                            onSubmitSuccess={handleCloseDeleteModal}
+                            onProductsChange={reloadProducts}
+                            handleCloseDeleteModal={handleCloseDeleteModal}/>
+                    )}
+                </Modal>
         
         </MainLayout>
       </>

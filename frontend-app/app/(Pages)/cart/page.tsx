@@ -1,10 +1,14 @@
 "use client"
+
 import MainLayout from "@/app/components/home/main-layout/MainLayout";
 import { useState, useEffect } from "react";
-import CartItem from "@/app/components/cart/CartItem";
 import Cart from "@/app/components/cart/Cart";
 
-export default function CartPage() {
+interface CartPageProps {
+    fetchCartItemCount: () => void;
+}
+
+export default function CartPage({ fetchCartItemCount }: CartPageProps) {
     const [message, setMessage] = useState('');
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
@@ -45,10 +49,10 @@ export default function CartPage() {
     };
 
     return (
-        <>
-      <MainLayout isAdmin={isAdmin} onCategoryChange={handleCategoryChange} >
-        <Cart/>
-      </MainLayout>
-    </>
-    )
+        <div className="bg-[#FBF8F3] min-h-screen">
+            <MainLayout isAdmin={isAdmin} onCategoryChange={handleCategoryChange}> 
+                <Cart fetchCartItemCount={fetchCartItemCount} />
+            </MainLayout>
+        </div>
+    );
 }
