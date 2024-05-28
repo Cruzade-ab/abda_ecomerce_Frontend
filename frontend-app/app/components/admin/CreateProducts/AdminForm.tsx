@@ -186,6 +186,7 @@ const AdminForm: React.FC<AdminFormProps>= ({onSubmitSuccess, handleCloseEditMod
             </div>
 
             <div className='flex flex-col gap-4'>
+              <label htmlFor=""> Main Image</label>
               <Controller
                 name={`products[${index}].imageFile`  as keyof MyFormData}
                 control={control}
@@ -193,6 +194,7 @@ const AdminForm: React.FC<AdminFormProps>= ({onSubmitSuccess, handleCloseEditMod
                   <input type="file" onChange={(e) => e.target.files && field.onChange(e.target.files[0])} className="form-input rounded" />
                 )}
               />
+              <label htmlFor=""> Hover Image</label>
               <Controller
                 name={`products[${index}].hoverImageFile`  as keyof MyFormData}
                 control={control}

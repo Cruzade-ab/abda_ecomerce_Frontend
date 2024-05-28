@@ -4,15 +4,16 @@ import CartItem from './CartItem';
 import OrderForm from '../order/orderForm';
 import Link from 'next/link';
 import CheckoutContainer from '../checkout_container/Checkout';
-import LoginModal from './LoginModal'; // Import the LoginModal componentimport Loader from '@/app/lib/loader';
+import Loader from '@/app/lib/loader';
+import LoginModal from './LoginModal';
 
 
 export default function Cart() {
     const [cartItems, setCartItems] = useState<CartDisplayDto[]>([]);
     const [totalPrice, setTotalPrice] = useState<number>(0);
     const [showForm, setShowForm] = useState(false);
-    const [isModalOpen, setModalOpen] = useState(false); // State for modal visibility    const [loading, setLoading] = useState(true);
-
+    const [loading, setLoading] = useState(true);
+    const [isModalOpen, setModalOpen] = useState(false); // State for modal visibility
 
     useEffect(() => {
         // Carga los elementos del carrito desde tu API

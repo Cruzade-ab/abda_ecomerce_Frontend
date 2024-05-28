@@ -6,9 +6,10 @@ import { colors } from '@mui/material';
 
 interface ProductCardProps {
     product: ProductInterface;
+    fetchCartItemCount: () => void;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product, fetchCartItemCount}) => {
 
     const [selectedColor, setSelectedColor] = useState<string>('');
     const [selectedSize, setSelectedSize] = useState<string>('');
@@ -19,6 +20,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [showLoginModal, setShowLoginModal] = useState(false);
     const router = useRouter();
+
+    
 
     useEffect(() => {
         (async () => {
@@ -113,6 +116,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     
                 if (response.ok) {
                     console.log('Product added to cart successfully');
+                    fetchCartItemCount();
                 } else {
                     throw new Error('Failed to add product to cart');
                 }
