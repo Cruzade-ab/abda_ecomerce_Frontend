@@ -6,6 +6,7 @@ import Link from 'next/link';
 import CheckoutContainer from '../checkout_container/Checkout';
 import Loader from '@/app/lib/loader';
 import LoginModal from './LoginModal';
+import { set } from 'react-hook-form';
 
 
 interface CartProps {
@@ -40,6 +41,7 @@ export default function Cart({fetchCartItemCount}: CartProps) {
     }, []);
 
     const handleRemoveItem = (productId: number) => {
+        setLoading(true)
         fetch('http://localhost:4000/api/cart/deleteCartItem', {
             method: 'POST',
             credentials: "include",
@@ -50,11 +52,13 @@ export default function Cart({fetchCartItemCount}: CartProps) {
         })
         .then(response => {
             if (response.ok) {
+                setLoading(false)
                 setCartItems(currentItems => currentItems.filter(item => item.product_id !== productId));
                 setTotalPrice(currentTotal => currentTotal - (cartItems.find(item => item.product_id === productId)?.product_price ?? 0) * (cartItems.find(item => item.product_id === productId)?.quantity ?? 0));
                 // Llama a fetchCartItemCount para actualizar el conteo del carrito
                 fetchCartItemCount();
             } else {
+                setLoading(false)
                 console.error('Error al eliminar el producto del carrito:', response.status);
             }
         })

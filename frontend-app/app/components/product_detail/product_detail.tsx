@@ -87,7 +87,10 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ isLoggedIn, isAdmin, fetc
     fetchProduct();
   }, []);
 
+  
+
   const handleCartClick = async () => {
+    fetchCartItemCount()
     if (!isLoggedIn) {
       console.log("Not logged in!");
       setShowLoginModal(true); // Show the login modal if user is not logged in
@@ -98,6 +101,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ isLoggedIn, isAdmin, fetc
       }
     }
     try {
+      setLoading(true)
       const response = await fetch("http://localhost:4000/api/cart/addToCart", {
         method: "POST",
         headers: {
@@ -115,11 +119,14 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ isLoggedIn, isAdmin, fetc
       console.log("Response from server:", data); // Aquí se registra la respuesta del servidor
 
       if (response.ok) {
+      setLoading(false)
         console.log("Product added to cart successfully");
       } else {
+        setLoading(false)
         throw new Error("Failed to add product to cart");
       }
     } catch (error) {
+      setLoading(false)
       console.error("Error adding product to cart:", error);
     }
   };
