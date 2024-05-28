@@ -1,10 +1,11 @@
 "use client"
 
-import Navbar from "@/app/components/home/navBar/Navbar"
+
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Cookies from 'js-cookie';
 import MainLayout from "@/app/components/home/main-layout/MainLayout";
+import Footer from "@/app/components/home/footer/Footer";
 
 export default function Admin() {
     const router = useRouter();
@@ -94,6 +95,7 @@ export default function Admin() {
                         )}
                     </div>
                 </MainLayout>
+                <Footer/>
             </div>
         </>
     );

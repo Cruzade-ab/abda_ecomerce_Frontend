@@ -127,7 +127,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, fetchCartItemCount})
     };
 
     return (
-        <div className="m-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg transition-shadow duration-300 hover:shadow-xl">
+        <div className="m-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-xl transition-shadow duration-300 hover:shadow-xl">
             <div onClick={handleViewDetails} className='cursor-pointer'>
                 <div className='mx-3 mt-3 h-80 rounded-xl overflow-hidden flex justify-center items-center'
                      onMouseEnter={() => setHoverImage(true)}
