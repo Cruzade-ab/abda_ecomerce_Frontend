@@ -1,6 +1,6 @@
 "use client";
 import Banner from "./components/home/banner/banner1";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import ProductsContainer from "./components/products/ProductContainer";
 import MainLayout from "./components/home/main-layout/MainLayout";
 
@@ -10,6 +10,7 @@ export default function Home() {
 
   const [apiUrl, setApiUrl] = useState('http://localhost:4000/api/products/wantedProducts');
   const [sectionName, setSectionName] = useState('Most Wanted Products');
+  const [cartItemCount, setCartItemCount] = useState<number>(0);
 
   useEffect(() => {
     (async () => {
@@ -57,11 +58,29 @@ export default function Home() {
     }
   };
 
+  const fetchCartItemCount = async () => {
+    try {
+      const response = await fetch('http://localhost:4000/api/cart/itemCount', {
+        method: 'GET',
+        credentials: 'include', // Incluye las credenciales en la solicitud
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setCartItemCount(data); // No necesitas acceder a data.count, ya que el valor devuelto es directamente la cantidad
+      } else {
+        console.error('Error al obtener la cantidad de elementos en el carrito');
+      }
+    } catch (error) {
+      console.error('Error fetching cart item count:', error);
+    }
+  };
+
+
   return (
     <div className="bg-[#FBF8F3 ] min-h-screen">
       <MainLayout isAdmin={isAdmin} onCategoryChange={handleCategoryChange}>
         <Banner />
-        <ProductsContainer apiUrl={apiUrl} section_name={sectionName} />
+        <ProductsContainer apiUrl={apiUrl} section_name={sectionName} fetchCartItemCount={fetchCartItemCount} />
       </MainLayout>
     </div>
   );
