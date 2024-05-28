@@ -70,7 +70,7 @@ export default function Cart({fetchCartItemCount}: CartProps) {
     }
     
     return (
-        <div className="flex flex-col md:flex-row md:items-start justify-between bg-[#FBF8F3]">
+        <div className="flex flex-col md:flex-row md:items-start justify-between bg-[#f7efdf]">
             <div className="flex-1">
                 <h2 className='text-center text-2xl md:text-4xl font-bold mb-8 mt-10'>Your Cart</h2>
                 <div className="flex flex-wrap">

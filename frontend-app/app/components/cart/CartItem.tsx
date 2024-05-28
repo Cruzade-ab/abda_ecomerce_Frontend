@@ -31,7 +31,7 @@ export default function CartItem({ product_id, product_price, quantity,size, siz
 
     return (
         <div className="w-full md:w-1/2 p-2 mb-2">
-            <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg overflow-hidden h-full border border-gray-300">
+            <div className="flex flex-col md:flex-row bg-white shadow-xl rounded-lg overflow-hidden h-full border border-gray-300">
                 <img src={image_url} alt="Product" className="md:w-1/2 w-full object-cover" />
                 <div className="product-details p-4 flex flex-col justify-between w-full">
                     <div>
