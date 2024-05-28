@@ -35,7 +35,7 @@ const AdminTable: React.FC<ProductTableProps> = ({ products, onEdit, onRemove })
 
 
     return (
-        <div className='w-full flex items-center justify-center'>
+        <div className='w-full flex items-center justify-center mb-2'>
             <table className='w-[90%] border-2 border-gray-400'>
                 <thead>
                     <tr>

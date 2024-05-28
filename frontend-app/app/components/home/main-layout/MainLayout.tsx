@@ -1,5 +1,6 @@
 import Navbar from "../navBar/Navbar";
 import React, { ReactNode, useCallback, useEffect, useState } from 'react';
+import Footer from "../footer/Footer";
 
 type MainLayoutProps = {
   children: ReactNode;
@@ -37,6 +38,7 @@ type MainLayoutProps = {
       <main className="mt-16"> 
         {children}
       </main>
+      <Footer/>
     </div>
   );
 };
