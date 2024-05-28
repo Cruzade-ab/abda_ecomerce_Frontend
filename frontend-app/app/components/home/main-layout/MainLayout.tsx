@@ -33,14 +33,14 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, isAdmin, onCategoryCh
   }, []);
 
   return (
-    <div>
+    <div className="flex flex-col min-h-screen">
       <Navbar onCategoryChange={onCategoryChange} isAdmin={isAdmin} cartItemCount={cartItemCount} />
-      <main className="mt-16">
+      <main className="flex-grow mt-16">
         {React.Children.map(children, child =>
           React.cloneElement(child as React.ReactElement<any>, { fetchCartItemCount })
         )}
       </main>
-      <Footer/>
+      <Footer />
     </div>
   );
 };
